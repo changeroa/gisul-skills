@@ -1,0 +1,30 @@
+name: Validate skills
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: changeroa/gisul
+          ref: 7ddd01cc04fd8ae225870495cdcce142f5fad652
+          path: .ci/gisul
+      - run: npm ci
+      - run: npm run validate
+      - name: Build the pinned reference server
+        run: |
+          npm --prefix .ci/gisul/server ci
+          npm --prefix .ci/gisul/server run build
+      - name: Compare validator decisions with the real server
+        run: npm test
+        env:
+          GISUL_SERVER_PATH: ${{ github.workspace }}/.ci/gisul/server/dist/index.js

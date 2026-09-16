@@ -1,0 +1,230 @@
+{
+  "imported_at": "2026-09-16T08:13:35.739Z",
+  "origin": "macmini",
+  "skills": [
+    {
+      "name": "aim",
+      "original_uri": "skill://gisul/codex/aim/SKILL.md",
+      "uri": "skill://gisul/gisul/aim/SKILL.md",
+      "resources": 1,
+      "bytes": 1634
+    },
+    {
+      "name": "autobahn",
+      "original_uri": "skill://gisul/codex/autobahn/SKILL.md",
+      "uri": "skill://gisul/gisul/autobahn/SKILL.md",
+      "resources": 1,
+      "bytes": 8253
+    },
+    {
+      "name": "catchup",
+      "original_uri": "skill://gisul/codex/catchup/SKILL.md",
+      "uri": "skill://gisul/gisul/catchup/SKILL.md",
+      "resources": 1,
+      "bytes": 3147
+    },
+    {
+      "name": "debloat",
+      "original_uri": "skill://gisul/codex/debloat/SKILL.md",
+      "uri": "skill://gisul/gisul/debloat/SKILL.md",
+      "resources": 1,
+      "bytes": 3268
+    },
+    {
+      "name": "dedash",
+      "original_uri": "skill://gisul/codex/dedash/SKILL.md",
+      "uri": "skill://gisul/gisul/dedash/SKILL.md",
+      "resources": 1,
+      "bytes": 3797
+    },
+    {
+      "name": "detool",
+      "original_uri": "skill://gisul/codex/detool/SKILL.md",
+      "uri": "skill://gisul/gisul/detool/SKILL.md",
+      "resources": 1,
+      "bytes": 3578
+    },
+    {
+      "name": "factchk",
+      "original_uri": "skill://gisul/codex/factchk/SKILL.md",
+      "uri": "skill://gisul/gisul/factchk/SKILL.md",
+      "resources": 1,
+      "bytes": 2895
+    },
+    {
+      "name": "feynman",
+      "original_uri": "skill://gisul/codex/feynman/SKILL.md",
+      "uri": "skill://gisul/gisul/feynman/SKILL.md",
+      "resources": 1,
+      "bytes": 4180
+    },
+    {
+      "name": "hate",
+      "original_uri": "skill://gisul/codex/hate/SKILL.md",
+      "uri": "skill://gisul/gisul/hate/SKILL.md",
+      "resources": 1,
+      "bytes": 2445
+    },
+    {
+      "name": "macrothink",
+      "original_uri": "skill://gisul/codex/macrothink/SKILL.md",
+      "uri": "skill://gisul/gisul/macrothink/SKILL.md",
+      "resources": 1,
+      "bytes": 4011
+    },
+    {
+      "name": "mandela",
+      "original_uri": "skill://gisul/codex/mandela/SKILL.md",
+      "uri": "skill://gisul/gisul/mandela/SKILL.md",
+      "resources": 1,
+      "bytes": 3226
+    },
+    {
+      "name": "modelchk",
+      "original_uri": "skill://gisul/codex/modelchk/SKILL.md",
+      "uri": "skill://gisul/gisul/modelchk/SKILL.md",
+      "resources": 1,
+      "bytes": 6260
+    },
+    {
+      "name": "nba",
+      "original_uri": "skill://gisul/codex/nba/SKILL.md",
+      "uri": "skill://gisul/gisul/nba/SKILL.md",
+      "resources": 1,
+      "bytes": 2157
+    },
+    {
+      "name": "prism",
+      "original_uri": "skill://gisul/codex/prism/SKILL.md",
+      "uri": "skill://gisul/gisul/prism/SKILL.md",
+      "resources": 1,
+      "bytes": 3110
+    },
+    {
+      "name": "re0-git",
+      "original_uri": "skill://gisul/codex/re0-git/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-git/SKILL.md",
+      "resources": 1,
+      "bytes": 4150
+    },
+    {
+      "name": "re0-loop",
+      "original_uri": "skill://gisul/codex/re0-loop/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-loop/SKILL.md",
+      "resources": 1,
+      "bytes": 2316
+    },
+    {
+      "name": "re0-memo",
+      "original_uri": "skill://gisul/codex/re0-memo/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-memo/SKILL.md",
+      "resources": 1,
+      "bytes": 3261
+    },
+    {
+      "name": "re0-merge",
+      "original_uri": "skill://gisul/codex/re0-merge/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-merge/SKILL.md",
+      "resources": 1,
+      "bytes": 4716
+    },
+    {
+      "name": "re0-plan",
+      "original_uri": "skill://gisul/codex/re0-plan/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-plan/SKILL.md",
+      "resources": 1,
+      "bytes": 5314
+    },
+    {
+      "name": "re0-release",
+      "original_uri": "skill://gisul/codex/re0-release/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-release/SKILL.md",
+      "resources": 1,
+      "bytes": 7143
+    },
+    {
+      "name": "re0-upgrade",
+      "original_uri": "skill://gisul/codex/re0-upgrade/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-upgrade/SKILL.md",
+      "resources": 1,
+      "bytes": 14000
+    },
+    {
+      "name": "re0-work",
+      "original_uri": "skill://gisul/codex/re0-work/SKILL.md",
+      "uri": "skill://gisul/gisul/re0-work/SKILL.md",
+      "resources": 1,
+      "bytes": 2263
+    },
+    {
+      "name": "re0",
+      "original_uri": "skill://gisul/codex/re0/SKILL.md",
+      "uri": "skill://gisul/gisul/re0/SKILL.md",
+      "resources": 1,
+      "bytes": 2870
+    },
+    {
+      "name": "readchk",
+      "original_uri": "skill://gisul/codex/readchk/SKILL.md",
+      "uri": "skill://gisul/gisul/readchk/SKILL.md",
+      "resources": 1,
+      "bytes": 2751
+    },
+    {
+      "name": "reorder",
+      "original_uri": "skill://gisul/codex/reorder/SKILL.md",
+      "uri": "skill://gisul/gisul/reorder/SKILL.md",
+      "resources": 1,
+      "bytes": 2442
+    },
+    {
+      "name": "shower",
+      "original_uri": "skill://gisul/codex/shower/SKILL.md",
+      "uri": "skill://gisul/gisul/shower/SKILL.md",
+      "resources": 1,
+      "bytes": 3293
+    },
+    {
+      "name": "sip",
+      "original_uri": "skill://gisul/codex/sip/SKILL.md",
+      "uri": "skill://gisul/gisul/sip/SKILL.md",
+      "resources": 1,
+      "bytes": 3068
+    },
+    {
+      "name": "ssotize",
+      "original_uri": "skill://gisul/codex/ssotize/SKILL.md",
+      "uri": "skill://gisul/gisul/ssotize/SKILL.md",
+      "resources": 1,
+      "bytes": 5396
+    },
+    {
+      "name": "archify",
+      "original_uri": "skill://gisul/gisul/archify/SKILL.md",
+      "uri": "skill://gisul/gisul/archify/SKILL.md",
+      "resources": 213,
+      "bytes": 8290614
+    },
+    {
+      "name": "aside-browser",
+      "original_uri": "skill://gisul/gisul/aside-browser/SKILL.md",
+      "uri": "skill://gisul/gisul/aside-browser/SKILL.md",
+      "resources": 1,
+      "bytes": 975
+    },
+    {
+      "name": "herdr-orchestrator",
+      "original_uri": "skill://gisul/gisul/herdr-orchestrator/SKILL.md",
+      "uri": "skill://gisul/gisul/herdr-orchestrator/SKILL.md",
+      "resources": 1,
+      "bytes": 7445
+    },
+    {
+      "name": "test-behavior-flows",
+      "original_uri": "skill://gisul/gisul/test-behavior-flows/SKILL.md",
+      "uri": "skill://gisul/gisul/test-behavior-flows/SKILL.md",
+      "resources": 1,
+      "bytes": 6645
+    }
+  ]
+}
