@@ -98,3 +98,27 @@ Dispatch the same operation with the newer retained commit to restore it.
 Retain completed releases: connections holding old manifests continue to read
 their pinned files while fresh searches and loads use current. There is no release
 garbage collector in this MVP.
+
+## Installed-plugin and trace verification
+
+After installing the HTTPS plugin and the tested masked exporter through Codex's
+plugin CLI, run:
+
+```sh
+node scripts/smoke-installed-worker.mjs <content-commit> <runtime-commit> <langfuse-project-id>
+```
+
+This selects the actual enabled personal-marketplace plugin cache, compares it
+with its source, and calls its three read tools. It searches for
+dont-make-me-think, loads its verified manifest and reads SKILL.md plus a supporting
+file. It checks exact release/commit, runtime version and manifest digest.
+
+The script feeds metadata from those real calls into an explicitly synthetic
+exporter fixture. No model is run, no production user turn is fabricated, and
+skill bodies are omitted. It invokes the installed masked hook, verifies every
+expected observation and the exact gisul connection join through the Langfuse
+API, invokes the hook again and compares observation IDs and multiplicity.
+The expected project ID is required; credentials stay in the existing protected
+local configuration. Receipts and bridge events are written under ignored
+`eval/out/worker-canary/`. These checks are not behavioral evaluations and do not
+count toward E14's completed-day production audit.
