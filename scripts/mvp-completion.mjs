@@ -9,6 +9,7 @@ import { collectQuality, windowFor } from './langfuse-quality.mjs';
 import { langfuseApi } from './langfuse-api.mjs';
 
 export const TARGET = Object.freeze({ project: 'b86d7139-c2bd-4075-b720-20d5f20dcc81', team: 'be395db1-8ee7-4c30-9fe8-f7a2ba8404c5', milestone: '1d58f2aa-52ac-4e1b-a113-284d39930f38', parent: 'IYEN-20', sleep: 'IYEN-25', quality: 'IYEN-36', done: '5a7a8261-4996-40ee-a350-f7f7abdcfd72' });
+const childQuery = { parentId: TARGET.parent, project: TARGET.project, includeArchived: true, limit: 100, fields: ['id', 'projectId', 'parentId', 'teamId', 'projectMilestone', 'statusType'] };
 export const digest = value => createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex');
 export const fingerprint = issue => digest({ title: issue.title, description: issue.description, projectId: issue.projectId, teamId: issue.teamId, parentId: issue.parentId ?? null, milestone: issue.projectMilestone?.id, status: issue.status, relations: issue.relations });
 const replaceOnce = (text, before, after) => { assert.equal(text.split(before).length, 2, `Expected one acceptance item: ${before}`); return text.replace(before, after); };
@@ -90,9 +91,13 @@ export async function completeIssue({ api, id, guard, receipt, evidence, marker,
   const result = { intent, confirmed: true, id, url: verified.issue.url, at: new Date().toISOString(), writeError: writeError ?? null };
   await persist(result); return result;
 }
-export function childrenComplete(issues) {
+function childrenScope(issues) {
   assert.equal(issues.length, 14, 'Expected exactly 14 MVP children');
   assert.deepEqual(issues.map(issue => issue.id).sort(), Array.from({ length: 14 }, (_, n) => `IYEN-${n + 23}`).sort());
+  for (const issue of issues) scope(issue);
+}
+export function childrenComplete(issues) {
+  childrenScope(issues);
   for (const issue of issues) { scope(issue); assert.equal(issue.statusType, 'completed', `${issue.id} incomplete`); }
 }
 async function retireSleepObserver(config) {
@@ -123,6 +128,7 @@ async function run(configFile, preflight) {
     const qualityDue = now >= Date.parse(config.notBefore);
     if (!preflight && (hasSleep || sleepLog.includes('"event":"observation-timeout"'))) await retireSleepObserver(config);
     if (!preflight && !hasSleep && !qualityDue) { state.waiting = 'Actual sleep/wake and completed calendar day'; await save(); return; }
+    delete state.waiting;
     api = await new CodexLinear(config.codex, config.cwd).start();
     const statuses = await api.call('list_issue_statuses', { team: TARGET.team });
     assert.ok(statuses.some(status => status.id === TARGET.done && status.type === 'completed'), 'Done state changed');
@@ -133,6 +139,7 @@ async function run(configFile, preflight) {
         guards[id] = { fingerprint: fingerprint(item.issue), commentsHash: item.commentsHash };
       }
       hookEvidence(await api.rpc('hooks/list', { cwds: config.hookCwds }), config);
+      const children = await api.call('list_issues', childQuery); assert.equal(children.hasNextPage, false); childrenScope(children.issues);
       assert.equal(digest(await readFile(config.exporterBundle, 'utf8')), config.exporterDigest, 'Exporter bundle changed');
       await atomicJson(join(dirname(configFile), 'preflight.json'), { at: new Date().toISOString(), readOnly: true, modelGeneration: false, guards });
       console.log(JSON.stringify({ preflight: true, guards })); return;
@@ -163,7 +170,7 @@ async function run(configFile, preflight) {
     }
     if (state.receipts[TARGET.sleep]?.confirmed && state.receipts[TARGET.quality]?.confirmed) {
       try {
-        const page = await api.call('list_issues', { parentId: TARGET.parent, project: TARGET.project, includeArchived: true, limit: 100 });
+        const page = await api.call('list_issues', childQuery);
         assert.equal(page.hasNextPage, false); childrenComplete(page.issues);
         await finish(TARGET.parent, 'MVP 하위 14개 티켓을 Linear API로 다시 조회해 모두 완료됨을 확인했다. E-03 실제 절전 재현과 E-14 완료된 하루의 Codex 중복 0 검증 기록은 각 하위 티켓에 있다.', 'mvp-all-14-verified-20260917', description => replaceOnce(description, '[ ] MVP 하위 14개 작업의 수용 기준을 충족한다.', '[X] MVP 하위 14개 작업의 수용 기준을 충족한다.').replace(/### 현재 상태[^\n]*[\s\S]*?(?=\*\*PR:)/, '### 완료 상태\n\nMVP 하위 14개 작업을 완료했다. 배포 버전과 검증 결과는 각 하위 티켓에 기록했다.\n\n'));
         state.complete = true; delete state.parentError; await save();
