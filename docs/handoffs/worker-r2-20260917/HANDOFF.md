@@ -59,7 +59,7 @@ Only write the **dev-tools** project in IYEN, using the installed Linear API/plu
 
 ## Working conventions
 
-- The new pane was created on Mac mini in Herdr session `default`, workspace `w3`, tab `w3:t1`, pane **w3:p4**, cwd `/Users/iyen/dev-tools`. Existing pane w3:p2 must remain untouched.
+- Work in the new pane on Mac mini in Herdr session `default`, workspace `w3`, tab `w3:t1`, cwd `/Users/iyen/dev-tools`. Read the actual pane ID from HERDR_PANE_ID and the bootstrap RECEIPT.json; the first empty pane closed before work started. Existing pane w3:p2 must remain untouched.
 - Start a fresh Codex session, not resume/fork. The user will interact with Cloudflare authentication in this new pane. Keep the user informed in Korean.
 - Keep an event monitor for agent/pane/tab changes. Parent handoff monitor is currently subscribed, but establish your own monitor for ongoing work. Read and follow the local Herdr skill and current CLI help; verify HERDR_ENV=1. Do not stop/update other sessions or operate unrelated panes.
 - Use rg for literal search, ast-grep for structural code changes, activate LSP for type/symbol operations (install/configure missing servers as needed). Use codegraph if an index exists and verify its freshness. Browser QA/automation requires the aside-browser skill.
