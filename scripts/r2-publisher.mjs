@@ -14,7 +14,15 @@ export function releaseApi(base, token, fetcher = fetch) {
     for (let attempt = 0; ; attempt++) {
       try {
         const response = await fetcher(new URL(path, url), { method, redirect: "error", headers: { authorization: `Bearer ${token}`, "content-type": body instanceof Uint8Array ? "application/octet-stream" : "application/json" }, body: body === undefined ? undefined : body instanceof Uint8Array ? body : JSON.stringify(body), signal: AbortSignal.timeout(120000) });
-        const data = await response.json();
+        let data;
+        try { data = await response.json(); }
+        catch {
+          // Browser challenge/error pages are not API responses. Do not dump
+          // their bodies or retry an explicit client rejection as transport loss.
+          const error = new Error(`Release API ${method} ${path}: HTTP ${response.status}: expected JSON, received a non-JSON response`);
+          error.status = response.status;
+          throw error;
+        }
         if (response.ok) return data;
         const error = new Error(`Release API ${method} ${path}: HTTP ${response.status}: ${data.error ?? "request failed"}`);
         error.status = response.status;

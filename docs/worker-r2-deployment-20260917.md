@@ -1,6 +1,6 @@
 # Worker/R2 deployment, 2026-09-17
 
-The production endpoint is `https://gisul.iyendev.com/mcp`. Worker `gisul-mcp`
+The production endpoint is `https://gisul-mcp.changeroa.workers.dev/mcp`. Worker `gisul-mcp`
 serves the private `gisul-skills-releases` bucket directly in Cloudflare account
 `8277c1acc712e4a9d00479255015c200` (iyen / iyen.team@gmail.com).
 The origin deployment at `/Users/iyen/gisul` was preserved and is no longer on
@@ -38,8 +38,15 @@ This is integration evidence, not a model-selection evaluation or E14 audit.
 Permanent GitHub checkouts are `/Users/iyen/dev-tools/gisul`,
 `/Users/iyen/dev-tools/gisul-skills` and `/Users/iyen/dev-tools/langfuse-masked`.
 The exact deployed identities above are distinct from later documentation commits.
-The Actions publication origin is now `https://gisul.iyendev.com`; subsequent main
+The Actions publication origin is now `https://gisul-mcp.changeroa.workers.dev`; subsequent main
 changes use the [same gated publisher and rollback workflow](r2-publication.md).
+
+The initial custom-domain canary passed locally, but the next GitHub runner was
+challenged before reaching `/admin/current` ([failed run](https://github.com/changeroa/gisul-skills/actions/runs/35198044520)).
+The active release remained unchanged. The existing Worker's stable workers.dev
+route was then enabled through the supported routing API and read back; bearer
+authentication and private R2 remain enforced. The custom domain still points to
+the same Worker, but unattended clients use the stable endpoint.
 
 GitHub uses task-only `GH_CONFIG_DIR=/Users/iyen/.config/gh-gisul-dev-tools` with
 the same environment in repository-local Git credential helpers. Global GitHub
