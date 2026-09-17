@@ -58,6 +58,10 @@ test("release build is committed, reproducible, tamper-evident and rollback is a
     await activateRelease({ root: runtime, id: "20260917.1", smoke });
     assert.equal((await list())._meta.release, "20260917.1", "long-lived process follows the current pointer");
   } finally { await client.close(); }
+  await assert.rejects(activateRelease({ root: runtime, id: "20260917.2", smoke, restart: async () => { throw new Error("injected restart failure"); } }), /restart failure/);
+  assert.equal(await readlink(join(runtime, "current")), "releases/20260917.1");
+  await assert.rejects(activateRelease({ root: runtime, id: "20260917.1", smoke }), { code: "EEXIST" });
+  await rm(join(runtime, ".release-lock"), { recursive: true });
   const changed = join(runtime, "releases/20260917.2/skills/demo/SKILL.md");
   await chmod(changed, 0o644); await writeFile(changed, "tampered");
   await assert.rejects(verifyRelease(join(runtime, "releases/20260917.2")), /inventory mismatch/);
