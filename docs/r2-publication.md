@@ -68,6 +68,13 @@ through GitHub's encrypted Actions secret store. They must match the Worker's
 separate publisher and reader credentials. CI does not need Cloudflare account
 credentials or public bucket access. Never commit tokens or embed them in URLs.
 
+The verified stable production origin is
+`https://gisul-mcp.changeroa.workers.dev`. Both Actions and installed clients use
+this endpoint. The custom domain `gisul.iyendev.com` can return its zone's browser
+challenge to GitHub-hosted runners; a successful local request is insufficient
+evidence that an unattended runner can use it. The stable workers.dev route uses
+the same active Worker and bearer checks. No unrelated zone settings are changed.
+
 For the initial migration, use the uploaded candidate's preview origin while the
 old production version remains active. The old version reads the Mac origin and
 has no R2 binding; candidate and future production share the R2 bucket and pointer.
@@ -77,7 +84,7 @@ that the MCP `serverInfo.version` matches its full source commit. Follow the
 [runtime deployment guide](https://github.com/changeroa/gisul/blob/main/docs/deployment.md)
 for version upload and activation. After actual installed-plugin and
 Langfuse checks, activate that Worker version, verify the production MCP endpoint,
-then change the repository variable to the production origin. Keep the R2 bucket
+then change the repository variable to the stable production origin. Keep the R2 bucket
 private. Runtime deployment is maintained in `changeroa/gisul`.
 
 ## Recovery and rollback

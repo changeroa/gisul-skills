@@ -128,3 +128,13 @@ test("matching release bytes cannot reconcile a missing operation sequence", asy
   await assert.rejects(activateVerified(api, "rollback", { ...identity, sequence: 2 }), /Unknown transport failure/);
   assert.equal(writes, 1);
 });
+
+test("a browser challenge fails once without exposing its HTML body", async () => {
+  let requests = 0;
+  const api = releaseApi("https://worker.example.invalid", "test-publisher", async () => {
+    requests++;
+    return new Response("<html>challenge-body-canary</html>", { status: 403, headers: { "content-type": "text/html" } });
+  });
+  await assert.rejects(api("/admin/current"), error => error.status === 403 && /expected JSON/.test(error.message) && !error.message.includes("challenge-body-canary"));
+  assert.equal(requests, 1);
+});
