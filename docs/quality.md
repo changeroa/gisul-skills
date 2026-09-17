@@ -27,6 +27,15 @@ and legacy exporter cohorts before attributing a project-wide failure to a chang
 The root-observation population differs from historical trace-level input/output
 audits; do not directly compare their denominators.
 
+`gates.e14_codex_duplicate_free` separately reports the Codex tracing-hook
+acceptance criterion over the entire completed calendar day. It includes both
+legacy `codex` tags and `agent:codex`, requires a nonempty population with known
+turn identities, and fails on duplicates, unfinished Codex roots, repeated rows
+or unattributed producers. OpenClaw's separate collector remains in the overall
+quality result. This narrow gate does not claim that project-wide input/context
+quality passed. Checkpoints written before attribution schema 2 cannot satisfy
+this gate; retain them and use a fresh output directory to recollect the day.
+
 On an Asia/Seoul macOS host, `node scripts/install-quality-schedule.mjs PROJECT_ID`
 installs `com.iyendev.langfuse-quality` at 09:00 daily in the user's launchd domain.
 It queries the previous completed Korean calendar day. Sleeping/offline machines

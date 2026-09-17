@@ -42,3 +42,21 @@ test("429 checkpoints the unconsumed cursor and resumes without refetching compl
   assert.ok(!checkpoint.includes("hello"));assert.ok(!checkpoint.includes("done"));
   await assert.rejects(collectQuality({...options,projectId:"wrong"}), /identity/);
 });
+
+test("E-14 audits the whole Codex population without treating an incomplete day or unknown producer as a pass", () => {
+  const state={schema_version:2,window:windowFor("2020-01-01","Asia/Seoul"),rows:{},repeated_rows:0,pages:1,complete:true};
+  const gate=()=>reportFor(state).gates.e14_codex_duplicate_free;
+  assert.equal(gate().passed,false);
+  state.rows.codex=summarizeRoot(row("a",{tags:["codex"]}));
+  state.rows.openclaw=summarizeRoot(row("o",{tags:["openclaw"],metadata:{run_id:"oc-run"}}));
+  assert.equal(gate().passed,true);
+  assert.equal(reportFor(state).passed,false); // OpenClaw context remains incomplete.
+  assert.equal(reportFor(state,new Date('2019-12-31T16:00:00Z')).gates.e14_codex_duplicate_free.passed,false);
+  state.rows.duplicate=summarizeRoot(row("b",{tags:["agent:codex"]}));
+  assert.equal(gate().duplicate_turn_traces,1);assert.equal(gate().passed,false);
+  delete state.rows.duplicate;
+  state.rows.unknown=summarizeRoot(row("u",{tags:[],metadata:{}}));assert.equal(gate().passed,false);
+  delete state.rows.unknown;
+  delete state.schema_version;assert.equal(gate().passed,false); // Recollect legacy checkpoints with full attribution.
+  assert.equal(summarizeRoot(row("ambiguous",{tags:["codex","openclaw"]})).agent,"unknown");
+});

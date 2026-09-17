@@ -17,10 +17,13 @@ export function summarizeRoot(row) {
   const tags = Array.isArray(row.tags) ? row.tags : [];
   const synthetic = quality.synthetic === true || tags.includes("synthetic");
   const heartbeat = quality.heartbeat === true || tags.includes("heartbeat");
+  const declaredAgents = [...new Set(tags.filter(tag => tag.startsWith("agent:")).map(tag => tag.slice(6)))];
+  const legacyAgents = ["codex", "openclaw"].filter(agent => tags.includes(agent));
+  const agents = declaredAgents.length ? declaredAgents : legacyAgents;
   const turn = Number.isInteger(run.turn_index) ? `index:${run.turn_index}` : typeof meta["codex.turn_id"] === "string" ? `id:${meta["codex.turn_id"]}` : null;
   return { id: row.id, trace_id: row.traceId, session_id: row.sessionId ?? meta["codex.thread_id"] ?? null, turn, start_time: row.startTime,
     missing_input: missing(row.input), missing_output: missing(row.output), synthetic, heartbeat,
-    agent: tags.find(tag => tag.startsWith("agent:"))?.slice(6) ?? "unknown",
+    agent: agents.length === 1 ? agents[0] : "unknown",
     device: tags.find(tag => tag.startsWith("device:"))?.slice(7) ?? meta.device_id ?? "unknown",
     gisul_loads: Array.isArray(gisul.loads) ? gisul.loads.length : 0, gisul_partial: quality.gisul_join === "partial",
     missing_release: quality.missing_gisul_release === true, release: typeof gisul.release === "string" ? gisul.release : null,
@@ -44,11 +47,30 @@ export function reportFor(state, now = new Date()) {
   const fullDay = Date.parse(state.window.to) <= now.getTime();
   const complete = state.complete && fullDay;
   const eligibleCount = eligible.length;
+  const codex = eligible.filter(row => row.agent === "codex"), codexIdentities = new Map();
+  for (const row of codex) if (row.session_id && row.turn) {
+    const key = `${row.session_id}/${row.turn}`;
+    if (!codexIdentities.has(key)) codexIdentities.set(key, new Set());
+    codexIdentities.get(key).add(row.trace_id);
+  }
+  const codexGate = {
+    scope: "All explicitly attributed non-synthetic, non-heartbeat Codex roots in this complete calendar day; OpenClaw has its own collector.",
+    checkpoint_schema: state.schema_version ?? 1,
+    roots: codex.length, identified_turns: codexIdentities.size,
+    unknown_turn_identity: codex.filter(row => !row.session_id || !row.turn).length,
+    duplicate_turn_traces: [...codexIdentities.values()].reduce((sum, ids) => sum + ids.size - 1, 0),
+    unfinished_codex: production.filter(row => row.agent === "codex" && row.unfinished).length,
+    unattributed_roots: production.filter(row => row.agent === "unknown").length,
+    repeated_identity_rows: state.repeated_rows,
+  };
+  const codexPassed = complete && state.schema_version === 2 && codex.length > 0 &&
+    !["unknown_turn_identity", "duplicate_turn_traces", "unfinished_codex", "unattributed_roots", "repeated_identity_rows"].some(key => codexGate[key]);
   return { version: 1, generated_at: now.toISOString(), project_id: state.project_id, origin: state.origin, date: state.date, timezone: state.timezone,
     source: "observations-v2-logical-roots", window: state.window, complete, full_day: fullDay, fetched_pages: state.pages, counts,
     missing_input_rate: eligibleCount ? counts.missing_input / eligibleCount : null,
     missing_output_rate: eligibleCount ? counts.missing_output / eligibleCount : null,
     by_agent: Object.fromEntries([...new Set(rows.map(x=>x.agent))].map(agent => [agent, rows.filter(x=>x.agent===agent).length])),
+    gates: { e14_codex_duplicate_free: { ...codexGate, passed: codexPassed } },
     passed: complete && eligibleCount > 0 && !["duplicate_turn_traces","repeated_identity_rows","unknown_turn_identity","missing_input","missing_output","missing_metadata"].some(key=>counts[key]),
     limitations: ["Logical root observations measure completed turns; legacy trace-level IO is a separate compatibility surface.", "Unmarked synthetic/heartbeat traffic cannot be inferred safely from prompt text.", "Unknown turn identities prevent a zero-duplicate claim; no-data days do not pass."] };
 }
@@ -63,7 +85,7 @@ export async function collectQuality({ api, projectId, date, tz = "Asia/Seoul", 
   await mkdir(lock);
   const checkpoint = `${prefix}.checkpoint.json`;
   try {
-    let state = { project_id: projectId, origin: api.origin, date, timezone: tz, window, cursor: null, rows: {}, pages: 0, repeated_rows: 0, complete: false };
+    let state = { schema_version: 2, project_id: projectId, origin: api.origin, date, timezone: tz, window, cursor: null, rows: {}, pages: 0, repeated_rows: 0, complete: false };
     try { state = JSON.parse(await readFile(checkpoint, "utf8")); } catch (error) { if (error.code !== "ENOENT") throw error; }
     if (state.project_id !== projectId || state.origin !== api.origin || state.date !== date || state.timezone !== tz) throw new Error("Checkpoint belongs to another query");
     if (state.resume_after && Date.parse(state.resume_after) > now()) {
@@ -97,7 +119,7 @@ export async function collectQuality({ api, projectId, date, tz = "Asia/Seoul", 
     }
     const report = reportFor(state);
     await atomicJson(`${prefix}.json`, report);
-    await writeFile(`${prefix}.md`, `# Langfuse quality ${date} (${tz})\n\nProject: ${projectId}. API: logical root observations v2. Full day: ${report.full_day}. Passed: ${report.passed}.\n\n| Metric | Count |\n| --- | ---: |\n${Object.entries(report.counts).map(([key,value])=>`| ${key} | ${value} |`).join("\n")}\n\n${report.limitations.map(x=>`- ${x}`).join("\n")}\n`);
+    await writeFile(`${prefix}.md`, `# Langfuse quality ${date} (${tz})\n\nProject: ${projectId}. API: logical root observations v2. Full day: ${report.full_day}. Passed: ${report.passed}.\n\n| Metric | Count |\n| --- | ---: |\n${Object.entries(report.counts).map(([key,value])=>`| ${key} | ${value} |`).join("\n")}\n\n## E-14 Codex duplicate gate\n\n${report.gates.e14_codex_duplicate_free.scope}\n\nPassed: ${report.gates.e14_codex_duplicate_free.passed}. This does not replace the overall quality result.\n\n${report.limitations.map(x=>`- ${x}`).join("\n")}\n`);
     return report;
   } finally { await rm(lock, { recursive: true }); }
 }
