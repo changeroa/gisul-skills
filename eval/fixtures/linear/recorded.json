@@ -1,0 +1,92 @@
+{
+  "recorded_at": "2026-09-17T00:29:09.809Z",
+  "provenance": "Linear plugin API; description, people and signed attachments omitted. Runtime scenarios are synthetic mutations of this recorded shape.",
+  "workspace": {
+    "id": "7671f845-2b12-4c35-9480-7b91d8d61f63",
+    "name": "IYEN"
+  },
+  "projects": [
+    {
+      "id": "b86d7139-c2bd-4075-b720-20d5f20dcc81",
+      "name": "dev-tools",
+      "teams": [
+        {
+          "id": "be395db1-8ee7-4c30-9fe8-f7a2ba8404c5",
+          "name": "IYEN Development"
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "IYEN-31",
+      "uuid": "580c2b6a-7d64-42d8-8ed0-78c3969beccb",
+      "title": "[E-09] 스킬 release 배포와 롤백 자동화",
+      "url": "https://linear.app/iyen/issue/IYEN-31/e-09-스킬-release-배포와-롤백-자동화",
+      "project": "dev-tools",
+      "projectId": "b86d7139-c2bd-4075-b720-20d5f20dcc81",
+      "parentId": "IYEN-20",
+      "team": "IYEN Development",
+      "teamId": "be395db1-8ee7-4c30-9fe8-f7a2ba8404c5",
+      "status": "착수 가능",
+      "statusType": "unstarted",
+      "relations": {
+        "blocks": [
+          {
+            "id": "IYEN-35",
+            "title": "[E-13] trace에 지침·스킬 버전 연결"
+          }
+        ],
+        "blockedBy": [
+          {
+            "id": "IYEN-27",
+            "title": "[E-05] 스킬 검증기와 CI 구성"
+          },
+          {
+            "id": "IYEN-29",
+            "title": "[E-07] 서버 응답에 release 정보 추가"
+          }
+        ],
+        "relatedTo": [],
+        "duplicateOf": null
+      }
+    }
+  ],
+  "statuses": [
+    {
+      "id": "0a9e3036-ff67-4ef2-b284-f0ad54f10526",
+      "name": "착수 가능",
+      "type": "unstarted"
+    },
+    {
+      "id": "03fd0ccb-c07a-426a-9091-06a27cc821e2",
+      "name": "진행 중",
+      "type": "started"
+    },
+    {
+      "id": "183e74fb-7bc4-45a4-9920-287d0fa0168c",
+      "name": "In Review",
+      "type": "started"
+    },
+    {
+      "id": "4f1003ea-f027-465e-8091-040195e9fb55",
+      "name": "검증·배포 대기",
+      "type": "started"
+    },
+    {
+      "id": "5a7a8261-4996-40ee-a350-f7f7abdcfd72",
+      "name": "완료",
+      "type": "completed"
+    }
+  ],
+  "templates": [
+    {
+      "id": "0a325e5a-af11-4b58-9b18-1cb0d21489dd",
+      "name": "개발 작업"
+    },
+    {
+      "id": "3288c06c-8eb7-4520-82bb-3ce5e584c15e",
+      "name": "기획 결정"
+    }
+  ]
+}

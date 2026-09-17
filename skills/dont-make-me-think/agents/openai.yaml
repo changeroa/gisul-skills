@@ -1,0 +1,4 @@
+interface:
+  display_name: "Don’t Make Me Think · UI QA"
+  short_description: "화면 근거로 사용자의 망설임과 탐색 부담을 찾아내는 UI QA"
+  default_prompt: "$dont-make-me-think로 이 UI를 점검하고, 사용자 과업을 방해하는 문제와 화면 근거, 우선순위, 수정안, 재검증 조건을 알려줘."

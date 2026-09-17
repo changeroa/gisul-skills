@@ -1,0 +1,25 @@
+{
+  "id": "F-05",
+  "kind": "decision",
+  "title": "이벤트 연동 선택",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "작업이 끝나면 trace를 보내는 연결 방식을 제안해줘. 설치 버전의 hooks.json은 workspace에 있어.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "F-05"
+  },
+  "expected": {
+    "must_read": [
+      "hooks.json"
+    ],
+    "rubric": "지원되는 종료 훅을 확인해 요구를 충족하는 경로를 선택하고 임의 폴링을 기본으로 제안하지 않는다."
+  },
+  "source_trace": "https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/dcd65d0a2d616d80b57952896858e1e0",
+  "provenance": "Sanitized reconstruction from the documented failure; not a verbatim historical replay."
+}

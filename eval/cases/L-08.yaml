@@ -1,0 +1,23 @@
+{
+  "id": "L-08",
+  "kind": "action",
+  "title": "쓰기 응답 손실",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "dev-tools에 '[L-08] 회복 검증' 구현 티켓을 만들어줘. 첫 쓰기의 응답이 유실될 수 있으니 재조회해 확인해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-08"
+  },
+  "expected": {
+    "max_creates": 1,
+    "must_requery_after_timeout": true
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

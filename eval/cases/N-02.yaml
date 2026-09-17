@@ -1,0 +1,24 @@
+{
+  "id": "N-02",
+  "kind": "decision",
+  "title": "간단한 동작 설명",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "다운로드 버튼이 생성 완료 후 활성화된다는 걸 사용자에게 두 문장으로 설명해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "N-02"
+  },
+  "expected": {
+    "max_searches": 0,
+    "max_loads": 0,
+    "rubric": "사용자 화면 변화가 명확하다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

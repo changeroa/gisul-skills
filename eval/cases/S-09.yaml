@@ -1,0 +1,25 @@
+{
+  "id": "S-09",
+  "kind": "search",
+  "title": "한국어 스킬 검색",
+  "split": "holdout",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "기획 티켓을 개발 작업으로 나누고 완료까지 추적하는 절차를 찾아줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "S-09"
+  },
+  "expected": {
+    "must_load": [
+      "linear-delivery"
+    ],
+    "max_loads": 2
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

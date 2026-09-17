@@ -30,7 +30,7 @@ test("the imported catalog loads through the real bridge with release identity a
   };
   try {
     await client.connect(transport);
-    assert.equal((await call("search_skills", { limit: 50 })).totalMatches, 32);
+    assert.equal((await call("search_skills", { limit: 50 })).totalMatches, catalog.valid.length);
     assert.equal(Object.keys(aliases).length, 28);
     for (const [oldUri, uri] of Object.entries(aliases)) {
       const loaded = await call("load_skill", { uri: oldUri });

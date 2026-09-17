@@ -1,0 +1,16 @@
+key: arkpoint
+linear:
+  workspace: {id: 7671f845-2b12-4c35-9480-7b91d8d61f63, name: IYEN}
+  team: {id: be395db1-8ee7-4c30-9fe8-f7a2ba8404c5, name: IYEN Development}
+  project: {id: 544d025c-fc0b-4a4d-9fa3-0c314cf733a4, name: arkpoint-studio}
+  templates: {implementation: 개발 작업, decision: 기획 결정}
+  states: {todo: 착수 가능, in_progress: 진행 중, in_review: In Review, verifying: 검증·배포 대기, done: 완료, canceled: Canceled}
+notifications:
+  slack:
+    allowed_channels: [{name: '#tf-arkpoint-dev', id: C0BBR6TNSCR}]
+    forbidden_channels: ['#eum-협업', '#eum협업']
+    manual_send: never
+policy_file: arkpoint-delivery.md
+repos: []
+verified_at: '2026-09-17'
+unverified: [repository_mapping, github_merge_automation]

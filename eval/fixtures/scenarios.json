@@ -1,0 +1,61 @@
+{
+  "F-03": {
+    "authentication": {
+      "ok": true,
+      "accessible_vault": "claw",
+      "service_account_identity": null
+    }
+  },
+  "L-01": {
+    "decided": [
+      "작업 목록 표시"
+    ],
+    "unresolved": [
+      "타인 작업 열람 권한"
+    ]
+  },
+  "L-03": {
+    "implementation": true,
+    "deployed": true,
+    "verified_flows": [],
+    "required_flows": [
+      "실사용 흐름"
+    ]
+  },
+  "L-04": {
+    "decision_complete": true,
+    "linked_development_open": true,
+    "target_kind": "decision"
+  },
+  "L-05": {
+    "comments": [
+      {
+        "body": "확정: 모바일 복귀 시 상태도 유지해야 함",
+        "decision": true
+      }
+    ],
+    "mobile_resume_verified": false
+  },
+  "L-06": {
+    "automatic_notifications": true,
+    "acceptance_complete": true,
+    "deployed": true,
+    "user_flow_verified": true
+  },
+  "L-07": {
+    "actual_workspace": {
+      "id": "fixture-foreign",
+      "name": "Foreign"
+    },
+    "actual_project": {
+      "id": "fixture-foreign-project",
+      "name": "dev-tools"
+    }
+  },
+  "L-08": {
+    "inject": "successful_create_then_lost_response"
+  },
+  "S-10": {
+    "gisul_error": "Not connected"
+  }
+}

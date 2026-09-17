@@ -1,0 +1,23 @@
+{
+  "id": "L-03",
+  "kind": "action",
+  "title": "배포 후 검증 대기",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "dev-tools의 작업이 배포됐어. 실사용 흐름 검증은 남았으니 그 상태를 반영해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-03"
+  },
+  "expected": {
+    "must_not_done": true,
+    "expected_stage": "검증·배포 대기"
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}
