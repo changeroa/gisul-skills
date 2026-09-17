@@ -1,0 +1,66 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { chmod, cp, mkdir, mkdtemp, readFile, readlink, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { buildRelease } from "../scripts/build-release.mjs";
+import { activateRelease } from "../scripts/release-runtime.mjs";
+import { verifyRelease } from "../scripts/release-files.mjs";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { z } from "zod";
+
+test("release build is committed, reproducible, tamper-evident and rollback is atomic", { timeout: 30000 }, async t => {
+  const root = await mkdtemp(join(tmpdir(), "gisul-publish-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const repo = join(root, "repo");
+  const runtime = join(root, "runtime");
+  await mkdir(join(repo, "skills/demo"), { recursive: true });
+  await writeFile(join(repo, ".gitignore"), "dist/\n");
+  await writeFile(join(repo, "skills/demo/SKILL.md"), "---\nname: demo\ndescription: Demo 데모\n---\nversion one\n");
+  await writeFile(join(repo, "aliases.json"), "{}\n");
+  const git = args => execFileSync("git", args, { cwd: repo, stdio: "pipe" });
+  git(["init"]); git(["config", "user.name", "Test"]); git(["config", "user.email", "test@example.invalid"]);
+  git(["add", "."]); git(["commit", "-m", "one"]);
+  const one = await buildRelease(repo, "20260917.1");
+  assert.equal(await buildRelease(repo, "20260917.1"), one);
+  await writeFile(join(repo, "dirty"), "untracked");
+  await assert.rejects(buildRelease(repo, "20260917.2"), /Commit all/);
+  await rm(join(repo, "dirty"));
+  const smoke = async (dir, expected) => assert.equal(JSON.parse(await readFile(join(dir, "release.json"))).release, expected);
+  const staging = join(root, "stage-one"); await cp(one, staging, { recursive: true });
+  assert.equal((await activateRelease({ root: runtime, id: "20260917.1", staging, smoke })).state, "active");
+  assert.equal((await activateRelease({ root: runtime, id: "20260917.1", smoke })).state, "unchanged");
+  await writeFile(join(repo, "skills/demo/SKILL.md"), "---\nname: demo\ndescription: Demo 데모\n---\nversion two\n");
+  git(["add", "."]); git(["commit", "-m", "two"]);
+  const two = await buildRelease(repo, "20260917.2");
+  await assert.rejects(buildRelease(repo, "20260917.1"), /another commit/);
+  const stageTwo = join(root, "stage-two"); await cp(two, stageTwo, { recursive: true });
+  await assert.rejects(activateRelease({ root: runtime, id: "20260917.2", staging: stageTwo,
+    smoke: async (dir, expected, live) => { if (live && expected === "20260917.2") throw new Error("injected smoke failure"); await smoke(dir, expected); }
+  }), /injected smoke failure/);
+  assert.equal(await readlink(join(runtime, "current")), "releases/20260917.1");
+  await activateRelease({ root: runtime, id: "20260917.2", smoke });
+  assert.equal(await readlink(join(runtime, "current")), "releases/20260917.2");
+  const server = process.env.GISUL_SERVER_PATH ?? new URL("../../gisul/server/dist/index.js", import.meta.url).pathname;
+  const client = new Client({ name: "release-pointer-test", version: "1" });
+  const transport = new StdioClientTransport({ command: process.execPath, args: [server], env: { ...process.env, GISUL_ROOT: runtime }, stderr: "pipe" });
+  transport.stderr.on("data", () => {});
+  try {
+    await client.connect(transport);
+    const schema = z.object({ skills: z.array(z.object({ uri: z.string() })), _meta: z.object({ release: z.string() }) });
+    const list = () => client.request({ method: "skills/list", params: {} }, schema);
+    assert.equal((await list())._meta.release, "20260917.2");
+    assert.equal((await list()).skills.length, 1, "native fallback roots must be excluded");
+    const result = await client.callTool({ name: "create_skill", arguments: { name: "test", markdown: "---\nname: test\ndescription: Test\n---\n" } });
+    assert.ok(result.isError); assert.match(result.content[0].text, /immutable/);
+    await activateRelease({ root: runtime, id: "20260917.1", smoke });
+    assert.equal((await list())._meta.release, "20260917.1", "long-lived process follows the current pointer");
+  } finally { await client.close(); }
+  const changed = join(runtime, "releases/20260917.2/skills/demo/SKILL.md");
+  await chmod(changed, 0o644); await writeFile(changed, "tampered");
+  await assert.rejects(verifyRelease(join(runtime, "releases/20260917.2")), /inventory mismatch/);
+  await assert.rejects(activateRelease({ root: runtime, id: "20260917.2", smoke }), /inventory mismatch/);
+  assert.equal(await readlink(join(runtime, "current")), "releases/20260917.1");
+});
