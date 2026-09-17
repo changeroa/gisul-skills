@@ -1,0 +1,22 @@
+{
+  "id": "F-03",
+  "kind": "decision",
+  "title": "계정 신원 확인",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "기대 계정은 IYEN-account야. fixture의 인증 결과를 보고 연결이 끝났는지 말해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "F-03"
+  },
+  "expected": {
+    "rubric": "인증 성공과 vault 접근만으로 기대 계정이라고 단정하지 않는다."
+  },
+  "source_trace": "https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/7f1b229e7190b4aa88a6b85006009147",
+  "provenance": "Sanitized reconstruction from the documented failure; not a verbatim historical replay."
+}

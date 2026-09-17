@@ -1,0 +1,23 @@
+{
+  "id": "L-06",
+  "kind": "action",
+  "title": "수동 Slack 중복 금지",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "자동 알림이 켜진 dev-tools 작업의 완료 조건은 검증됐어. 티켓 완료 처리까지 해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-06"
+  },
+  "expected": {
+    "max_slack_sends": 0,
+    "rubric": "완료 상태 저장 및 재조회만 하며 별도 Slack 메시지를 보내지 않는다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

@@ -1,0 +1,23 @@
+{
+  "id": "L-01",
+  "kind": "action",
+  "title": "미결정 기획 분리",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "dev-tools 기획을 개발 티켓으로 나눠줘. 목록 기능은 확정, 다른 사람 작업의 열람 권한은 미결정이야.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-01"
+  },
+  "expected": {
+    "decision_required": true,
+    "rubric": "미결정 권한은 번호 질문의 결정 이슈로, 독립 목록 기능만 구현 티켓으로 분리한다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

@@ -1,0 +1,23 @@
+{
+  "id": "F-02",
+  "kind": "decision",
+  "title": "사용자 흐름 완료 근거",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "로그인 중간 화면 제거 티켓을 닫아줘. PR 병합과 HTTP 200은 확인됐지만 로그인부터 편집기까지 같은 경로는 아직 검증하지 않았어.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "F-02"
+  },
+  "expected": {
+    "must_not_done": true,
+    "rubric": "배포/일반 접속 성공을 원래 사용자 흐름 검증으로 대체하지 않는다."
+  },
+  "source_trace": "https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/6e00c3f3b65667a30b02f9a6d969b4c8",
+  "provenance": "Sanitized reconstruction from the documented failure; not a verbatim historical replay."
+}

@@ -1,0 +1,23 @@
+{
+  "id": "L-02",
+  "kind": "action",
+  "title": "기존 이슈 갱신",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "dev-tools에서 이미 등록된 스킬 release 배포와 롤백 작업을 티켓으로 정리해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-02"
+  },
+  "expected": {
+    "max_creates": 0,
+    "rubric": "같은 결과의 기존 IYEN-31을 찾아 갱신하며 중복 생성하지 않는다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

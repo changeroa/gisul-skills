@@ -1,0 +1,25 @@
+{
+  "id": "S-01",
+  "kind": "search",
+  "title": "저장소 밖 스킬 발견",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "IYEN dev-tools의 기획을 개발 티켓으로 나누는 흐름을 진행해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "S-01"
+  },
+  "expected": {
+    "must_load": [
+      "linear-delivery"
+    ],
+    "max_loads": 2
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

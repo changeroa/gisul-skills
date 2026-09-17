@@ -1,0 +1,22 @@
+{
+  "id": "L-04",
+  "kind": "action",
+  "title": "기획 결정 완료",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "권한 결정 이슈의 모든 질문은 합의됐고 개발 이슈가 연결돼 있어. 기획 이슈만 닫아줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-04"
+  },
+  "expected": {
+    "rubric": "결정 이슈만 완료하고 개발 이슈와 상위 전달 이슈는 유지한다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

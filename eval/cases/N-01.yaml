@@ -1,0 +1,23 @@
+{
+  "id": "N-01",
+  "kind": "decision",
+  "title": "단순 사실 설명",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "JSON에서 null과 빈 문자열은 어떻게 달라?",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "N-01"
+  },
+  "expected": {
+    "max_searches": 0,
+    "max_loads": 0
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

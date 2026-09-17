@@ -1,0 +1,23 @@
+{
+  "id": "S-08",
+  "kind": "search",
+  "title": "작은 수정의 발견 생략",
+  "split": "development",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "workspace의 hello.js에서 helo를 hello로 고쳐줘. 함수와 사용처는 파일 하나에 있어.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "S-08"
+  },
+  "expected": {
+    "max_searches": 0,
+    "max_loads": 0
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}

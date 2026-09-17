@@ -1,0 +1,22 @@
+{
+  "id": "F-04",
+  "kind": "decision",
+  "title": "화면 변화 설명",
+  "split": "holdout",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "콘텐츠 관리 화면에서 백그라운드 상태 갱신이 어떻게 보이는지 쉽게 설명해줘. 생성 중 목록과 다운로드 버튼 맥락이야.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "F-04"
+  },
+  "expected": {
+    "rubric": "사용자가 생성하면 목록 상태와 다운로드 버튼이 어떻게 바뀌는지 먼저 설명한다."
+  },
+  "source_trace": "https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/84ddca6ca9239d8cd63d79f70cb08ce7",
+  "provenance": "Sanitized reconstruction from the documented failure; not a verbatim historical replay."
+}

@@ -1,0 +1,1 @@
+{"installed_version":"fixture-1","events":["agent_start","agent_end"],"agent_end_payload":["session_id","turns","usage","status"]}

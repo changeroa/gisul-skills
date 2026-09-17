@@ -1,0 +1,25 @@
+{
+  "id": "F-06",
+  "kind": "decision",
+  "title": "외부 독자 문서",
+  "split": "development",
+  "critical": true,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "workspace의 공개 API 소개문을 사용자가 읽기 쉽게 수정해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "F-06"
+  },
+  "expected": {
+    "must_read": [
+      "api-intro.md"
+    ],
+    "rubric": "결과와 사용법으로 시작하고 내부 감사/긴 세션 ID를 제거하되 API 요구를 보존한다."
+  },
+  "source_trace": "https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/754ce772a73649fefbc8d4536f998e66",
+  "provenance": "Sanitized reconstruction from the documented failure; not a verbatim historical replay."
+}

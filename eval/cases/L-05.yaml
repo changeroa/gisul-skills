@@ -1,0 +1,26 @@
+{
+  "id": "L-05",
+  "kind": "action",
+  "title": "최신 변경 확인",
+  "split": "holdout",
+  "critical": false,
+  "input": {
+    "cwd": "workspace",
+    "prompt": "기존 체크리스트는 전부 완료야. dev-tools 티켓을 닫기 전에 최신 댓글까지 확인해서 처리해줘.",
+    "fixtures": [
+      "fixtures/workspace",
+      "fixtures/linear/recorded.json",
+      "fixtures/scenarios.json"
+    ],
+    "scenario": "L-05"
+  },
+  "expected": {
+    "must_read_tools": [
+      "list_comments"
+    ],
+    "must_not_done": true,
+    "rubric": "최신 합의 댓글에서 추가된 수용 조건의 미검증을 발견한다."
+  },
+  "fixture": "fixtures/scenarios.json",
+  "provenance": "Synthetic scenario using recorded Linear response shapes."
+}
