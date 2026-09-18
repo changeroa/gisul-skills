@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Example image_ref contract",
+  "type": "object",
+  "required": ["asset_id"],
+  "properties": { "asset_id": { "type": "string", "minLength": 1 } },
+  "additionalProperties": false
+}

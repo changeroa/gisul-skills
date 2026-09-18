@@ -1,0 +1,12 @@
+name: login-no-interstitial
+role: example-admin
+timeout_ms: 2000
+steps:
+  - goto: /login
+  - fill: { selector: '[name=email]', value: '$account.email' }
+  - fill: { selector: '[name=password]', value: '$account.password' }
+  - click: 'button[type=submit]'
+  - expect_url: '^/dashboard$'
+  - expect_not_visible: '[data-testid=interstitial]'
+  - expect_visible: '[data-testid=workspace]'
+artifacts: [screenshot, trace]

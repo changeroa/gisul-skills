@@ -47,3 +47,10 @@ The new workflow and bootstrap are reviewable candidates in `eval/candidates/`.
 See [evaluation](../eval/README.md) for promotion conditions. Three consecutive
 dated reports must be actual scheduled observations; backfilled dates do not prove
 three days of scheduler operation.
+
+OpenClaw's canonical `run.agent_kind=openclaw` and explicit `run.turn_id` are
+recognized as turn identity. Legacy `run_id` alone remains unknown because the
+older collector could generate it randomly when the source run ID was absent.
+The new collector leaves `turn_id` null in that situation. Historical unknown
+rows are not reclassified as proven unique turns. This does not change the E14
+Codex population or turn a failed retained audit into a pass.
