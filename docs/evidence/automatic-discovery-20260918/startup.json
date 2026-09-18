@@ -1,0 +1,783 @@
+{
+  "generatedAt": "2026-09-18T08:52:01.006Z",
+  "protocol": {
+    "version": "discovery-v2",
+    "phase": "startup",
+    "frozenAt": "2026-09-18T08:43:39.233Z",
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "runtimeHash": "58026a6751e5bf38e2de97124430a1497715b0445145df3aae39172bd881da30",
+    "expectedCommit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+    "harnessFiles": {
+      "run.mjs": "4a1d28efed29a7d717b858aeb75f32b8c04de0391ccb7bfa3bf8fd445f444df2",
+      "scenarios.mjs": "01b007b966e05bac74ac865ffe469b5f8dee78c5c6c3a72c7c3e4794716acd78",
+      "codex-session.mjs": "63ed7c92c5ad9edcfc7ca3397eea821be46fe3b8d473de9a2af1f1351b57c6df",
+      "environment.mjs": "5382dc5dd9e2a4ea9ae159b6f6686c692e7a0b0f7368bf807b80b6ad3f180f1e",
+      "offline-reader.mjs": "8fc44667d27dba0df7422819c1ead7c26f1140b1de9e3b577f0d769989046cd0",
+      "evidence.mjs": "0ed5491840978969a70d0952bb65a306b08a5d8a4cd313730ca6d2ad009f190e"
+    },
+    "scenariosHash": "dc59e65839744e08f7055d336846a3ff862ab703dbcfadd8c1b19bef4c221b8a",
+    "variantsHash": "2f6772f7d90710f0afa1508905fd7da6c73e2ddd2f66b48cf3fc4358071dafd7",
+    "schedule": [
+      {
+        "id": "4a96d803-c3a7-4603-bb39-62a5cc68c281",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/4a96d803-c3a7-4603-bb39-62a5cc68c281"
+      },
+      {
+        "id": "7d91904e-159c-4bb0-9a48-d74a5dda1eef",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7d91904e-159c-4bb0-9a48-d74a5dda1eef"
+      },
+      {
+        "id": "7d584f3b-cbc9-42a6-81eb-a20ae522a6dd",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7d584f3b-cbc9-42a6-81eb-a20ae522a6dd"
+      },
+      {
+        "id": "7482aee1-1d39-418d-a8eb-8ab0083d6081",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7482aee1-1d39-418d-a8eb-8ab0083d6081"
+      },
+      {
+        "id": "5e716591-5948-41b6-8cb2-848a7785da40",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/5e716591-5948-41b6-8cb2-848a7785da40"
+      },
+      {
+        "id": "7ba17d62-382a-4cb9-8265-a7b2fe4e3599",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7ba17d62-382a-4cb9-8265-a7b2fe4e3599"
+      },
+      {
+        "id": "af0ff076-1564-46d9-9fdc-2a6c80a9ce64",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/af0ff076-1564-46d9-9fdc-2a6c80a9ce64"
+      },
+      {
+        "id": "e52e89d0-f479-4ae4-bd72-26f562f887d5",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/e52e89d0-f479-4ae4-bd72-26f562f887d5"
+      },
+      {
+        "id": "7971a8bf-d93a-4323-abe1-145d9401225f",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7971a8bf-d93a-4323-abe1-145d9401225f"
+      },
+      {
+        "id": "c3e2c7e8-44bd-49b0-87b9-773372651788",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/c3e2c7e8-44bd-49b0-87b9-773372651788"
+      },
+      {
+        "id": "23095189-7245-4d2d-9084-22e468797e03",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/23095189-7245-4d2d-9084-22e468797e03"
+      },
+      {
+        "id": "cdbc7afa-95b9-4fc1-8a83-f4843e5594e6",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cdbc7afa-95b9-4fc1-8a83-f4843e5594e6"
+      },
+      {
+        "id": "72d46bf5-44e3-4bc8-ab91-e9574bf5ae2f",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/72d46bf5-44e3-4bc8-ab91-e9574bf5ae2f"
+      },
+      {
+        "id": "762022aa-d981-4c34-aa58-0e6a26908437",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/762022aa-d981-4c34-aa58-0e6a26908437"
+      },
+      {
+        "id": "0ab6dd78-39dd-4bac-bf21-b17a10a39875",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/0ab6dd78-39dd-4bac-bf21-b17a10a39875"
+      }
+    ],
+    "maxTokens": 300000,
+    "concurrency": 1,
+    "tokenPrices": {
+      "date": "2026-09-18",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "kind": "standard_api_equivalent_not_account_bill",
+      "inputPerMillion": 10,
+      "cachedPerMillion": 1,
+      "cacheWritePerMillion": 12.5,
+      "outputPerMillion": 50
+    },
+    "nativeSkills": [],
+    "hash": "bf230289d137302873498411624321293edbf87c25afd0fb07a7b1fe58509568"
+  },
+  "ledger": {
+    "protocolHash": "bf230289d137302873498411624321293edbf87c25afd0fb07a7b1fe58509568",
+    "scheduled": 15,
+    "completed": 15,
+    "usedTokens": 217719,
+    "infrastructureFailures": 0,
+    "stopReason": null,
+    "runs": [
+      {
+        "id": "4a96d803-c3a7-4603-bb39-62a5cc68c281",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/4a96d803-c3a7-4603-bb39-62a5cc68c281",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "7d91904e-159c-4bb0-9a48-d74a5dda1eef",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7d91904e-159c-4bb0-9a48-d74a5dda1eef",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "7d584f3b-cbc9-42a6-81eb-a20ae522a6dd",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7d584f3b-cbc9-42a6-81eb-a20ae522a6dd",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "7482aee1-1d39-418d-a8eb-8ab0083d6081",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7482aee1-1d39-418d-a8eb-8ab0083d6081",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "5e716591-5948-41b6-8cb2-848a7785da40",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/5e716591-5948-41b6-8cb2-848a7785da40",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "7ba17d62-382a-4cb9-8265-a7b2fe4e3599",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 1,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7ba17d62-382a-4cb9-8265-a7b2fe4e3599",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "af0ff076-1564-46d9-9fdc-2a6c80a9ce64",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/af0ff076-1564-46d9-9fdc-2a6c80a9ce64",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "e52e89d0-f479-4ae4-bd72-26f562f887d5",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/e52e89d0-f479-4ae4-bd72-26f562f887d5",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "7971a8bf-d93a-4323-abe1-145d9401225f",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 2,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/7971a8bf-d93a-4323-abe1-145d9401225f",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "c3e2c7e8-44bd-49b0-87b9-773372651788",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/c3e2c7e8-44bd-49b0-87b9-773372651788",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "23095189-7245-4d2d-9084-22e468797e03",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/23095189-7245-4d2d-9084-22e468797e03",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "cdbc7afa-95b9-4fc1-8a83-f4843e5594e6",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 3,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cdbc7afa-95b9-4fc1-8a83-f4843e5594e6",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "72d46bf5-44e3-4bc8-ab91-e9574bf5ae2f",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/72d46bf5-44e3-4bc8-ab91-e9574bf5ae2f",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "762022aa-d981-4c34-aa58-0e6a26908437",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/762022aa-d981-4c34-aa58-0e6a26908437",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "0ab6dd78-39dd-4bac-bf21-b17a10a39875",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 4,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/0ab6dd78-39dd-4bac-bf21-b17a10a39875",
+        "status": "completed",
+        "failure": null
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": "4a96d803-c3a7-4603-bb39-62a5cc68c281",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 0,
+      "resultHash": "a44c6016519133449e62462a4666551a55ed343e0975a956d55c3cb18c375b86",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14438,
+      "usage": {
+        "totalTokens": 14466,
+        "inputTokens": 14438,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 28,
+        "reasoningOutputTokens": 21
+      },
+      "elapsedMs": 6376,
+      "estimatedCost": 0.14578,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "7d91904e-159c-4bb0-9a48-d74a5dda1eef",
+      "caseId": "N02",
+      "variant": "description",
+      "repeat": 0,
+      "resultHash": "4903ecf14eb8cb86c47950518f36be7971259ebce04e15a43ef89f564fac0db9",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14450,
+      "usage": {
+        "totalTokens": 14478,
+        "inputTokens": 14450,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 28,
+        "reasoningOutputTokens": 21
+      },
+      "elapsedMs": 6318,
+      "estimatedCost": 0.069868,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "7d584f3b-cbc9-42a6-81eb-a20ae522a6dd",
+      "caseId": "N02",
+      "variant": "selective",
+      "repeat": 0,
+      "resultHash": "a342cb039dd93aeaf9155f923df74555e6f42fb6a343b00435536146f068fd0d",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [],
+      "firstInputTokens": 14574,
+      "usage": {
+        "totalTokens": 14601,
+        "inputTokens": 14574,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 27,
+        "reasoningOutputTokens": 20
+      },
+      "elapsedMs": 5685,
+      "estimatedCost": 0.14709,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "7482aee1-1d39-418d-a8eb-8ab0083d6081",
+      "caseId": "N02",
+      "variant": "description",
+      "repeat": 1,
+      "resultHash": "9df56c0cc57d999dc5272ffd4147e646a8f741ec55b88a386421e2f525231f44",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14450,
+      "usage": {
+        "totalTokens": 14479,
+        "inputTokens": 14450,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 29,
+        "reasoningOutputTokens": 22
+      },
+      "elapsedMs": 6586,
+      "estimatedCost": 0.14595,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "5e716591-5948-41b6-8cb2-848a7785da40",
+      "caseId": "N02",
+      "variant": "selective",
+      "repeat": 1,
+      "resultHash": "03cdefff06122fa52cd0daeae647289bfc87c6033297e7076166dabd2c79dcc1",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [],
+      "firstInputTokens": 14570,
+      "usage": {
+        "totalTokens": 14599,
+        "inputTokens": 14570,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 29,
+        "reasoningOutputTokens": 22
+      },
+      "elapsedMs": 6369,
+      "estimatedCost": 0.071118,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "7ba17d62-382a-4cb9-8265-a7b2fe4e3599",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 1,
+      "resultHash": "f45170eb43c8a386db576aa53faf16a2f323285c26574246d29db9c5d7c9c289",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14441,
+      "usage": {
+        "totalTokens": 14463,
+        "inputTokens": 14441,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 22,
+        "reasoningOutputTokens": 15
+      },
+      "elapsedMs": 6774,
+      "estimatedCost": 0.14551,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "af0ff076-1564-46d9-9fdc-2a6c80a9ce64",
+      "caseId": "N02",
+      "variant": "selective",
+      "repeat": 2,
+      "resultHash": "4f2f9d7bce3f0e1135a90b623c29fdc3ff519b3394ff94ac5a1820b23f7ad706",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [],
+      "firstInputTokens": 14582,
+      "usage": {
+        "totalTokens": 14606,
+        "inputTokens": 14582,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 24,
+        "reasoningOutputTokens": 17
+      },
+      "elapsedMs": 7601,
+      "estimatedCost": 0.070988,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "e52e89d0-f479-4ae4-bd72-26f562f887d5",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 2,
+      "resultHash": "89b325f6c0c438d86b75b28b9bedaf291ca4100ea869ae3aa855ae7f51df839f",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14435,
+      "usage": {
+        "totalTokens": 14462,
+        "inputTokens": 14435,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 27,
+        "reasoningOutputTokens": 20
+      },
+      "elapsedMs": 6522,
+      "estimatedCost": 0.069668,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "7971a8bf-d93a-4323-abe1-145d9401225f",
+      "caseId": "N02",
+      "variant": "description",
+      "repeat": 2,
+      "resultHash": "6d0977f78bd7e8c4a4e7f6d65f3b4566e5b7878f20a779b2eba57977e30115bc",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14444,
+      "usage": {
+        "totalTokens": 14478,
+        "inputTokens": 14444,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 34,
+        "reasoningOutputTokens": 27
+      },
+      "elapsedMs": 5749,
+      "estimatedCost": 0.070108,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "c3e2c7e8-44bd-49b0-87b9-773372651788",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 3,
+      "resultHash": "f8c2d59ce00b89dae828ad80d40edf26c1555946f722aaf40c4a43402e2555ab",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14438,
+      "usage": {
+        "totalTokens": 14469,
+        "inputTokens": 14438,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 31,
+        "reasoningOutputTokens": 24
+      },
+      "elapsedMs": 6638,
+      "estimatedCost": 0.069898,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "23095189-7245-4d2d-9084-22e468797e03",
+      "caseId": "N02",
+      "variant": "description",
+      "repeat": 3,
+      "resultHash": "ddc3f0cfd92917b5c1b3f7832b3ae097bfc7c6ede01dc17ce42148f4f486a16d",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14444,
+      "usage": {
+        "totalTokens": 14475,
+        "inputTokens": 14444,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 31,
+        "reasoningOutputTokens": 24
+      },
+      "elapsedMs": 5945,
+      "estimatedCost": 0.14599,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "cdbc7afa-95b9-4fc1-8a83-f4843e5594e6",
+      "caseId": "N02",
+      "variant": "selective",
+      "repeat": 3,
+      "resultHash": "4feb119dc56d623f57819dea65978df64409926a140ecf020563652864a59466",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [],
+      "firstInputTokens": 14574,
+      "usage": {
+        "totalTokens": 14607,
+        "inputTokens": 14574,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 33,
+        "reasoningOutputTokens": 26
+      },
+      "elapsedMs": 6382,
+      "estimatedCost": 0.071358,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "72d46bf5-44e3-4bc8-ab91-e9574bf5ae2f",
+      "caseId": "N02",
+      "variant": "description",
+      "repeat": 4,
+      "resultHash": "9b9396163b240a67dc52b45b5c1a42f22bd303b741e11a0be65e41528223d0bd",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14450,
+      "usage": {
+        "totalTokens": 14483,
+        "inputTokens": 14450,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 33,
+        "reasoningOutputTokens": 26
+      },
+      "elapsedMs": 6202,
+      "estimatedCost": 0.14615,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "762022aa-d981-4c34-aa58-0e6a26908437",
+      "caseId": "N02",
+      "variant": "selective",
+      "repeat": 4,
+      "resultHash": "1e034f11af1a56bf5c28d5485cab54270faa20b00f9ac9cee4631320b6cecc6f",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [],
+      "firstInputTokens": 14558,
+      "usage": {
+        "totalTokens": 14595,
+        "inputTokens": 14558,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 37,
+        "reasoningOutputTokens": 30
+      },
+      "elapsedMs": 6992,
+      "estimatedCost": 0.071398,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "0ab6dd78-39dd-4bac-bf21-b17a10a39875",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 4,
+      "resultHash": "96b1db993849fdd7e2bbe5a5d50f61f06fe3fcb59f791f45e9d206213258aadc",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [],
+      "firstInputTokens": 14432,
+      "usage": {
+        "totalTokens": 14458,
+        "inputTokens": 14432,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 26,
+        "reasoningOutputTokens": 19
+      },
+      "elapsedMs": 6633,
+      "estimatedCost": 0.069588,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": true,
+      "remoteCalls": [],
+      "instructionReads": []
+    }
+  ],
+  "summaries": [
+    {
+      "variant": "baseline",
+      "runs": 5,
+      "firstInputTokens": [
+        14438,
+        14441,
+        14435,
+        14438,
+        14432
+      ],
+      "meanFirstInputTokens": 14436.8,
+      "minFirstInputTokens": 14432,
+      "maxFirstInputTokens": 14441,
+      "sampleStandardDeviation": 3.420526275297414,
+      "remoteCalls": 0,
+      "exact391Passes": 5,
+      "firstInputDifferenceFromBaseline": 0
+    },
+    {
+      "variant": "description",
+      "runs": 5,
+      "firstInputTokens": [
+        14450,
+        14450,
+        14444,
+        14444,
+        14450
+      ],
+      "meanFirstInputTokens": 14447.6,
+      "minFirstInputTokens": 14444,
+      "maxFirstInputTokens": 14450,
+      "sampleStandardDeviation": 3.286335345030997,
+      "remoteCalls": 0,
+      "exact391Passes": 5,
+      "firstInputDifferenceFromBaseline": 10.800000000001091
+    },
+    {
+      "variant": "selective",
+      "runs": 5,
+      "firstInputTokens": [
+        14574,
+        14570,
+        14582,
+        14574,
+        14558
+      ],
+      "meanFirstInputTokens": 14571.6,
+      "minFirstInputTokens": 14558,
+      "maxFirstInputTokens": 14582,
+      "sampleStandardDeviation": 8.763560920082659,
+      "remoteCalls": 0,
+      "exact391Passes": 5,
+      "firstInputDifferenceFromBaseline": 134.8000000000011
+    }
+  ],
+  "semanticRatings": null,
+  "humanRatings": 0,
+  "limitation": "Isolated diagnostic, not the complete installed native catalog or global production startup. Routing observations do not establish semantic quality."
+}

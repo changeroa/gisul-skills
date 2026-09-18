@@ -22,6 +22,11 @@ ratings, at least baseline total passes and mean cost at most 130% of baseline.
 Record judge version and agreement with ten genuine human ratings. Global startup
 token comparison requires five identical fresh runs per condition.
 
+The separate [automatic discovery experiment](../docs/automatic-discovery-evaluation-20260918.md)
+uses `discovery/` for real Codex runs and keeps its 18 development conditions
+separate from this canonical dataset. Its results do not certify this promotion
+gate. `npm test` runs deterministic harness checks only; model runs are explicit.
+
 Never provide expected outputs or rubric labels to the evaluated agent. Mock tools
 may change fixture state but cannot contact Linear or Slack. A lost create response
 must be followed by a read before another write. Model runs and results are separate

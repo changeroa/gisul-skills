@@ -1,0 +1,303 @@
+{
+  "generatedAt": "2026-09-18T08:52:01.043Z",
+  "protocol": {
+    "version": "discovery-v2",
+    "phase": "native-duplicate",
+    "frozenAt": "2026-09-18T08:42:04.863Z",
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "runtimeHash": "58026a6751e5bf38e2de97124430a1497715b0445145df3aae39172bd881da30",
+    "expectedCommit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+    "harnessFiles": {
+      "run.mjs": "2959146868ed3326e8579a1ca5670dc1168161048a546d6881aecd5c59084808",
+      "scenarios.mjs": "01b007b966e05bac74ac865ffe469b5f8dee78c5c6c3a72c7c3e4794716acd78",
+      "codex-session.mjs": "63ed7c92c5ad9edcfc7ca3397eea821be46fe3b8d473de9a2af1f1351b57c6df",
+      "environment.mjs": "5382dc5dd9e2a4ea9ae159b6f6686c692e7a0b0f7368bf807b80b6ad3f180f1e",
+      "offline-reader.mjs": "8fc44667d27dba0df7422819c1ead7c26f1140b1de9e3b577f0d769989046cd0",
+      "evidence.mjs": "0ed5491840978969a70d0952bb65a306b08a5d8a4cd313730ca6d2ad009f190e"
+    },
+    "scenariosHash": "bc4baf418f444fcdcd95dd81f90f7570940d1468871f4f854228c091a7939de4",
+    "variantsHash": "2f6772f7d90710f0afa1508905fd7da6c73e2ddd2f66b48cf3fc4358071dafd7",
+    "schedule": [
+      {
+        "id": "d6cef205-95c2-4179-80db-b0e716dc9cf1",
+        "caseId": "D01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/d6cef205-95c2-4179-80db-b0e716dc9cf1"
+      },
+      {
+        "id": "fcb91a1f-b197-4c72-9cda-1a8b16761e91",
+        "caseId": "D01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/fcb91a1f-b197-4c72-9cda-1a8b16761e91"
+      },
+      {
+        "id": "cb9a69c5-ebc9-4391-9668-3817334422c9",
+        "caseId": "N01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cb9a69c5-ebc9-4391-9668-3817334422c9"
+      },
+      {
+        "id": "1be3368d-bc25-42d5-97ee-5ff2735dfc7c",
+        "caseId": "N01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/1be3368d-bc25-42d5-97ee-5ff2735dfc7c"
+      }
+    ],
+    "maxTokens": 450000,
+    "concurrency": 1,
+    "tokenPrices": {
+      "date": "2026-09-18",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "kind": "standard_api_equivalent_not_account_bill",
+      "inputPerMillion": 10,
+      "cachedPerMillion": 1,
+      "cacheWritePerMillion": 12.5,
+      "outputPerMillion": 50
+    },
+    "nativeSkills": [
+      "mandela"
+    ],
+    "hash": "d0b79bc07e8c78a6ad8f09ec2755ad2a8d9a9454b6209207256335cc35a352be"
+  },
+  "ledger": {
+    "protocolHash": "d0b79bc07e8c78a6ad8f09ec2755ad2a8d9a9454b6209207256335cc35a352be",
+    "scheduled": 4,
+    "completed": 4,
+    "usedTokens": 124241,
+    "infrastructureFailures": 0,
+    "stopReason": null,
+    "runs": [
+      {
+        "id": "d6cef205-95c2-4179-80db-b0e716dc9cf1",
+        "caseId": "D01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/d6cef205-95c2-4179-80db-b0e716dc9cf1",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "fcb91a1f-b197-4c72-9cda-1a8b16761e91",
+        "caseId": "D01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/fcb91a1f-b197-4c72-9cda-1a8b16761e91",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "cb9a69c5-ebc9-4391-9668-3817334422c9",
+        "caseId": "N01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cb9a69c5-ebc9-4391-9668-3817334422c9",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "1be3368d-bc25-42d5-97ee-5ff2735dfc7c",
+        "caseId": "N01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/1be3368d-bc25-42d5-97ee-5ff2735dfc7c",
+        "status": "completed",
+        "failure": null
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": "d6cef205-95c2-4179-80db-b0e716dc9cf1",
+      "caseId": "D01",
+      "variant": "baseline",
+      "repeat": 0,
+      "resultHash": "c7dc1e6d6ee420454d654ae6224b583ab321bf7136524aa5634a6da1e4fb2843",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [
+        "mandela"
+      ],
+      "firstInputTokens": 13678,
+      "usage": {
+        "totalTokens": 30549,
+        "inputTokens": 28270,
+        "cachedInputTokens": 13440,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2279,
+        "reasoningOutputTokens": 1552
+      },
+      "elapsedMs": 74250,
+      "estimatedCost": 0.27569,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": null,
+      "remoteCalls": [],
+      "instructionReads": [
+        {
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "id": "fcb91a1f-b197-4c72-9cda-1a8b16761e91",
+      "caseId": "D01",
+      "variant": "selective",
+      "repeat": 0,
+      "resultHash": "015612ef69c4a4e3a1b5fcf5a4fc291934825679022f1d00f23c25806678e5cb",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [
+        "mandela"
+      ],
+      "firstInputTokens": 13824,
+      "usage": {
+        "totalTokens": 65830,
+        "inputTokens": 62759,
+        "cachedInputTokens": 53632,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3071,
+        "reasoningOutputTokens": 2070
+      },
+      "elapsedMs": 109179,
+      "estimatedCost": 0.298452,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": null,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "leakage"
+          },
+          "status": "completed"
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed"
+        }
+      ],
+      "instructionReads": [
+        {
+          "command": "/bin/zsh -lc 'cat .agents/skills/gisul/SKILL.md'",
+          "exitCode": 0
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0
+        }
+      ]
+    },
+    {
+      "id": "cb9a69c5-ebc9-4391-9668-3817334422c9",
+      "caseId": "N01",
+      "variant": "selective",
+      "repeat": 0,
+      "resultHash": "5718a41adf86f4d243d17d743868a71673d36a8d5e52c97b668fd37410c3d49d",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "policyHash": "577faead21361e490207bd58fae97889261b433c26aae54c97d74dd52940c914",
+      "nativeSkills": [
+        "mandela"
+      ],
+      "firstInputTokens": 13723,
+      "usage": {
+        "totalTokens": 13978,
+        "inputTokens": 13723,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 255,
+        "reasoningOutputTokens": 185
+      },
+      "elapsedMs": 13645,
+      "estimatedCost": 0.14998,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": null,
+      "remoteCalls": [],
+      "instructionReads": []
+    },
+    {
+      "id": "1be3368d-bc25-42d5-97ee-5ff2735dfc7c",
+      "caseId": "N01",
+      "variant": "baseline",
+      "repeat": 0,
+      "resultHash": "616cac58301a845e1d56e1406d15b2f463c68b7f40bee9c4efcfe4cf2606f7a9",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "policyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "nativeSkills": [
+        "mandela"
+      ],
+      "firstInputTokens": 13594,
+      "usage": {
+        "totalTokens": 13884,
+        "inputTokens": 13594,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 290,
+        "reasoningOutputTokens": 246
+      },
+      "elapsedMs": 13252,
+      "estimatedCost": 0.15044,
+      "boundaryPassed": true,
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+      },
+      "exact391": null,
+      "remoteCalls": [],
+      "instructionReads": []
+    }
+  ],
+  "summaries": [
+    {
+      "variant": "baseline",
+      "runs": 2,
+      "firstInputTokens": [
+        13678,
+        13594
+      ],
+      "meanFirstInputTokens": 13636,
+      "minFirstInputTokens": 13594,
+      "maxFirstInputTokens": 13678,
+      "sampleStandardDeviation": 59.39696961966999,
+      "remoteCalls": 0,
+      "exact391Passes": 0,
+      "firstInputDifferenceFromBaseline": 0
+    },
+    {
+      "variant": "selective",
+      "runs": 2,
+      "firstInputTokens": [
+        13824,
+        13723
+      ],
+      "meanFirstInputTokens": 13773.5,
+      "minFirstInputTokens": 13723,
+      "maxFirstInputTokens": 13824,
+      "sampleStandardDeviation": 71.4177848998413,
+      "remoteCalls": 2,
+      "exact391Passes": 0,
+      "firstInputDifferenceFromBaseline": 137.5
+    }
+  ],
+  "semanticRatings": null,
+  "humanRatings": 0,
+  "limitation": "Isolated diagnostic, not the complete installed native catalog or global production startup. Routing observations do not establish semantic quality."
+}
