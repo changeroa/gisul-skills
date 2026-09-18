@@ -1,0 +1,328 @@
+[
+  {
+    "resultHash": "2aea4d9b0137aad56718abe3cd8d2489e8925121b2177a5ed0fa0c05c34b4cfe",
+    "caseId": "D01",
+    "variant": "baseline",
+    "repeat": 0,
+    "completion": {
+      "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+      "status": "completed",
+      "finalAnswers": [
+        "**95%를 새 문제나 실제 사용에서의 성공률로 믿기는 어렵습니다.** 현재 수치는 “반복 튜닝에 사용한 20문제 중 19개를 같은 모델의 채점으로 통과했다”는 의미입니다. 핵심은 **평가 문제 재사용과 독립적인 정답 검증의 부재**입니다.\n\n1. **개발용 문제를 평가에 재사용했습니다.**  \n   프롬프트를 같은 20문제에 맞춰 계속 고쳤으므로, 성적 상승이 일반적인 능력 향상인지 특정 문제에 대한 과적합인지 구분할 수 없습니다.  \n   → 기존 20개는 개발용으로 분류하고, 프롬프트와 채점 기준을 확정한 뒤 **튜닝에 전혀 사용하지 않은 별도 문제**로 평가해야 합니다. 그 결과로 다시 튜닝하면 새로운 최종 평가셋이 필요합니다.\n\n2. **정답 작성과 검증이 순환합니다.**  \n   `Shared hallucination`, `Tautology`, `Verifier = designer`에 해당하는 구조입니다. 같은 모델이 만든 잘못된 정답이나 판단 기준을 같은 모델이 다시 인정할 수 있습니다.  \n   → 정답은 신뢰할 수 있는 외부 자료, 전문가 검토, 실행 가능한 검증 등으로 독립적으로 확정해야 합니다. 모델 채점도 독립 채점과 대조해 정확성을 확인해야 합니다. **채점자가 정답을 보는 것 자체는 문제가 아닙니다. 그 정답과 채점 판단이 검증되지 않은 것이 문제입니다.**\n\n3. **문제와 정답의 출처가 하나로 편향되어 있습니다.**  \n   `Shared-pool bias`입니다. 한 모델이 만든 문제는 실제 사용자의 문제 분포와 다를 수 있고, 생성·풀이·채점에 같은 편향이 반복될 수 있습니다.  \n   → 실제 사용 사례에서 독립적으로 문제를 수집하고, 사용자나 도메인 전문가가 관련성과 결과의 유용성을 검토해야 합니다. 모델만 다른 것으로 바꾸는 조치로는 충분하지 않습니다.\n\n4. **풀이 모델에 정답이 유출되었는지 확인하지 않았습니다.**  \n   유출이 있었다고 단정할 수는 없지만, 있었다면 추론 능력 대신 정답 재현을 측정했을 수 있습니다.  \n   → 시스템 프롬프트, 예시, 대화 이력, 검색 결과 등 **풀이 모델이 받은 전체 입력**을 점검하고, 참조 정답은 채점 단계에만 제공해야 합니다.\n\n현재 95%는 **개발셋 내부 채점 결과**로 보고하는 것이 적절합니다. 20문제는 한 문항이 5%p인 작은 표본이기도 하므로, 수정된 설계로 평가할 때는 성공 건수·전체 문항 수와 불확실성도 함께 보고해야 합니다."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc \"rg --files -g AGENTS.md -g '\"'!node_modules'\"' -g '\"'!.git'\"' .\"",
+          "exitCode": 1,
+          "output": ""
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "632f3344b547601bd9f1b0303449e26820273e4b0e1d3384f9b681848fa629ca",
+    "caseId": "D01",
+    "variant": "selective",
+    "repeat": 0,
+    "completion": {
+      "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+      "status": "completed",
+      "finalAnswers": [
+        "**95%를 새 문제나 실제 사용자에 대한 성공률로 해석할 수 없습니다.** 현재 확인된 것은 “반복 조정에 사용한 20문항 중 19개를 같은 모델이 성공으로 판정했다”는 사실입니다. 핵심 문제는 **평가 데이터·정답·채점이 독립적이지 않다**는 점입니다.\n\n| 핵심 문제 | 결과를 믿기 어려운 이유 | 수정안 |\n|---|---|---|\n| **개발·평가 문항 재사용** | 프롬프트가 그 20문항에 맞춰졌으므로, 새 문제를 푸는 능력과 특정 문항에 대한 과적합을 구분할 수 없습니다. | 기존 20개는 개발용으로만 취급하세요. 프롬프트를 확정한 뒤, 조정 과정에서 보지 않은 별도 평가셋으로 평가하세요. |\n| **순환 검증** — Shared hallucination, Tautology, Verifier = designer | 문제·정답 생성과 채점을 같은 모델이 맡아, 잘못된 자체 정답에 동의한 것을 성공으로 셀 수 있습니다. | 외부 자료나 독립 전문가로 정답을 검증하고, 채점 기준을 사전에 고정하세요. 가능한 항목은 실행 결과로 채점하고, 판단이 필요한 항목은 독립 검토자가 확인하세요. |\n| **출처 편향** — Shared-pool bias | 같은 모델이 만든 문제만 쓰면 그 모델의 강점과 오류가 개발·평가 양쪽에 들어갑니다. 실제 사용자 문제를 대표하는지도 확인되지 않았습니다. | 실제 사용 사례에서 독립적으로 수집한 문제와 정답을 포함하고, 대표 사용자에게 결과의 유용성을 검토받으세요. 같은 모델로 새 문제만 추가해서는 충분하지 않습니다. |\n| **정답 누출 여부 미확인** | 풀이 입력에 정답이 들어갔다면, 점수가 문제 해결보다 정답 재현을 반영할 수 있습니다. 다만 현재 정보로 누출을 확정할 수는 없습니다. | 실제 프롬프트·대화 기록·검색 및 도구 결과를 점검하고, 채점용 정답이 풀이 모델에 전달되지 않도록 분리하세요. |\n\n채점자가 기준 정답을 보는 것 자체는 정상적인 절차입니다. 문제는 **그 정답이 독립적으로 검증됐는지, 풀이 단계로 새지 않았는지**입니다.\n\n또한 20문항에서는 한 문항이 **5%포인트**입니다. 위 문제를 먼저 해결한 뒤 표본을 늘리고, 성공 건수·전체 건수·불확실성을 함께 보고하세요. 현재 95%는 **개발용 문항에 대한 내부 채점 결과**로 표기하는 것이 타당합니다."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat .agents/skills/gisul/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "server": "gisul",
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "turn": 1,
+          "server": "gisul",
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "e655e8bd1eb8e9296fef12e581c6da2bc594f278db95b65168d8abe5a795cc31",
+    "caseId": "D01",
+    "variant": "bounded",
+    "repeat": 0,
+    "completion": {
+      "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+      "status": "completed",
+      "finalAnswers": [
+        "**95%(19/20)는 반복해서 프롬프트를 맞춘 문항에서 얻은 자체 채점 점수입니다. 새로운 문제에서도 95% 성공한다는 근거로는 부족합니다.** 핵심은 개발·정답·채점 과정에 독립적인 검증이 없다는 점입니다.\n\n1. **개발과 평가 데이터가 같습니다 — Shared-pool bias**\n   같은 20개를 보면서 프롬프트를 계속 고치면 그 문항의 특성과 오류에 맞춰 과적합될 수 있습니다. 실제로 암기했는지는 확인되지 않았지만, 일반화 능력을 측정하는 독립 평가가 아닙니다.\n   **수정:** 프롬프트를 확정한 뒤, 개발에 사용하지 않은 새 문항으로 평가하세요. 평가 결과를 보고 다시 수정했다면 그 문항도 개발용으로 간주해야 합니다.\n\n2. **문제·정답 생성과 검증이 순환합니다 — Shared hallucination, Tautology, Verifier = designer**\n   모델이 잘못 만든 정답을 같은 모델이 옳다고 인정하면, 오류를 공유하는 것만으로 높은 점수가 나올 수 있습니다.\n   **수정:** 실제 자료, 실행 결과, 업무 전문가 등 외부 근거로 정답을 검증하고, 사전에 정한 기준으로 독립 채점하세요. 다른 모델로 바꾸는 것만으로 정답의 정확성이 보장되지는 않습니다. **채점자가 정답을 보는 것 자체는 정상**이며, 문제는 정답과 판정이 독립적으로 검증되지 않았다는 점입니다.\n\n3. **풀이 모델에 정답이 노출됐을 가능성이 미확인입니다**\n   누수가 있었다고 단정할 수는 없지만, 배제하지도 못했습니다.\n   **수정:** 실제 입력 로그에서 시스템·사용자 프롬프트, 예시, 대화 이력, 검색 문맥을 확인하세요. 평가 정답을 분리하고, 새 대화에서 정답이 제공되지 않은 상태로 재평가해야 합니다.\n\n4. **실제 사용성과 표본의 근거가 약합니다**\n   실제 사용자 검토가 없고, 20문항에서는 한 문제 차이가 5%p입니다.\n   **수정:** 실제 사용 사례를 대표하는 독립 표본을 늘리고, 사용자나 업무 전문가가 성공 여부를 검토하세요. 이후 성공률과 함께 표본 수, 불확실성, 주요 실패 유형을 보고하세요."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "248323e5e54f9a318bd3e6eee15a0c976234dd863919f692ae789094f84d909c",
+    "caseId": "E01",
+    "variant": "selective",
+    "repeat": 0,
+    "completion": {
+      "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+      "status": "completed",
+      "finalAnswers": [
+        "**현재 최종 점수로 새 문제에 대한 성능이나 객관적 정확도를 입증하기는 어렵습니다.** gisul 원격 [mandela](skill://gisul/gisul/mandela/SKILL.md)를 읽고 적용했습니다.\n\n문제는 두 가지 독립성 결여입니다.\n\n- **Recall, not reason — 연습·평가 문제 중복.** 연습에 쓴 문제로 최종 점수를 계산하면, 새로운 문제를 푸는 능력과 이미 접한 답을 재현하는 능력을 구분할 수 없습니다. **수정:** 연습·튜닝 과정에 노출되지 않은 별도 평가셋을 확보하고, 유사 문제까지 중복을 제거하세요.\n\n- **Shared hallucination / Tautology — 정답 작성과 채점의 자기확인.** 같은 모델이 정답을 만들고 채점하면, 그 모델의 잘못된 가정이 양쪽에서 반복되어 높은 점수로 나타날 수 있습니다. 정답을 외부에서 검증하지 않았다면 점수는 모델 자신의 답과 얼마나 일치하는지를 측정하게 됩니다. **수정:** 실제 관측값, 실행 결과, 독립 전문가 등으로 정답과 채점 기준을 검증·확정한 뒤 평가하세요. 채점 모델만 바꾸는 것으로는 정답 자체의 오류가 해결되지 않습니다.\n\n이 판단은 말씀하신 설계상의 두 조건에 근거합니다. 실제 암기나 오답이 발생했다는 뜻은 아니며, 기존 점수는 **연습 문제 재평가 결과**로 한정해 해석하는 것이 적절합니다."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat .agents/skills/gisul/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "server": "gisul",
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "a5562bb55602b9940ae2908a90964b2f6460c7e724a9feb718a36ead592cc754",
+    "caseId": "E01",
+    "variant": "bounded",
+    "repeat": 0,
+    "completion": {
+      "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+      "status": "completed",
+      "finalAnswers": [
+        "요청하신 [gisul 원격 mandela](skill://gisul/gisul/mandela/SKILL.md)(릴리스 `20260918.1`)를 읽고 검토했습니다. **제공된 설계만으로는 최종 점수를 새 문제에 대한 독립적인 성능 증거로 보기 어렵습니다.**\n\n- **Recall, not reason — 연습 문제 재사용**\n  연습과 평가 데이터가 겹쳐, 기억하거나 반복해서 익힌 답과 새로운 문제를 해결하는 능력을 구분할 수 없습니다.\n  **개선:** 연습·튜닝에 노출되지 않은 별도 문제 집합을 확보하고, 평가 전에 고정하세요.\n\n- **Shared hallucination / Tautology — 정답 작성과 채점의 자기확인**\n  같은 모델이 기준 정답을 만들고 채점하면, 정답 작성 때의 오류나 편향이 채점에서도 승인될 수 있습니다. 외부 정답 검증 여부는 제시되지 않았습니다.\n  **개선:** 외부 자료·실측·독립 전문가 등으로 기준 정답을 검증하고 채점 기준을 고정하세요. 채점자만 다른 모델로 바꿔도 기준 정답이 틀렸다면 문제는 남습니다.\n\n이는 **설계상 독립성 결여에 대한 판단**입니다. 실제 암기나 정답 오류가 발생했는지, 점수가 얼마나 부풀려졌는지는 현재 정보로 확정할 수 없습니다."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat .agents/skills/gisul/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc \"rg --files -g AGENTS.md -g '\"'!node_modules'\"' -g '\"'!.git'\"' -g '\"'!vendor'\"'\"",
+          "exitCode": 0,
+          "output": "AGENTS.md\n"
+        },
+        {
+          "turn": 1,
+          "server": "gisul",
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat AGENTS.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "27f44827861701168f19ae3625f44ac2d1cb3a5c6df84b7d37330524e56b1f73",
+    "caseId": "E01",
+    "variant": "baseline",
+    "repeat": 0,
+    "completion": {
+      "id": "404c6259-24bc-4429-860c-2c71dedda139",
+      "status": "completed",
+      "finalAnswers": [
+        "**현재 점수로는 처음 보는 문제에 대한 실력을 입증하기 어렵습니다.** gisul 원격 [mandela](skill://gisul/gisul/mandela/SKILL.md) 지침(`candidate-release`, `20260918.1`)을 읽고 검토했습니다.\n\n두 가지 독립성 문제가 있습니다.\n\n1. **연습·평가 문제 중복 — Recall, not reason**\n   연습한 문제로 최종 점수를 계산하면 정답 기억과 새로운 문제를 푸는 능력을 구분할 수 없습니다.\n   **개선:** 연습과 튜닝에 노출되지 않은 평가 세트를 확보하고, 동일 원문에서 파생된 유사 문제도 분리하세요.\n\n2. **정답 작성·채점의 자기검증 — Shared hallucination / Tautology**\n   같은 모델이 정답을 만들고 그 정답으로 채점하면, 정답 생성 단계의 오류가 채점에서도 그대로 인정될 수 있습니다. 높은 점수가 모델 내부의 일관성만 나타낼 위험이 있습니다.\n   **개선:** 외부 자료·실행 결과·독립 전문가 등으로 정답을 검증하고, 검증된 정답과 채점 기준을 고정하세요. 채점 모델만 다른 모델로 바꾸어도 잘못된 정답표 문제는 남습니다.\n\n제공된 설명에서는 **외부의 정답이 독립적으로 검증되어 들어오는 경로가 확인되지 않습니다.** 실제 점수가 얼마나 부풀려졌는지는 별도 검증이 필요합니다."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat .agents/skills/gisul/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        },
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc \"pwd\nrg --files -g 'AGENTS.md' -g '*eval*' -g '*fixture*' -g 'README*' -g 'SKILL.md' -g '\"'!node_modules'\"' -g '\"'!vendor'\"' -g '\"'!.git'\"' .\"",
+          "exitCode": 1,
+          "output": "<workspace>\n"
+        },
+        {
+          "turn": 1,
+          "server": "gisul",
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "313d1f86c8f25ec4d3cdfe2d57ef6ab09e82133ad9fb28ac0f82e6b3de8219a8",
+    "caseId": "N01",
+    "variant": "bounded",
+    "repeat": 0,
+    "completion": {
+      "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+      "status": "completed",
+      "finalAnswers": [
+        "JSON에서 `null`은 값이 없음을 명시하는 값이고, `\"\"`는 길이가 0인 문자열입니다. 예를 들어 `{\"name\": null}`은 이름 값이 없다는 뜻이고, `{\"name\": \"\"}`은 이름이 문자열로 존재하지만 내용은 비어 있다는 뜻입니다."
+      ],
+      "files": {},
+      "actions": []
+    }
+  },
+  {
+    "resultHash": "a906d01bb8f4a38c4d21be1c71c84d3dd1f51b3eb0bfeccf11cbd13f36bd99fe",
+    "caseId": "N01",
+    "variant": "baseline",
+    "repeat": 0,
+    "completion": {
+      "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+      "status": "completed",
+      "finalAnswers": [
+        "JSON에서 `null`은 값이 없음을 나타내고, 빈 문자열 `\"\"`는 길이가 0인 문자열입니다. 예를 들어 `{\"name\": null}`은 이름 값이 없다는 뜻이고, `{\"name\": \"\"}`는 이름 값이 문자열이지만 내용은 비어 있다는 뜻입니다."
+      ],
+      "files": {},
+      "actions": []
+    }
+  },
+  {
+    "resultHash": "b33c437583e9031356f4018022d8551a8dd68763a98065903808bf0fa152ee1a",
+    "caseId": "N01",
+    "variant": "selective",
+    "repeat": 0,
+    "completion": {
+      "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+      "status": "completed",
+      "finalAnswers": [
+        "JSON에서 `null`은 값이 없음을 명시하는 값이고, `\"\"`는 길이가 0인 문자열입니다. 예를 들어 `{\"name\": null}`은 이름 값이 없음을, `{\"name\": \"\"}`는 이름이 빈 문자열임을 나타냅니다."
+      ],
+      "files": {},
+      "actions": []
+    }
+  },
+  {
+    "resultHash": "7419b3209627d6b282ad6004b20a9fbde8185c7d51bc6643a84d802e3007d55e",
+    "caseId": "N05",
+    "variant": "baseline",
+    "repeat": 0,
+    "completion": {
+      "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+      "status": "completed",
+      "finalAnswers": [
+        "연습 문제를 최종 시험에 그대로 쓰면 ‘암기 재현(Recall, not reason)’ 누수가 발생해, 외운 답으로 얻은 점수가 실제 이해·응용 능력을 과대평가할 수 있습니다. 같은 역량과 난이도를 평가하는 미공개 새 문제로 최종 시험을 구성하고, 연습 과정에서 노출되지 않도록 분리하세요."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "c68570cef71de7a4e8648d5f8e373af86255b008f4e2b86999bbbb9ff656680f",
+    "caseId": "N05",
+    "variant": "selective",
+    "repeat": 0,
+    "completion": {
+      "id": "edf70db7-929b-490b-ac23-250171737e83",
+      "status": "completed",
+      "finalAnswers": [
+        "연습 문제를 최종 시험에 재사용하면 ‘암기 재현(Recall, not reason)’ 누수가 생겨, 점수가 새로운 문제를 해결하는 능력을 과대평가할 수 있습니다. 같은 학습 목표와 난이도의 미공개 새 문항으로 시험을 구성하고, 연습 문제와 중복되거나 표면만 바꾼 문항은 제외하세요."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        }
+      ]
+    }
+  },
+  {
+    "resultHash": "6e21e63d0b49edc50a0760a87ec0004229d918598e16960543426273816cdf50",
+    "caseId": "N05",
+    "variant": "bounded",
+    "repeat": 0,
+    "completion": {
+      "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+      "status": "completed",
+      "finalAnswers": [
+        "연습 문제를 최종 시험에 그대로 쓰면 ‘암기 재현(Recall, not reason)’ 누수가 생겨, 이해·응용 능력보다 점수가 높게 나올 수 있습니다. 최종 시험은 같은 학습 목표와 난이도의 새로운 문제로 구성하고, 연습과 사전 피드백에 노출되지 않도록 분리하세요."
+      ],
+      "files": {},
+      "actions": [
+        {
+          "turn": 1,
+          "command": "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'",
+          "exitCode": 0,
+          "output": "[instruction-file content withheld]"
+        }
+      ]
+    }
+  }
+]
