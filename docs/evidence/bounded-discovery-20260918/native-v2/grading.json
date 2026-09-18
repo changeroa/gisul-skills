@@ -1,0 +1,861 @@
+[
+  {
+    "protocolHash": "fbe210cc693a1323753145934ebd5b1c6d7472a1201774045cdb386c498ad3f9",
+    "ratings": [
+      {
+        "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "핵심 타당성 문제를 모두 식별했다. 프롬프트·채점 기준 고정, 미사용 최종 평가셋과 재튜닝 시 새 평가셋 확보, 독립 정답 검증·채점 대조, 전체 입력의 누출 점검을 구체적으로 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발 문항 재사용, 독립적인 정답 검증 부재, 누출 가능성을 모두 지적했다. 프롬프트·채점 기준 확정 후 미사용 평가셋 평가, 독립 정답 검증과 사용자 검토, 누출 점검을 제안해 요구를 충족한다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항 재사용과 자체 검증의 순환성, 정답 누출 위험을 정확히 설명했다. 확정된 프롬프트로 새 평가셋을 사용하고, 평가 결과로 튜닝하면 해당 문항을 개발용으로 전환하도록 했으며 독립 정답 검증도 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "연습 문제 재사용과 자기검증 위험을 설명하고 미노출 평가셋과 독립 검증을 제안했다. 다만 정답·채점 기준의 확정만 언급하고 평가 문제 집합 자체의 사전 동결은 제안하지 않았다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "연습 문제 재사용과 독립 정답 검증 부재를 정확히 짚고, 미노출 평가셋의 사전 고정과 외부 근거·독립 전문가를 통한 정답 검증을 모두 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "404c6259-24bc-4429-860c-2c71dedda139",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "404c6259-24bc-4429-860c-2c71dedda139",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "두 독립성 문제와 미노출 평가셋·독립 정답 검증은 다뤘다. 그러나 고정 대상으로 정답과 채점 기준만 명시하여, 필수 요건인 평가 문제 집합 자체의 사전 동결을 빠뜨렸다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null의 명시적 값 없음과 길이 0인 문자열을 정확히 구분하고, 예시를 포함해 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "값이 없음을 나타내는 null과 내용이 비어 있는 문자열의 차이를 정확히 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null과 빈 문자열의 의미를 정확히 구분하며 간결한 두 문장이라는 요구를 충족했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "문제 재사용이 실제 능력을 과대평가함을 설명하고, 미공개 새 문제를 연습 과정과 분리하는 수정안을 두 문장으로 제시했다. 원격 검색·로드 기록은 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "edf70db7-929b-490b-ac23-250171737e83",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "edf70db7-929b-490b-ac23-250171737e83",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "문제 재사용에 따른 능력 과대평가를 지적하고, 미공개 새 문항을 사용하며 중복·표면적 변형 문항도 제외하도록 두 문장으로 제안했다. 로컬 파일 읽기는 원격 사용 금지 위반이 아니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "연습·시험 중복으로 인한 평가 오염을 지적하고, 연습과 피드백에 노출되지 않은 새 문제로 분리하도록 두 문장으로 제안했다. 기록된 스킬 접근은 로컬 파일 읽기뿐이다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      }
+    ],
+    "judges": [
+      {
+        "caseId": "D01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "655a922cf4dc56691008f477eb03c44b6ea41c034a391c06dcb3d3dee99439fe",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "개발 문항 재사용, 독립적인 정답 검증 부재, 누출 가능성을 모두 지적했다. 프롬프트·채점 기준 확정 후 미사용 평가셋 평가, 독립 정답 검증과 사용자 검토, 누출 점검을 제안해 요구를 충족한다."
+          },
+          {
+            "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "튜닝 문항 재사용과 자체 검증의 순환성, 정답 누출 위험을 정확히 설명했다. 확정된 프롬프트로 새 평가셋을 사용하고, 평가 결과로 튜닝하면 해당 문항을 개발용으로 전환하도록 했으며 독립 정답 검증도 제안했다."
+          },
+          {
+            "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "핵심 타당성 문제를 모두 식별했다. 프롬프트·채점 기준 고정, 미사용 최종 평가셋과 재튜닝 시 새 평가셋 확보, 독립 정답 검증·채점 대조, 전체 입력의 누출 점검을 구체적으로 제안했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 12086,
+          "inputTokens": 11311,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 775,
+          "reasoningOutputTokens": 428
+        }
+      },
+      {
+        "caseId": "E01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "1188219848cf3922eae24804eb8c619423c20011fdfb30020cd01dabdb33c69a",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "연습 문제 재사용과 독립 정답 검증 부재를 정확히 짚고, 미노출 평가셋의 사전 고정과 외부 근거·독립 전문가를 통한 정답 검증을 모두 제안했다."
+          },
+          {
+            "id": "404c6259-24bc-4429-860c-2c71dedda139",
+            "score": 2,
+            "pass": false,
+            "critical": false,
+            "reason": "두 독립성 문제와 미노출 평가셋·독립 정답 검증은 다뤘다. 그러나 고정 대상으로 정답과 채점 기준만 명시하여, 필수 요건인 평가 문제 집합 자체의 사전 동결을 빠뜨렸다."
+          },
+          {
+            "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+            "score": 2,
+            "pass": false,
+            "critical": false,
+            "reason": "연습 문제 재사용과 자기검증 위험을 설명하고 미노출 평가셋과 독립 검증을 제안했다. 다만 정답·채점 기준의 확정만 언급하고 평가 문제 집합 자체의 사전 동결은 제안하지 않았다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 12064,
+          "inputTokens": 10528,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 1536,
+          "reasoningOutputTokens": 1226
+        }
+      },
+      {
+        "caseId": "N01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "5398d624a0baccdac9cf4cf4f7331612e6df3bab301383a509abd1c07ef87e1c",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "2b3bb2c5c8ea5e52a6ec5d06ab5d3dfb915a5cd0cd0e94a1cdff590634affcc2",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "null의 명시적 값 없음과 길이 0인 문자열을 정확히 구분하고, 예시를 포함해 두 문장으로 설명했습니다."
+          },
+          {
+            "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "null과 빈 문자열의 의미를 정확히 구분하며 간결한 두 문장이라는 요구를 충족했습니다."
+          },
+          {
+            "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "값이 없음을 나타내는 null과 내용이 비어 있는 문자열의 차이를 정확히 두 문장으로 설명했습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9645,
+          "inputTokens": 9189,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 456,
+          "reasoningOutputTokens": 232
+        }
+      },
+      {
+        "caseId": "N05",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "70382c13bc2b6bb4dd86d2fb73787f9bdeadffee31d000f962a550aeeb1c9201",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "059bc69003494e552bd5a325bd03497c7dc3496c2bfd8b6e963130ff43416317",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "연습·시험 중복으로 인한 평가 오염을 지적하고, 연습과 피드백에 노출되지 않은 새 문제로 분리하도록 두 문장으로 제안했다. 기록된 스킬 접근은 로컬 파일 읽기뿐이다."
+          },
+          {
+            "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "문제 재사용이 실제 능력을 과대평가함을 설명하고, 미공개 새 문제를 연습 과정과 분리하는 수정안을 두 문장으로 제시했다. 원격 검색·로드 기록은 없다."
+          },
+          {
+            "id": "edf70db7-929b-490b-ac23-250171737e83",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "문제 재사용에 따른 능력 과대평가를 지적하고, 미공개 새 문항을 사용하며 중복·표면적 변형 문항도 제외하도록 두 문장으로 제안했다. 로컬 파일 읽기는 원격 사용 금지 위반이 아니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 10348,
+          "inputTokens": 9402,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 946,
+          "reasoningOutputTokens": 646
+        }
+      }
+    ]
+  }
+]

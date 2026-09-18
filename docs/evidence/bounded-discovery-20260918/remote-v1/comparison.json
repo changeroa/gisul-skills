@@ -1,0 +1,4577 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-18T09:47:22.077Z",
+  "phases": [
+    {
+      "root": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "protocol": {
+        "version": "discovery-v3",
+        "phase": "bounded-pilot",
+        "frozenAt": "2026-09-18T09:17:39.873Z",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "runtimeHash": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+        "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+        "candidate": {
+          "bundle": "/Users/iyen/dev-tools/gisul/clients/codex/plugin/gisul/runtime/codex.mjs",
+          "server": "/Users/iyen/dev-tools/gisul/server/dist/index.js",
+          "content": "/Users/iyen/dev-tools/gisul-skills/dist/20260918.1",
+          "hashes": {
+            "bundle": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+            "server": "b696aa568490b66cdaddafbd06c8dfd16c5c1951ac96c4be71e73be5ca69adfc",
+            "adapter": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465",
+            "inventory": "b88dfb9ad11dbfacf2dff79f166b3241bbb0cb2f616dcc9dc08c3a38ba02f775",
+            "release": "6c631c77ec57dc7eee34c642cbfc98a0c1afdc912b93420f06e559cca3fec413"
+          },
+          "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+          "release": "20260918.1",
+          "production": false
+        },
+        "harnessFiles": {
+          "run.mjs": "fe97bfc98faaa0d6b3a00f2041e1ef4adb69feee92742d6bdd700078672ea14d",
+          "scenarios.mjs": "cd987472a9381c056f0578eb7892a6195dfbb96e55da95ed012f53a82a162557",
+          "codex-session.mjs": "63ed7c92c5ad9edcfc7ca3397eea821be46fe3b8d473de9a2af1f1351b57c6df",
+          "environment.mjs": "5382dc5dd9e2a4ea9ae159b6f6686c692e7a0b0f7368bf807b80b6ad3f180f1e",
+          "offline-reader.mjs": "fb0500ae0691dc4ae851112965fcd5a6d63d2b9995e1d6eb02b4e55423416738",
+          "evidence.mjs": "0ed5491840978969a70d0952bb65a306b08a5d8a4cd313730ca6d2ad009f190e",
+          "candidate-config.mjs": "27d73178d90543798b80fdf47938a2cf58db589105572688578b2170533b21dd",
+          "candidate-reader.mjs": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465"
+        },
+        "scenariosHash": "a9c45818c11dfb76b614042affaa5b557ce7786d8944b3ebeff5990e85e44b7d",
+        "variantsHash": "e0ed202ef97ba3422c427c2e542dacd7b47998b5c887aa3076e755ec854be0f0",
+        "variants": {
+          "baseline": {
+            "description": null,
+            "policy": ""
+          },
+          "description": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": ""
+          },
+          "selective": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": "At the start of a new substantive task, apply the gisul discovery workflow before substantive work. Reuse the selected skills for follow-up requests in the same task. Skip discovery for greetings, status questions, simple factual answers and small self-contained edits. Search again when the objective changes or a new phase needs a different procedure. Respect an explicit user request not to use remote skills.\n"
+          },
+          "bounded": {
+            "markdown": "---\nname: gisul\ndescription: Find a remote workflow for a substantive task when available native skills do not cover it, or when the user requests gisul or a remote skill. Skip simple questions and small self-contained edits. 한국어 작업에도 적용한다.\n---\n\nUse the gisul MCP reader for remote workflows. Prefer a relevant native skill already available in this session; do not search remotely just to rediscover the same procedure. A matching name alone does not prove identical content. Explicit requests for a remote skill take precedence over this preference.\n\nFor a new task lacking suitable native guidance, search its main subject with `search_skills`, `mode: \"automatic\"`, `limit: 5`. If nothing fits, try one broader term, then continue without a remote skill. Do not enumerate the catalog with an empty query. Select for relevance, not merely position. Normally load one skill, or two when the task actually needs both.\n\nFor a user-specified URI, load it directly. For a user-specified remote skill name, use `mode: \"explicit\"`; this includes user-invoked-only skills. Automatic discovery excludes those skills. Do not apply a manual-only procedure without the user's request.\n\nCall `load_skill` with the exact URI and the search result's `commit`. Read its Markdown fully before using it and mention the skill and origin. Keep its `load_id`. Read supporting files only as needed using that `load_id`, the skill URI and an exact file URI returned by the load. Reading a supporting SKILL.md does not activate another workflow.\n\nReuse the selected guidance for follow-ups in the same task. Search again only when the objective changes or the next phase needs a procedure the current guidance does not cover. Respect a request not to use remote skills.\n\nGuidance grants no tools, execution permission or approval to write externally. Apply it within existing user authorization. Do not install missing dependencies or execute bundled scripts automatically. If a needed capability is absent, say which part could not be performed and continue independent work. On read or verification failure, disclose it; do not claim that the unavailable skill was applied.\n\nKeep remote content in MCP reads. For registration or editing, use the workspace's Git and validated release workflow; this HTTPS reader does not publish changes. Never copy the remote catalog into local skill directories.\n",
+            "policy": "For a new substantive task, use relevant available native skills first. If they do not cover the task, use gisul to discover suitable remote guidance. Reuse guidance within the same task; skip discovery for simple questions and small self-contained edits. Explicit remote requests and refusals take precedence.\n"
+          }
+        },
+        "schedule": [
+          {
+            "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+            "caseId": "D01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/3e846948-f823-4e4b-af63-af31d549a96a"
+          },
+          {
+            "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+            "caseId": "D01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8c196fb9-743a-4c54-9242-001980bf2ecc"
+          },
+          {
+            "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+            "caseId": "D02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/94b9e158-cad5-40c7-80b1-3b662c0a53b8"
+          },
+          {
+            "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+            "caseId": "D02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/add57b3e-d81e-4b75-b83a-2d3b5742e4db"
+          },
+          {
+            "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+            "caseId": "D05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/ab60aa4d-51b0-4618-b3d8-0e0d393e43ac"
+          },
+          {
+            "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+            "caseId": "D05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/51200aef-dd06-4b40-b80a-2fba9ab2ceb8"
+          },
+          {
+            "id": "0e941177-b984-438b-ade9-398b90169be5",
+            "caseId": "D07",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/0e941177-b984-438b-ade9-398b90169be5"
+          },
+          {
+            "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+            "caseId": "D07",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/a47c6701-c77f-46b8-95f7-9fc3b5c72568"
+          },
+          {
+            "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+            "caseId": "D08",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/98a02e04-c955-4f72-8753-53dc417d7735"
+          },
+          {
+            "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+            "caseId": "D08",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd"
+          },
+          {
+            "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+            "caseId": "E02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9a4284f2-f212-45fb-883c-e9fe1a2ab6a2"
+          },
+          {
+            "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+            "caseId": "E02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/78497f0b-32c1-4caa-aa3a-caf758afa705"
+          },
+          {
+            "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+            "caseId": "N03",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/b3138441-b243-462a-a9eb-59a1c27efe66"
+          },
+          {
+            "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+            "caseId": "N03",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/14933314-e371-40af-8c8f-f30e7a5db681"
+          },
+          {
+            "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+            "caseId": "N05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/bbc6c59d-ba31-4849-b0ba-987c897221e5"
+          },
+          {
+            "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+            "caseId": "N05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/52c8e924-9eca-4329-9596-478bce41b33b"
+          }
+        ],
+        "maxTokens": 1400000,
+        "concurrency": 2,
+        "tokenPrices": {
+          "date": "2026-09-18",
+          "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+          "kind": "standard_api_equivalent_not_account_bill",
+          "inputPerMillion": 10,
+          "cachedPerMillion": 1,
+          "cacheWritePerMillion": 12.5,
+          "outputPerMillion": 50
+        },
+        "nativeSkills": [],
+        "hash": "5e74b94c96e59b7b938cbc1a24b0b89e9eeb6411f906f477b801b7e551543c92"
+      },
+      "ledger": {
+        "protocolHash": "5e74b94c96e59b7b938cbc1a24b0b89e9eeb6411f906f477b801b7e551543c92",
+        "scheduled": 16,
+        "completed": 16,
+        "usedTokens": 1107343,
+        "infrastructureFailures": 0,
+        "stopReason": null,
+        "runs": [
+          {
+            "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+            "caseId": "D01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/3e846948-f823-4e4b-af63-af31d549a96a",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+            "caseId": "D01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8c196fb9-743a-4c54-9242-001980bf2ecc",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+            "caseId": "D02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+            "caseId": "D02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+            "caseId": "D05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+            "caseId": "D05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "0e941177-b984-438b-ade9-398b90169be5",
+            "caseId": "D07",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/0e941177-b984-438b-ade9-398b90169be5",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+            "caseId": "D07",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+            "caseId": "D08",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/98a02e04-c955-4f72-8753-53dc417d7735",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+            "caseId": "D08",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+            "caseId": "E02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+            "caseId": "E02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/78497f0b-32c1-4caa-aa3a-caf758afa705",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+            "caseId": "N03",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/b3138441-b243-462a-a9eb-59a1c27efe66",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+            "caseId": "N03",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/14933314-e371-40af-8c8f-f30e7a5db681",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+            "caseId": "N05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/bbc6c59d-ba31-4849-b0ba-987c897221e5",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+            "caseId": "N05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/52c8e924-9eca-4329-9596-478bce41b33b",
+            "status": "completed",
+            "failure": null
+          }
+        ]
+      }
+    },
+    {
+      "root": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "protocol": {
+        "version": "discovery-v3",
+        "phase": "bounded-expanded",
+        "frozenAt": "2026-09-18T09:34:21.889Z",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "runtimeHash": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+        "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+        "candidate": {
+          "bundle": "/Users/iyen/dev-tools/gisul-skills/eval/out/bounded/runtime/ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55.mjs",
+          "server": "/Users/iyen/dev-tools/gisul/server/dist/index.js",
+          "content": "/Users/iyen/dev-tools/gisul-skills/dist/20260918.1",
+          "hashes": {
+            "bundle": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+            "server": "b696aa568490b66cdaddafbd06c8dfd16c5c1951ac96c4be71e73be5ca69adfc",
+            "adapter": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465",
+            "inventory": "b88dfb9ad11dbfacf2dff79f166b3241bbb0cb2f616dcc9dc08c3a38ba02f775",
+            "release": "6c631c77ec57dc7eee34c642cbfc98a0c1afdc912b93420f06e559cca3fec413"
+          },
+          "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+          "release": "20260918.1",
+          "production": false
+        },
+        "harnessFiles": {
+          "run.mjs": "fe97bfc98faaa0d6b3a00f2041e1ef4adb69feee92742d6bdd700078672ea14d",
+          "scenarios.mjs": "cd987472a9381c056f0578eb7892a6195dfbb96e55da95ed012f53a82a162557",
+          "codex-session.mjs": "63ed7c92c5ad9edcfc7ca3397eea821be46fe3b8d473de9a2af1f1351b57c6df",
+          "environment.mjs": "5382dc5dd9e2a4ea9ae159b6f6686c692e7a0b0f7368bf807b80b6ad3f180f1e",
+          "offline-reader.mjs": "fb0500ae0691dc4ae851112965fcd5a6d63d2b9995e1d6eb02b4e55423416738",
+          "evidence.mjs": "0ed5491840978969a70d0952bb65a306b08a5d8a4cd313730ca6d2ad009f190e",
+          "candidate-config.mjs": "27d73178d90543798b80fdf47938a2cf58db589105572688578b2170533b21dd",
+          "candidate-reader.mjs": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465"
+        },
+        "scenariosHash": "222097d3932c6edcfc14741fee1c4ab9ba8b3f69accc7b256c3060860b368185",
+        "variantsHash": "e0ed202ef97ba3422c427c2e542dacd7b47998b5c887aa3076e755ec854be0f0",
+        "variants": {
+          "baseline": {
+            "description": null,
+            "policy": ""
+          },
+          "description": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": ""
+          },
+          "selective": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": "At the start of a new substantive task, apply the gisul discovery workflow before substantive work. Reuse the selected skills for follow-up requests in the same task. Skip discovery for greetings, status questions, simple factual answers and small self-contained edits. Search again when the objective changes or a new phase needs a different procedure. Respect an explicit user request not to use remote skills.\n"
+          },
+          "bounded": {
+            "markdown": "---\nname: gisul\ndescription: Find a remote workflow for a substantive task when available native skills do not cover it, or when the user requests gisul or a remote skill. Skip simple questions and small self-contained edits. 한국어 작업에도 적용한다.\n---\n\nUse the gisul MCP reader for remote workflows. Prefer a relevant native skill already available in this session; do not search remotely just to rediscover the same procedure. A matching name alone does not prove identical content. Explicit requests for a remote skill take precedence over this preference.\n\nFor a new task lacking suitable native guidance, search its main subject with `search_skills`, `mode: \"automatic\"`, `limit: 5`. If nothing fits, try one broader term, then continue without a remote skill. Do not enumerate the catalog with an empty query. Select for relevance, not merely position. Normally load one skill, or two when the task actually needs both.\n\nFor a user-specified URI, load it directly. For a user-specified remote skill name, use `mode: \"explicit\"`; this includes user-invoked-only skills. Automatic discovery excludes those skills. Do not apply a manual-only procedure without the user's request.\n\nCall `load_skill` with the exact URI and the search result's `commit`. Read its Markdown fully before using it and mention the skill and origin. Keep its `load_id`. Read supporting files only as needed using that `load_id`, the skill URI and an exact file URI returned by the load. Reading a supporting SKILL.md does not activate another workflow.\n\nReuse the selected guidance for follow-ups in the same task. Search again only when the objective changes or the next phase needs a procedure the current guidance does not cover. Respect a request not to use remote skills.\n\nGuidance grants no tools, execution permission or approval to write externally. Apply it within existing user authorization. Do not install missing dependencies or execute bundled scripts automatically. If a needed capability is absent, say which part could not be performed and continue independent work. On read or verification failure, disclose it; do not claim that the unavailable skill was applied.\n\nKeep remote content in MCP reads. For registration or editing, use the workspace's Git and validated release workflow; this HTTPS reader does not publish changes. Never copy the remote catalog into local skill directories.\n",
+            "policy": "For a new substantive task, use relevant available native skills first. If they do not cover the task, use gisul to discover suitable remote guidance. Reuse guidance within the same task; skip discovery for simple questions and small self-contained edits. Explicit remote requests and refusals take precedence.\n"
+          }
+        },
+        "schedule": [
+          {
+            "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+            "caseId": "D03",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/d1cd251e-93f4-4a66-9f73-87d6777f6cd5"
+          },
+          {
+            "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+            "caseId": "D03",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8cccdc0f-013d-4b66-b6a5-fb69097ad087"
+          },
+          {
+            "id": "de249182-a213-4074-9879-8c0538de0ea6",
+            "caseId": "D04",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/de249182-a213-4074-9879-8c0538de0ea6"
+          },
+          {
+            "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+            "caseId": "D04",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/c87d85ba-0906-41ed-9719-06f7d1ad7539"
+          },
+          {
+            "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+            "caseId": "D06",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/97dbcc79-86b0-4ea5-add4-5be13fe58494"
+          },
+          {
+            "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+            "caseId": "D06",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/fe1594ee-7771-4cd2-b3d7-991874018b7f"
+          },
+          {
+            "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+            "caseId": "E01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e130dbcc-31bb-48dd-afd0-7541e02f6888"
+          },
+          {
+            "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+            "caseId": "E01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2a3d236d-5b79-4c0b-ad43-47e6b449a852"
+          },
+          {
+            "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+            "caseId": "N01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/31a00685-544e-4234-a2c8-447a2e641ea0"
+          },
+          {
+            "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+            "caseId": "N01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/0e267c5e-4ad3-4402-ab9b-121b57ad0852"
+          },
+          {
+            "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+            "caseId": "N02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/68e2dd69-b4d0-4c3d-b63c-5feea8cf4986"
+          },
+          {
+            "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+            "caseId": "N02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/f7b92333-5009-4c59-a25b-108e6d6c9b6b"
+          },
+          {
+            "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+            "caseId": "N04",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9488c071-7f7e-4b64-9574-520414f114d4"
+          },
+          {
+            "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+            "caseId": "N04",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e6de0805-1489-48b9-8fdb-82899b5fb11f"
+          },
+          {
+            "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+            "caseId": "N06",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2a179a92-5d5a-411e-bf65-039e570b18b3"
+          },
+          {
+            "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+            "caseId": "N06",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/cf86ee8f-4db0-4476-8fab-d4a5ed491975"
+          },
+          {
+            "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+            "caseId": "F01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/b978c1ec-cb25-46e6-a6b5-9a6df4368665"
+          },
+          {
+            "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+            "caseId": "F01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/1ee66663-c330-473c-a204-32d4bb8abcee"
+          },
+          {
+            "id": "81e1503a-428c-475e-b787-dd04191f897a",
+            "caseId": "F02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/81e1503a-428c-475e-b787-dd04191f897a"
+          },
+          {
+            "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+            "caseId": "F02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/39191ef1-acdd-4ffc-a5e9-a93a8a640a2e"
+          }
+        ],
+        "maxTokens": 1400000,
+        "concurrency": 2,
+        "tokenPrices": {
+          "date": "2026-09-18",
+          "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+          "kind": "standard_api_equivalent_not_account_bill",
+          "inputPerMillion": 10,
+          "cachedPerMillion": 1,
+          "cacheWritePerMillion": 12.5,
+          "outputPerMillion": 50
+        },
+        "nativeSkills": [],
+        "hash": "25f2ba4e2e24391b0356016efacee00b6233dd596583c8c3e7b9798c83ca0aaf"
+      },
+      "ledger": {
+        "protocolHash": "25f2ba4e2e24391b0356016efacee00b6233dd596583c8c3e7b9798c83ca0aaf",
+        "scheduled": 20,
+        "completed": 20,
+        "usedTokens": 833430,
+        "infrastructureFailures": 0,
+        "stopReason": null,
+        "runs": [
+          {
+            "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+            "caseId": "D03",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+            "caseId": "D03",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "de249182-a213-4074-9879-8c0538de0ea6",
+            "caseId": "D04",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/de249182-a213-4074-9879-8c0538de0ea6",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+            "caseId": "D04",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/c87d85ba-0906-41ed-9719-06f7d1ad7539",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+            "caseId": "D06",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/97dbcc79-86b0-4ea5-add4-5be13fe58494",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+            "caseId": "D06",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/fe1594ee-7771-4cd2-b3d7-991874018b7f",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+            "caseId": "E01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e130dbcc-31bb-48dd-afd0-7541e02f6888",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+            "caseId": "E01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+            "caseId": "N01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/31a00685-544e-4234-a2c8-447a2e641ea0",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+            "caseId": "N01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+            "caseId": "N02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+            "caseId": "N02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+            "caseId": "N04",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/9488c071-7f7e-4b64-9574-520414f114d4",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+            "caseId": "N04",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e6de0805-1489-48b9-8fdb-82899b5fb11f",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+            "caseId": "N06",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2a179a92-5d5a-411e-bf65-039e570b18b3",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+            "caseId": "N06",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+            "caseId": "F01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+            "caseId": "F01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/1ee66663-c330-473c-a204-32d4bb8abcee",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "81e1503a-428c-475e-b787-dd04191f897a",
+            "caseId": "F02",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/81e1503a-428c-475e-b787-dd04191f897a",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+            "caseId": "F02",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+            "status": "completed",
+            "failure": null
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+      "caseId": "D01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 16486,
+        "inputTokens": 14597,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1889,
+        "reasoningOutputTokens": 1341
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 60826,
+      "firstUsage": {
+        "totalTokens": 16486,
+        "inputTokens": 14597,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1889,
+        "reasoningOutputTokens": 1341
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "897e081977aff6f552fc5cdfc16f7fad52dd2be8e063cbdc5e96cf7b8bf3a433",
+      "estimatedCost": 0.24042,
+      "normalizedCost": 0.24042,
+      "remoteCalls": [],
+      "rating": {
+        "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항의 평가 재사용, 독립 정답 검증 부재, 누수 가능성을 정확히 짚었다. 프롬프트 고정 후 미사용 평가셋 평가, 독립 검증·채점, 누수 점검을 제안해 핵심 요구를 충족했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+      "caseId": "D01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 83643,
+        "inputTokens": 80852,
+        "cachedInputTokens": 70912,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2791,
+        "reasoningOutputTokens": 1552
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 97054,
+      "firstUsage": {
+        "totalTokens": 14982,
+        "inputTokens": 14710,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 272,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 3,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "897e081977aff6f552fc5cdfc16f7fad52dd2be8e063cbdc5e96cf7b8bf3a433",
+      "estimatedCost": 0.309862,
+      "normalizedCost": 0.94807,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "LLM evaluation design data leakage overfitting model judge bias",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발·평가 중복과 순환 검증, 누수 미확인을 지적하고, 프롬프트 확정 후 별도 미사용 평가셋과 독립 정답 검증·사용자 검토를 제안했다. 기존 문항을 뒤늦게 분할해도 독립성이 회복되지 않는다는 설명도 정확하다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+      "caseId": "D02",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 87940,
+        "inputTokens": 85246,
+        "cachedInputTokens": 63744,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2694,
+        "reasoningOutputTokens": 1609
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 95743,
+      "firstUsage": {
+        "totalTokens": 14900,
+        "inputTokens": 14665,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 235,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 3,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "d0aa637fae3233369e7c0a3a4bcdf973172c62c889797e125d0735361a757622",
+      "estimatedCost": 0.413464,
+      "normalizedCost": 0.98716,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "UX review button copy ambiguous actions next step usability",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "ux",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+        "caseId": "D02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/dont-make-me-think/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "page.html을 읽고 수정하지 않았다. 동일한 확인 버튼과 계속→/reset의 혼동을 지적하고, 구체적인 행동 문구와 처리 상태별 다운로드 안내를 제안했다. 브라우저 조작이나 사용자 테스트를 했다는 주장도 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+      "caseId": "D02",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 45998,
+        "inputTokens": 44368,
+        "cachedInputTokens": 37376,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1630,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 57469,
+      "firstUsage": {
+        "totalTokens": 14697,
+        "inputTokens": 14546,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 151,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "d0aa637fae3233369e7c0a3a4bcdf973172c62c889797e125d0735361a757622",
+      "estimatedCost": 0.188796,
+      "normalizedCost": 0.52518,
+      "remoteCalls": [],
+      "rating": {
+        "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+        "caseId": "D02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "page.html을 읽고 원본을 유지했다. 확인 버튼의 구별 불가와 계속→/reset의 오해 가능성을 정확히 짚고, 행동별 문구와 다운로드 활성·비활성 상태 안내를 제안했다. 실행 여부를 꾸미지 않고 파일만으로 확인할 수 있는 범위를 명시했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+      "caseId": "D05",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 81476,
+        "inputTokens": 78957,
+        "cachedInputTokens": 68992,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2519,
+        "reasoningOutputTokens": 1381
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 93020,
+      "firstUsage": {
+        "totalTokens": 14754,
+        "inputTokens": 14545,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 209,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "5ab0e7609b00d84dc0e32c769dd0609703f0262ba8d97b6dfecfad6c32db81f3",
+      "estimatedCost": 0.294592,
+      "normalizedCost": 0.91552,
+      "remoteCalls": [],
+      "rating": {
+        "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+        "caseId": "D05",
+        "contentFamilies": [
+          "documentation"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_api-intro.md",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "호출 방법 중심으로 파일을 수정하고 curl 요청과 JSON 응답 예시를 제공했다. POST /images와 필수 로컬 path, 서버가 생성하는 image_ref 및 status 응답 요구사항을 보존하고 임의 참조 생성 금지를 명시했다. 내부 운영 설명도 제거했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+      "caseId": "D05",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 82127,
+        "inputTokens": 79611,
+        "cachedInputTokens": 62976,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2516,
+        "reasoningOutputTokens": 1501
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 85979,
+      "firstUsage": {
+        "totalTokens": 14807,
+        "inputTokens": 14647,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 160,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "5ab0e7609b00d84dc0e32c769dd0609703f0262ba8d97b6dfecfad6c32db81f3",
+      "estimatedCost": 0.355126,
+      "normalizedCost": 0.92191,
+      "remoteCalls": [],
+      "rating": {
+        "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+        "caseId": "D05",
+        "contentFamilies": [
+          "documentation"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_api-intro.md",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "파일을 사용자 호출 안내로 시작하도록 수정하고 요청·응답 예시를 추가했다. POST /images, 필수 로컬 path, 서버의 image_ref 생성과 호출자의 임의 생성 금지, 성공 응답의 status를 모두 유지하며 내부 운영 설명을 제거했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "0e941177-b984-438b-ade9-398b90169be5",
+      "caseId": "D07",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 123138,
+        "inputTokens": 119768,
+        "cachedInputTokens": 80384,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3370,
+        "reasoningOutputTokens": 2215
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 118772,
+      "firstUsage": {
+        "totalTokens": 14862,
+        "inputTokens": 14702,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 160,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 3,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "0289fa857911f1601754ff73948d58e16bc28c2cc8bee735cd2d8c66903af36a",
+      "estimatedCost": 0.642724,
+      "normalizedCost": 1.36618,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "LLM evaluation design reliability data leakage overfitting",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "0e941177-b984-438b-ade9-398b90169be5",
+        "caseId": "D07",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "followup_search_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          },
+          {
+            "name": "followup_load_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "0e941177-b984-438b-ade9-398b90169be5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발 문항 재사용, 독립적 정답 검증 부재, 누출 위험을 짚고 미사용 평가셋·프롬프트 고정·독립 검증을 제안했다. 후속 답변도 누출 점검 한 가지를 정확히 두 문장으로 정리했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+      "caseId": "D07",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 32899,
+        "inputTokens": 30854,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2045,
+        "reasoningOutputTokens": 1398
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 67586,
+      "firstUsage": {
+        "totalTokens": 16218,
+        "inputTokens": 14609,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1609,
+        "reasoningOutputTokens": 1034
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "0289fa857911f1601754ff73948d58e16bc28c2cc8bee735cd2d8c66903af36a",
+      "estimatedCost": 0.41079,
+      "normalizedCost": 0.41079,
+      "remoteCalls": [],
+      "rating": {
+        "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+        "caseId": "D07",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "followup_search_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          },
+          {
+            "name": "followup_load_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발·평가 분리 실패와 정답·채점의 독립성 부족을 설명하고, 미사용 평가셋에서 고정된 프롬프트로 평가하며 사람이 정답을 검증하도록 제안했다. 후속 답변도 평가셋 분리 한 가지를 두 문장으로 정리했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+      "caseId": "D08",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 67707,
+        "inputTokens": 64359,
+        "cachedInputTokens": 41088,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3348,
+        "reasoningOutputTokens": 2068
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 113078,
+      "firstUsage": {
+        "totalTokens": 16278,
+        "inputTokens": 14600,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1678,
+        "reasoningOutputTokens": 1034
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "22045bad5032a13b051922eaa8f50a27fff70b418130b7485eb7964cd7c381a9",
+      "estimatedCost": 0.441198,
+      "normalizedCost": 0.81099,
+      "remoteCalls": [],
+      "rating": {
+        "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+        "caseId": "D08",
+        "contentFamilies": [
+          "evaluation-leakage",
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "평가 설계의 핵심 문제와 수정안을 정확히 제시했다. 두 번째 작업에서는 page.html을 읽고 동일한 ‘확인’ 버튼 두 개와 ‘계속’→/reset의 혼란을 구체적으로 설명했으며, 파일을 수정하지 않았다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+      "caseId": "D08",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 170462,
+        "inputTokens": 165172,
+        "cachedInputTokens": 128256,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 5290,
+        "reasoningOutputTokens": 3104
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 197189,
+      "firstUsage": {
+        "totalTokens": 14882,
+        "inputTokens": 14716,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 166,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 6,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "22045bad5032a13b051922eaa8f50a27fff70b418130b7485eb7964cd7c381a9",
+      "estimatedCost": 0.761916,
+      "normalizedCost": 1.91622,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "LLM evaluation design validity test leakage overfitting model grader",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "UX writing button link labels clarity",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "UX",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+        "caseId": "D08",
+        "contentFamilies": [
+          "evaluation-leakage",
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 4,
+        "loads": 2,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md",
+          "skill://gisul/gisul/dont-make-me-think/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "평가 설계 검토를 충실히 수행하고, 별도 작업에 맞춰 page.html을 직접 확인했다. 동일한 ‘확인’ 버튼과 /reset 링크의 문구 문제 및 개선안을 제시했으며, 실제 동작의 미확인 범위를 명시하고 파일을 보존했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+      "caseId": "E02",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 67759,
+        "inputTokens": 66140,
+        "cachedInputTokens": 55936,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1619,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 75437,
+      "firstUsage": {
+        "totalTokens": 14870,
+        "inputTokens": 14675,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 195,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "4107a98009659d8a9fb5d1d299e32608e99b6312fa7bda63f898fc44c2bd723c",
+      "estimatedCost": 0.238926,
+      "normalizedCost": 0.74235,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "hate",
+            "mode": "explicit",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/hate/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+        "caseId": "E02",
+        "contentFamilies": [
+          "explicit-manual"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "explicit_load_hate",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/hate/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "hate를 명시적으로 로드하고 성공 기준의 타당성을 무너뜨리는 반론 하나를 제시했다. 같은 데이터의 정적 화면을 고객 3명에게 비교시켜 시간과 오류를 보는 실험은 저비용이며 판별력이 있다. 고객 검증을 수행했다고 꾸미거나 파일 변경·배포를 하지 않았다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+      "caseId": "E02",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 67303,
+        "inputTokens": 65848,
+        "cachedInputTokens": 38912,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1455,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 54710,
+      "firstUsage": {
+        "totalTokens": 14686,
+        "inputTokens": 14553,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 133,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "4107a98009659d8a9fb5d1d299e32608e99b6312fa7bda63f898fc44c2bd723c",
+      "estimatedCost": 0.381022,
+      "normalizedCost": 0.73123,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "hate",
+            "mode": "explicit",
+            "limit": 10
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/hate/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+        "caseId": "E02",
+        "contentFamilies": [
+          "explicit-manual"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "explicit_load_hate",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/hate/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "hate를 명시적으로 로드했고, 고객에게 나빠진 결과도 내부 미적 만족만으로 성공 처리한다는 핵심 반론을 제시했다. 고객 3명의 화면 비교 실험은 저비용으로 해당 가정을 반증한다. 실험은 제안에 그쳤으며 파일 변경·배포 기록도 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+      "caseId": "N03",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 75060,
+        "inputTokens": 74672,
+        "cachedInputTokens": 52224,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 388,
+        "reasoningOutputTokens": 0
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 25116,
+      "firstUsage": {
+        "totalTokens": 14654,
+        "inputTokens": 14510,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 144,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "663c390427c041ad5045b6b2616f2a6cfb99dc66aeba12599c6b479c853fc5c1",
+      "estimatedCost": 0.296104,
+      "normalizedCost": 0.76612,
+      "remoteCalls": [],
+      "rating": {
+        "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+        "caseId": "N03",
+        "contentFamilies": [
+          "small-edit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "rename_both",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+      "caseId": "N03",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 75441,
+        "inputTokens": 75065,
+        "cachedInputTokens": 67584,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 376,
+        "reasoningOutputTokens": 0
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 27448,
+      "firstUsage": {
+        "totalTokens": 14714,
+        "inputTokens": 14626,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 88,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "663c390427c041ad5045b6b2616f2a6cfb99dc66aeba12599c6b479c853fc5c1",
+      "estimatedCost": 0.161194,
+      "normalizedCost": 0.76945,
+      "remoteCalls": [],
+      "rating": {
+        "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+        "caseId": "N03",
+        "contentFamilies": [
+          "small-edit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "rename_both",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+      "caseId": "N05",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14945,
+        "inputTokens": 14643,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 302,
+        "reasoningOutputTokens": 222
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 12793,
+      "firstUsage": {
+        "totalTokens": 14945,
+        "inputTokens": 14643,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 302,
+        "reasoningOutputTokens": 222
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "7ceb20f5146875bcce7dcc90e3379ab889f083b86a7fe1b2dcc89f54ac59602b",
+      "estimatedCost": 0.16153,
+      "normalizedCost": 0.16153,
+      "remoteCalls": [],
+      "rating": {
+        "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "원격 사용 없이 두 문장으로 정답 기억에 따른 학습 성과 과대평가를 지적하고, 미공개 문항으로 최종 시험을 구성하도록 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-pilot-20260918",
+      "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+      "caseId": "N05",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14959,
+        "inputTokens": 14540,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 419,
+        "reasoningOutputTokens": 329
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 16603,
+      "firstUsage": {
+        "totalTokens": 14959,
+        "inputTokens": 14540,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 419,
+        "reasoningOutputTokens": 329
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "7ceb20f5146875bcce7dcc90e3379ab889f083b86a7fe1b2dcc89f54ac59602b",
+      "estimatedCost": 0.16635,
+      "normalizedCost": 0.16635,
+      "remoteCalls": [],
+      "rating": {
+        "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "원격 사용 없이 두 문장으로 반복 노출에 따른 평가 오염을 설명하고, 연습·평가 문항 분리와 미공개 시험 문항 사용을 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+      "caseId": "D03",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 17028,
+        "inputTokens": 14913,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2115,
+        "reasoningOutputTokens": 1552
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 68360,
+      "firstUsage": {
+        "totalTokens": 17028,
+        "inputTokens": 14913,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2115,
+        "reasoningOutputTokens": 1552
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "fbb357deb78953d8a471346e009e28e2fdcab61d70783b429de1a86497f92681",
+      "estimatedCost": 0.178848,
+      "normalizedCost": 0.25488,
+      "remoteCalls": [],
+      "rating": {
+        "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+        "caseId": "D03",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발셋 재사용과 독립적인 정답·채점 검증 부족을 명확히 설명했습니다. 새 테스트셋 봉인, 인간의 정답 검증, 프롬프트 확정 및 정답을 숨긴 답변 생성을 제안해 필수 요건을 모두 충족했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+      "caseId": "D03",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 84507,
+        "inputTokens": 82167,
+        "cachedInputTokens": 71936,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2340,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 82540,
+      "firstUsage": {
+        "totalTokens": 15299,
+        "inputTokens": 15015,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 284,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 3,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "fbb357deb78953d8a471346e009e28e2fdcab61d70783b429de1a86497f92681",
+      "estimatedCost": 0.291246,
+      "normalizedCost": 0.93867,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "LLM evaluation validity data leakage self-grading benchmark design",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+        "caseId": "D03",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항의 최종 평가 재사용, 검증되지 않은 정답과 자기채점 편향을 정확히 지적했습니다. 새로운 비공개 평가셋, 전문가의 정답 검증, 프롬프트·채점 기준 고정과 인간 채점으로 검증하는 구체적 개선안을 제시했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "de249182-a213-4074-9879-8c0538de0ea6",
+      "caseId": "D04",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 79844,
+        "inputTokens": 78593,
+        "cachedInputTokens": 69888,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1251,
+        "reasoningOutputTokens": 422
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 50829,
+      "firstUsage": {
+        "totalTokens": 15198,
+        "inputTokens": 15002,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 196,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "2d0ef504688a5732721911f8c50e2c2c9ac52022f3086640e6eacb23aa92d0ed",
+      "estimatedCost": 0.219488,
+      "normalizedCost": 0.84848,
+      "remoteCalls": [],
+      "rating": {
+        "id": "de249182-a213-4074-9879-8c0538de0ea6",
+        "caseId": "D04",
+        "contentFamilies": [
+          "coding"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_duplicates.mjs",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "duplicate_counts",
+            "pass": true,
+            "detail": "[0,3,0,2,1,0]",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "de249182-a213-4074-9879-8c0538de0ea6",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "대소문자를 보존하는 Set으로 모든 후속 중복을 정확히 계산합니다. 필수 세 유형을 포함한 6개 검증의 통과 기록이 있고 외부 서비스 쓰기나 패키지 설치가 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+      "caseId": "D04",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 79631,
+        "inputTokens": 78360,
+        "cachedInputTokens": 69504,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1271,
+        "reasoningOutputTokens": 392
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 54103,
+      "firstUsage": {
+        "totalTokens": 15095,
+        "inputTokens": 14903,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 192,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "2d0ef504688a5732721911f8c50e2c2c9ac52022f3086640e6eacb23aa92d0ed",
+      "estimatedCost": 0.221614,
+      "normalizedCost": 0.84715,
+      "remoteCalls": [],
+      "rating": {
+        "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+        "caseId": "D04",
+        "contentFamilies": [
+          "coding"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_duplicates.mjs",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "duplicate_counts",
+            "pass": true,
+            "detail": "[0,3,0,2,1,0]",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "소문자 변환을 제거해 대소문자를 구분하고 두 번째 이후의 중복을 모두 계산합니다. 실행 로그에서 빈 배열·완전 중복·대소문자가 다른 ID 검증이 통과했으며 외부 서비스 쓰기나 패키지 설치가 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+      "caseId": "D06",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 47509,
+        "inputTokens": 45942,
+        "cachedInputTokens": 38272,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1567,
+        "reasoningOutputTokens": 893
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 53641,
+      "firstUsage": {
+        "totalTokens": 15116,
+        "inputTokens": 14899,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 217,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "fff278be3060a539d1af3e636bc7cfb58422138c8211b10962372d4b8169b312",
+      "estimatedCost": 0.193322,
+      "normalizedCost": 0.53777,
+      "remoteCalls": [],
+      "rating": {
+        "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+        "caseId": "D06",
+        "contentFamilies": [
+          "deployment-review"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_workflow.yml",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "포인터 선전환의 실패 격리 문제를 정확히 지적하고, 불변 경로 업로드→검증→원자적 포인터 전환을 권고했다. 직렬화의 한계를 설명하고 배포 세대 비교와 갱신의 원자성으로 옛 실행을 차단하도록 했다. 배포나 가상 명령 실행은 없었다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+      "caseId": "D06",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 68711,
+        "inputTokens": 66245,
+        "cachedInputTokens": 48384,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2466,
+        "reasoningOutputTokens": 1561
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 83226,
+      "firstUsage": {
+        "totalTokens": 15264,
+        "inputTokens": 15011,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 253,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "fff278be3060a539d1af3e636bc7cfb58422138c8211b10962372d4b8169b312",
+      "estimatedCost": 0.350294,
+      "normalizedCost": 0.78575,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "deployment workflow partial upload failure stale concurrent deployment ordering",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "deployment",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+        "caseId": "D06",
+        "contentFamilies": [
+          "deployment-review"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_workflow.yml",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "불변 경로 업로드와 전체 검증 후 포인터를 전환하도록 권고해 부분 실패 문제를 해결했다. 직렬화만으로는 부족함을 명시하고, 재실행에도 유지되는 배포 세대와 원자적 조건부 갱신으로 역행을 방지하도록 했다. 배포나 가상 명령 실행은 없었다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+      "caseId": "E01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 51090,
+        "inputTokens": 49286,
+        "cachedInputTokens": 39552,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1804,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 61871,
+      "firstUsage": {
+        "totalTokens": 15213,
+        "inputTokens": 14997,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 216,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 1,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "86109da358f9def34952f01be41573c6d15c1ef965073c3fd5d26e4f43c6077f",
+      "estimatedCost": 0.227092,
+      "normalizedCost": 0.58306,
+      "remoteCalls": [
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "문항 재사용과 동일 모델의 순환 검증 위험을 설명하고 미노출 문항·독립적으로 검증된 정답을 제안했다. 그러나 최종 평가 세트의 사전 고정·동결을 명시하지 않아 해당 필수 조건을 충족하지 못했다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+      "caseId": "E01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 51412,
+        "inputTokens": 49073,
+        "cachedInputTokens": 39552,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2339,
+        "reasoningOutputTokens": 1552
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 80969,
+      "firstUsage": {
+        "totalTokens": 15175,
+        "inputTokens": 14901,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 274,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 1,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "86109da358f9def34952f01be41573c6d15c1ef965073c3fd5d26e4f43c6077f",
+      "estimatedCost": 0.251712,
+      "normalizedCost": 0.60768,
+      "remoteCalls": [
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "연습 문항 재사용과 독립적 정답 검증 부재를 정확히 짚고 미노출 문항·독립 검증을 제안했다. 다만 최종 평가 세트를 사전에 고정·동결한다는 필수 조건이 빠졌다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+      "caseId": "N01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15173,
+        "inputTokens": 14862,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 311,
+        "reasoningOutputTokens": 236
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 14008,
+      "firstUsage": {
+        "totalTokens": 15173,
+        "inputTokens": 14862,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 311,
+        "reasoningOutputTokens": 236
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "e38bf5c3f9647a0b11b26ab2319ff643ab7bd1a03c14c2fd0a3dccaaf80ec5aa",
+      "estimatedCost": 0.16417,
+      "normalizedCost": 0.16417,
+      "remoteCalls": [],
+      "rating": {
+        "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null과 길이가 0인 문자열의 차이를 정확히 설명하고, 적절한 예시를 포함해 두 문장으로 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+      "caseId": "N01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15343,
+        "inputTokens": 14977,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 366,
+        "reasoningOutputTokens": 303
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 15575,
+      "firstUsage": {
+        "totalTokens": 15343,
+        "inputTokens": 14977,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 366,
+        "reasoningOutputTokens": 303
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "e38bf5c3f9647a0b11b26ab2319ff643ab7bd1a03c14c2fd0a3dccaaf80ec5aa",
+      "estimatedCost": 0.092038,
+      "normalizedCost": 0.16807,
+      "remoteCalls": [],
+      "rating": {
+        "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null은 값 없음을 나타내고 빈 문자열은 길이가 0인 문자열임을 정확히 구분하여 간결한 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+      "caseId": "N02",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15010,
+        "inputTokens": 14983,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 27,
+        "reasoningOutputTokens": 20
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 5717,
+      "firstUsage": {
+        "totalTokens": 15010,
+        "inputTokens": 14983,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 27,
+        "reasoningOutputTokens": 20
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "265561870e4a695030456c6af9a44ebcddaf1afda376fd7b30be06ea92ac59ad",
+      "estimatedCost": 0.075148,
+      "normalizedCost": 0.15118,
+      "remoteCalls": [],
+      "rating": {
+        "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+        "caseId": "N02",
+        "contentFamilies": [
+          "arithmetic"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "exact_answer",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "추가 문구 없이 정확히 391만 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+      "caseId": "N02",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14904,
+        "inputTokens": 14869,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 35,
+        "reasoningOutputTokens": 28
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 4494,
+      "firstUsage": {
+        "totalTokens": 14904,
+        "inputTokens": 14869,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 35,
+        "reasoningOutputTokens": 28
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "265561870e4a695030456c6af9a44ebcddaf1afda376fd7b30be06ea92ac59ad",
+      "estimatedCost": 0.074408,
+      "normalizedCost": 0.15044,
+      "remoteCalls": [],
+      "rating": {
+        "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+        "caseId": "N02",
+        "contentFamilies": [
+          "arithmetic"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "exact_answer",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "추가 문구 없이 정확히 391만 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+      "caseId": "N04",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15053,
+        "inputTokens": 14870,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 183,
+        "reasoningOutputTokens": 151
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 9331,
+      "firstUsage": {
+        "totalTokens": 15053,
+        "inputTokens": 14870,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 183,
+        "reasoningOutputTokens": 151
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "bb9fd00584f3ad2c34726a47719a9d003a6d1973074104d5aa62084d617be096",
+      "estimatedCost": 0.081818,
+      "normalizedCost": 0.15785,
+      "remoteCalls": [],
+      "rating": {
+        "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+        "caseId": "N04",
+        "contentFamilies": [
+          "short-copy"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+      "caseId": "N04",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15263,
+        "inputTokens": 14982,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 281,
+        "reasoningOutputTokens": 247
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 13923,
+      "firstUsage": {
+        "totalTokens": 15263,
+        "inputTokens": 14982,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 281,
+        "reasoningOutputTokens": 247
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "bb9fd00584f3ad2c34726a47719a9d003a6d1973074104d5aa62084d617be096",
+      "estimatedCost": 0.087838,
+      "normalizedCost": 0.16387,
+      "remoteCalls": [],
+      "rating": {
+        "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+        "caseId": "N04",
+        "contentFamilies": [
+          "short-copy"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+      "caseId": "N06",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15502,
+        "inputTokens": 14985,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 517,
+        "reasoningOutputTokens": 437
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 19892,
+      "firstUsage": {
+        "totalTokens": 15502,
+        "inputTokens": 14985,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 517,
+        "reasoningOutputTokens": 437
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "b739fec860df6bdcb42d7a2f75b73fd5d0d15176fa08c8aefdb06cfd405c772f",
+      "estimatedCost": 0.099668,
+      "normalizedCost": 0.1757,
+      "remoteCalls": [],
+      "rating": {
+        "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+        "caseId": "N06",
+        "contentFamilies": [
+          "name-collision"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 채소 썰기와 영상통화라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+      "caseId": "N06",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 15312,
+        "inputTokens": 14866,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 446,
+        "reasoningOutputTokens": 360
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 18343,
+      "firstUsage": {
+        "totalTokens": 15312,
+        "inputTokens": 14866,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 446,
+        "reasoningOutputTokens": 360
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "b739fec860df6bdcb42d7a2f75b73fd5d0d15176fa08c8aefdb06cfd405c772f",
+      "estimatedCost": 0.17096,
+      "normalizedCost": 0.17096,
+      "remoteCalls": [],
+      "rating": {
+        "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+        "caseId": "N06",
+        "contentFamilies": [
+          "name-collision"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 달걀말이와 스마트폰 지문 인식이라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+      "caseId": "F01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 48228,
+        "inputTokens": 47196,
+        "cachedInputTokens": 39040,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1032,
+        "reasoningOutputTokens": 516
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 39279,
+      "firstUsage": {
+        "totalTokens": 15115,
+        "inputTokens": 14905,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 210,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "offline": true,
+        "verifiedCalls": 0
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "5e31f23bab6c505cc77107899d49856a13069aa0b26b1cddc946bf8069ba1327",
+      "estimatedCost": 0.1722,
+      "normalizedCost": 0.52356,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation"
+          },
+          "status": "failed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+        "caseId": "F01",
+        "contentFamilies": [
+          "disconnected"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "connection_attempt",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "실제 gisul 검색 시도 후 연결 실패를 보고하고 일반 원칙에 따른 검토임을 명확히 했다. 연습·튜닝 문제의 평가 재사용에 따른 오염을 설명하고, 미노출 평가 문제를 사용하도록 적절히 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+      "caseId": "F01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 48655,
+        "inputTokens": 47544,
+        "cachedInputTokens": 39168,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1111,
+        "reasoningOutputTokens": 668
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 42610,
+      "firstUsage": {
+        "totalTokens": 15178,
+        "inputTokens": 15001,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 177,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "offline": true,
+        "verifiedCalls": 0
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "5e31f23bab6c505cc77107899d49856a13069aa0b26b1cddc946bf8069ba1327",
+      "estimatedCost": 0.178478,
+      "normalizedCost": 0.53099,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "평가 설계 evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "failed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+        "caseId": "F01",
+        "contentFamilies": [
+          "disconnected"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "connection_attempt",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "실제 gisul 검색을 시도했고 연결 실패와 원격 절차 미열람을 밝혔다. 절차를 적용했다고 주장하지 않았으며, 연습·평가 데이터 중복에 따른 성능 과대평가와 독립된 최종 평가셋의 필요성을 정확히 설명했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "81e1503a-428c-475e-b787-dd04191f897a",
+      "caseId": "F02",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 70428,
+        "inputTokens": 67483,
+        "cachedInputTokens": 56704,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2945,
+        "reasoningOutputTokens": 1862
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 110232,
+      "firstUsage": {
+        "totalTokens": 15227,
+        "inputTokens": 14992,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 235,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "79fe657d667d438af7b66003d1b8b25aa22e62af9a1fd1d7d73cb135dba7c6bb",
+      "estimatedCost": 0.311744,
+      "normalizedCost": 0.82208,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "web page review accessibility interactive testing",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "web",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "81e1503a-428c-475e-b787-dd04191f897a",
+        "caseId": "F02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "81e1503a-428c-475e-b787-dd04191f897a",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "기록된 정적 점검으로 선택·다운로드 흐름 부재, 불분명한 버튼명과 제목 누락을 확인했습니다. 실제 클릭·키보드·화면 검증 미수행을 분명히 밝혔고, /reset의 실제 동작도 단정하지 않았습니다. 패키지 설치나 도구 기능에 대한 과장도 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-expanded-20260918",
+      "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+      "caseId": "F02",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 64827,
+        "inputTokens": 62835,
+        "cachedInputTokens": 45312,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1992,
+        "reasoningOutputTokens": 830
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 70034,
+      "firstUsage": {
+        "totalTokens": 15093,
+        "inputTokens": 14893,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 200,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "79fe657d667d438af7b66003d1b8b25aa22e62af9a1fd1d7d73cb135dba7c6bb",
+      "estimatedCost": 0.320142,
+      "normalizedCost": 0.72795,
+      "remoteCalls": [],
+      "rating": {
+        "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+        "caseId": "F02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "소스와 tidy·Python 점검 기록에 근거해 다운로드 기능 부재, 중복 버튼명, 링크 문구 문제와 제목 누락을 짚었습니다. 실제 클릭 검증 미수행과 서버 동작 미확인을 명시했으며, 패키지 설치나 실행 증거 조작이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    }
+  ],
+  "ratings": [],
+  "summaries": [
+    {
+      "variant": "baseline",
+      "runs": 18,
+      "graded": 18,
+      "passes": 17,
+      "critical": 0,
+      "mechanismPasses": 18,
+      "searches": 2,
+      "loads": 2,
+      "meanCost": 0.23602588888888887,
+      "normalizedMeanCost": 0.48383388888888884,
+      "meanSeconds": 50.05388888888889,
+      "medianSeconds": 54.4065,
+      "tokens": 770965,
+      "humanRatings": 0,
+      "costRatio": 1,
+      "normalizedCostRatio": 1
+    },
+    {
+      "variant": "bounded",
+      "runs": 18,
+      "graded": 18,
+      "passes": 17,
+      "critical": 0,
+      "mechanismPasses": 18,
+      "searches": 18,
+      "loads": 8,
+      "meanCost": 0.27654311111111113,
+      "normalizedMeanCost": 0.7211511111111111,
+      "meanSeconds": 66.49055555555555,
+      "medianSeconds": 68.654,
+      "tokens": 1169808,
+      "humanRatings": 0,
+      "costRatio": 1.1716643136605074,
+      "normalizedCostRatio": 1.4904931789032279
+    }
+  ],
+  "budget": {
+    "attempts": 36,
+    "selected": 36,
+    "tokensLowerBound": 1940773,
+    "standardPriceEquivalentLowerBound": 9.226242,
+    "hasPartialUsage": false,
+    "scheduledSlots": 36,
+    "notRunSlots": 0,
+    "missingResultSlots": []
+  },
+  "promotion": {
+    "approved": false,
+    "reason": "This is development direction-finding. Holdout gate and ten genuine human ratings are not satisfied; incomplete or critical runs and cost regressions also block promotion."
+  }
+}

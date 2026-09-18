@@ -1,5 +1,6 @@
 ---
 name: hate
+keywords: [critical review, plan critique, adversarial review, 계획 검토, 반론, 계획 비판]
 disable-model-invocation: true
 description: "Attack a plan, design, or argument like you want it to fail before you commit real effort — return the single load-bearing objection and the cheapest experiment that would prove it matters, not a checklist. User-invoked on purpose: a hate-it reflex always in the agent's reach would bias it toward demolition. Weighs many failure axes but owns the synthesis to one root."
 ---

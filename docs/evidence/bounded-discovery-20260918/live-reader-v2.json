@@ -1,0 +1,37 @@
+{
+  "synthetic": true,
+  "readerRuntimeHash": "8eeec926104db3fbabf52121fc7cb3e34e69b3de02d9d400f3f25f81fb1df70c",
+  "candidateBundle": true,
+  "discovery": {
+    "automaticMatches": 1,
+    "automaticNames": [
+      "nba"
+    ],
+    "explicitFirst": {
+      "uri": "skill://gisul/gisul/hate/SKILL.md",
+      "name": "hate",
+      "description": "Attack a plan, design, or argument like you want it to fail before you commit real effort — return the single load-bearing objection and the cheapest experiment that would prove it matters, not a checklist. User-invoked on purpose: a hate-it reflex always in the agent's reach would bias it toward demolition. Weighs many failure axes but owns the synthesis to one root.",
+      "invocation": "explicit",
+      "digest": "sha256:57252bb878e73e9c97e138a672e258efcc9afce4eef2eb344052747d98aaea02"
+    },
+    "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+  },
+  "loaderBytes": 3020,
+  "matchedNative": {
+    "name": "mandela",
+    "localPath": "/Users/iyen/.codex/skills/mandela/SKILL.md",
+    "localHash": "5efc42ffa98a67ea98c901f8106d346f36c397cd9b11dc0774ba4fa32fbdef40",
+    "remoteHash": "5efc42ffa98a67ea98c901f8106d346f36c397cd9b11dc0774ba4fa32fbdef40",
+    "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+  },
+  "supportingFile": {
+    "uri": "skill://gisul/gisul/dont-make-me-think/references/sources-and-testing.md",
+    "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+    "release": "20260917.10",
+    "manifestDigest": "sha256:7f89d8d826ec66bf4d9f3fb364e76abd4ea47e4c982ec7981268e7545fff8be6",
+    "loadId": "60d0a75522ea21fdaa58334401e6f4332611f6eb16cd3d1c5263133ec155fe6a",
+    "selectedCommit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+    "bytes": 3763,
+    "sha256": "5f897c607ba3eb676cd441d5c4177771d1c75f38ef409e75aa240020d34c30ba"
+  }
+}

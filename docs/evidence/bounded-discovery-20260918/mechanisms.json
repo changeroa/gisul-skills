@@ -1,0 +1,1075 @@
+{
+  "productionGateBlocked": true,
+  "gateMessage": "Error: Behavioral content changed. Publication is blocked until the model, critical-case, holdout, cost and human-rating evaluation in eval/README.md is completed and its evidence gate is connected. Static validation cannot approve this change.",
+  "observations": [
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D01",
+      "variant": "baseline",
+      "runId": "3e846948-f823-4e4b-af63-af31d549a96a",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D01",
+      "variant": "bounded",
+      "runId": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "LLM evaluation design data leakage overfitting model judge bias",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D02",
+      "variant": "bounded",
+      "runId": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "UX review button copy ambiguous actions next step usability",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "ux",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "7b8178c4659578bf7131763e25218e97a896782cb32360a256fe28d9adb7ec61"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D02",
+      "variant": "baseline",
+      "runId": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D05",
+      "variant": "baseline",
+      "runId": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D05",
+      "variant": "bounded",
+      "runId": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D07",
+      "variant": "bounded",
+      "runId": "0e941177-b984-438b-ade9-398b90169be5",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "LLM evaluation design reliability data leakage overfitting",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        },
+        {
+          "turn": 2,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D07",
+      "variant": "baseline",
+      "runId": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        },
+        {
+          "turn": 2,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D08",
+      "variant": "baseline",
+      "runId": "98a02e04-c955-4f72-8753-53dc417d7735",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        },
+        {
+          "turn": 2,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "D08",
+      "variant": "bounded",
+      "runId": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "LLM evaluation design validity test leakage overfitting model grader",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        },
+        {
+          "turn": 2,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "UX writing button link labels clarity",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "UX",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "7b8178c4659578bf7131763e25218e97a896782cb32360a256fe28d9adb7ec61"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "E02",
+      "variant": "bounded",
+      "runId": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "hate",
+                "mode": "explicit",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 4,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/hate/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "3bc56088ac7ffe538f1e4ff9416887ac83c8477ad56d8c39fdbc7b9bdbb9f144"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "E02",
+      "variant": "baseline",
+      "runId": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "hate",
+                "mode": "explicit",
+                "limit": 10
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 4,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/hate/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "3bc56088ac7ffe538f1e4ff9416887ac83c8477ad56d8c39fdbc7b9bdbb9f144"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "N03",
+      "variant": "baseline",
+      "runId": "b3138441-b243-462a-a9eb-59a1c27efe66",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "N03",
+      "variant": "bounded",
+      "runId": "14933314-e371-40af-8c8f-f30e7a5db681",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "N05",
+      "variant": "bounded",
+      "runId": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-pilot-20260918",
+      "caseId": "N05",
+      "variant": "baseline",
+      "runId": "52c8e924-9eca-4329-9596-478bce41b33b",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D03",
+      "variant": "baseline",
+      "runId": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D03",
+      "variant": "bounded",
+      "runId": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "LLM evaluation validity data leakage self-grading benchmark design",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D04",
+      "variant": "bounded",
+      "runId": "de249182-a213-4074-9879-8c0538de0ea6",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D04",
+      "variant": "baseline",
+      "runId": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D06",
+      "variant": "baseline",
+      "runId": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "D06",
+      "variant": "bounded",
+      "runId": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "deployment workflow partial upload failure stale concurrent deployment ordering",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "deployment",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "E01",
+      "variant": "bounded",
+      "runId": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "E01",
+      "variant": "baseline",
+      "runId": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N01",
+      "variant": "baseline",
+      "runId": "31a00685-544e-4234-a2c8-447a2e641ea0",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N01",
+      "variant": "bounded",
+      "runId": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N02",
+      "variant": "bounded",
+      "runId": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N02",
+      "variant": "baseline",
+      "runId": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N04",
+      "variant": "baseline",
+      "runId": "9488c071-7f7e-4b64-9574-520414f114d4",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N04",
+      "variant": "bounded",
+      "runId": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N06",
+      "variant": "bounded",
+      "runId": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "N06",
+      "variant": "baseline",
+      "runId": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "F01",
+      "variant": "baseline",
+      "runId": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation"
+              },
+              "status": "failed",
+              "error": null
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "F01",
+      "variant": "bounded",
+      "runId": "1ee66663-c330-473c-a204-32d4bb8abcee",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "평가 설계 evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "failed",
+              "error": null
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "F02",
+      "variant": "bounded",
+      "runId": "81e1503a-428c-475e-b787-dd04191f897a",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "web page review accessibility interactive testing",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 0,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "web",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 2,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "caseId": "F02",
+      "variant": "baseline",
+      "runId": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "D01",
+      "variant": "baseline",
+      "runId": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "D01",
+      "variant": "selective",
+      "runId": "3d2d2fac-5255-486a-8447-4eba702157bc",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "search_skills",
+              "arguments": {
+                "query": "evaluation",
+                "mode": "automatic",
+                "limit": 5
+              },
+              "status": "completed",
+              "error": null,
+              "matched": 1,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+            },
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md",
+                "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "D01",
+      "variant": "bounded",
+      "runId": "bdc87a50-ea66-43b0-8121-448ea7363221",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "E01",
+      "variant": "selective",
+      "runId": "a7d23f43-e95f-446d-a50a-733da1dada16",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "E01",
+      "variant": "bounded",
+      "runId": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "E01",
+      "variant": "baseline",
+      "runId": "404c6259-24bc-4429-860c-2c71dedda139",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [
+            {
+              "tool": "load_skill",
+              "arguments": {
+                "uri": "skill://gisul/gisul/mandela/SKILL.md"
+              },
+              "status": "completed",
+              "error": null,
+              "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+              "loadId": "59f2ec8b2618b60fa91c395a8e16afd7f3b6073a11747b15321d37db0e4a65fb"
+            }
+          ],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N01",
+      "variant": "bounded",
+      "runId": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N01",
+      "variant": "baseline",
+      "runId": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N01",
+      "variant": "selective",
+      "runId": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": []
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N05",
+      "variant": "baseline",
+      "runId": "737c540b-4a74-4148-8567-02ab1b08aab8",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N05",
+      "variant": "selective",
+      "runId": "edf70db7-929b-490b-ac23-250171737e83",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "caseId": "N05",
+      "variant": "bounded",
+      "runId": "27629d77-b252-44aa-8f34-47a19f61b047",
+      "turns": [
+        {
+          "turn": 1,
+          "calls": [],
+          "localSkillReads": [
+            "/bin/zsh -lc 'cat /Users/iyen/.codex/skills/mandela/SKILL.md'"
+          ]
+        }
+      ]
+    }
+  ]
+}

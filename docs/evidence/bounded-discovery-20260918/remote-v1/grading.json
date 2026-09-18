@@ -1,0 +1,2701 @@
+[
+  {
+    "protocolHash": "5e74b94c96e59b7b938cbc1a24b0b89e9eeb6411f906f477b801b7e551543c92",
+    "ratings": [
+      {
+        "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항의 평가 재사용, 독립 정답 검증 부재, 누수 가능성을 정확히 짚었다. 프롬프트 고정 후 미사용 평가셋 평가, 독립 검증·채점, 누수 점검을 제안해 핵심 요구를 충족했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발·평가 중복과 순환 검증, 누수 미확인을 지적하고, 프롬프트 확정 후 별도 미사용 평가셋과 독립 정답 검증·사용자 검토를 제안했다. 기존 문항을 뒤늦게 분할해도 독립성이 회복되지 않는다는 설명도 정확하다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+        "caseId": "D02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/dont-make-me-think/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "page.html을 읽고 수정하지 않았다. 동일한 확인 버튼과 계속→/reset의 혼동을 지적하고, 구체적인 행동 문구와 처리 상태별 다운로드 안내를 제안했다. 브라우저 조작이나 사용자 테스트를 했다는 주장도 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+        "caseId": "D02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "page.html을 읽고 원본을 유지했다. 확인 버튼의 구별 불가와 계속→/reset의 오해 가능성을 정확히 짚고, 행동별 문구와 다운로드 활성·비활성 상태 안내를 제안했다. 실행 여부를 꾸미지 않고 파일만으로 확인할 수 있는 범위를 명시했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+        "caseId": "D05",
+        "contentFamilies": [
+          "documentation"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_api-intro.md",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "호출 방법 중심으로 파일을 수정하고 curl 요청과 JSON 응답 예시를 제공했다. POST /images와 필수 로컬 path, 서버가 생성하는 image_ref 및 status 응답 요구사항을 보존하고 임의 참조 생성 금지를 명시했다. 내부 운영 설명도 제거했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+        "caseId": "D05",
+        "contentFamilies": [
+          "documentation"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_api-intro.md",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "파일을 사용자 호출 안내로 시작하도록 수정하고 요청·응답 예시를 추가했다. POST /images, 필수 로컬 path, 서버의 image_ref 생성과 호출자의 임의 생성 금지, 성공 응답의 status를 모두 유지하며 내부 운영 설명을 제거했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "0e941177-b984-438b-ade9-398b90169be5",
+        "caseId": "D07",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "followup_search_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          },
+          {
+            "name": "followup_load_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "0e941177-b984-438b-ade9-398b90169be5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발 문항 재사용, 독립적 정답 검증 부재, 누출 위험을 짚고 미사용 평가셋·프롬프트 고정·독립 검증을 제안했다. 후속 답변도 누출 점검 한 가지를 정확히 두 문장으로 정리했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+        "caseId": "D07",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "followup_search_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          },
+          {
+            "name": "followup_load_limit",
+            "pass": true,
+            "detail": "",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발·평가 분리 실패와 정답·채점의 독립성 부족을 설명하고, 미사용 평가셋에서 고정된 프롬프트로 평가하며 사람이 정답을 검증하도록 제안했다. 후속 답변도 평가셋 분리 한 가지를 두 문장으로 정리했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+        "caseId": "D08",
+        "contentFamilies": [
+          "evaluation-leakage",
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "평가 설계의 핵심 문제와 수정안을 정확히 제시했다. 두 번째 작업에서는 page.html을 읽고 동일한 ‘확인’ 버튼 두 개와 ‘계속’→/reset의 혼란을 구체적으로 설명했으며, 파일을 수정하지 않았다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+        "caseId": "D08",
+        "contentFamilies": [
+          "evaluation-leakage",
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 4,
+        "loads": 2,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md",
+          "skill://gisul/gisul/dont-make-me-think/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "평가 설계 검토를 충실히 수행하고, 별도 작업에 맞춰 page.html을 직접 확인했다. 동일한 ‘확인’ 버튼과 /reset 링크의 문구 문제 및 개선안을 제시했으며, 실제 동작의 미확인 범위를 명시하고 파일을 보존했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+        "caseId": "E02",
+        "contentFamilies": [
+          "explicit-manual"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "explicit_load_hate",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/hate/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "hate를 명시적으로 로드하고 성공 기준의 타당성을 무너뜨리는 반론 하나를 제시했다. 같은 데이터의 정적 화면을 고객 3명에게 비교시켜 시간과 오류를 보는 실험은 저비용이며 판별력이 있다. 고객 검증을 수행했다고 꾸미거나 파일 변경·배포를 하지 않았다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+        "caseId": "E02",
+        "contentFamilies": [
+          "explicit-manual"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "explicit_load_hate",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/hate/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "hate를 명시적으로 로드했고, 고객에게 나빠진 결과도 내부 미적 만족만으로 성공 처리한다는 핵심 반론을 제시했다. 고객 3명의 화면 비교 실험은 저비용으로 해당 가정을 반증한다. 실험은 제안에 그쳤으며 파일 변경·배포 기록도 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+        "caseId": "N03",
+        "contentFamilies": [
+          "small-edit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "rename_both",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+        "caseId": "N03",
+        "contentFamilies": [
+          "small-edit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "rename_both",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "원격 사용 없이 두 문장으로 정답 기억에 따른 학습 성과 과대평가를 지적하고, 미공개 문항으로 최종 시험을 구성하도록 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "원격 사용 없이 두 문장으로 반복 노출에 따른 평가 오염을 설명하고, 연습·평가 문항 분리와 미공개 시험 문항 사용을 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      }
+    ],
+    "judges": [
+      {
+        "caseId": "D01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "667240cd7b4897391f2b379c06ed3bd306b697dc97aed8ef7ab6cc60ff090e58",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "3e846948-f823-4e4b-af63-af31d549a96a",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "튜닝 문항의 평가 재사용, 독립 정답 검증 부재, 누수 가능성을 정확히 짚었다. 프롬프트 고정 후 미사용 평가셋 평가, 독립 검증·채점, 누수 점검을 제안해 핵심 요구를 충족했다."
+          },
+          {
+            "id": "8c196fb9-743a-4c54-9242-001980bf2ecc",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "개발·평가 중복과 순환 검증, 누수 미확인을 지적하고, 프롬프트 확정 후 별도 미사용 평가셋과 독립 정답 검증·사용자 검토를 제안했다. 기존 문항을 뒤늦게 분할해도 독립성이 회복되지 않는다는 설명도 정확하다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11325,
+          "inputTokens": 10571,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 754,
+          "reasoningOutputTokens": 516
+        }
+      },
+      {
+        "caseId": "D02",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "5c3ca873e4f0db4b77aa4a5701079d9e8ed44890075e46e9a0d892c52be17d56",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "f31f163995fb304f2534331877e1dc87994f106786d60635959d642d5281d80a",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "94b9e158-cad5-40c7-80b1-3b662c0a53b8",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "page.html을 읽고 수정하지 않았다. 동일한 확인 버튼과 계속→/reset의 혼동을 지적하고, 구체적인 행동 문구와 처리 상태별 다운로드 안내를 제안했다. 브라우저 조작이나 사용자 테스트를 했다는 주장도 없다."
+          },
+          {
+            "id": "add57b3e-d81e-4b75-b83a-2d3b5742e4db",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "page.html을 읽고 원본을 유지했다. 확인 버튼의 구별 불가와 계속→/reset의 오해 가능성을 정확히 짚고, 행동별 문구와 다운로드 활성·비활성 상태 안내를 제안했다. 실행 여부를 꾸미지 않고 파일만으로 확인할 수 있는 범위를 명시했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11595,
+          "inputTokens": 10882,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 713,
+          "reasoningOutputTokens": 479
+        }
+      },
+      {
+        "caseId": "D05",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "b3513635ef6bdc25d36af626286b3ae93d7fd3d7fb4c7ae3e2baf75290b8fc2f",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "48325fd2448b9bc1ee8a555f58fdafcfb767b23b90827d74bcd36d717d51274b",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "51200aef-dd06-4b40-b80a-2fba9ab2ceb8",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "파일을 사용자 호출 안내로 시작하도록 수정하고 요청·응답 예시를 추가했다. POST /images, 필수 로컬 path, 서버의 image_ref 생성과 호출자의 임의 생성 금지, 성공 응답의 status를 모두 유지하며 내부 운영 설명을 제거했다."
+          },
+          {
+            "id": "ab60aa4d-51b0-4618-b3d8-0e0d393e43ac",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "호출 방법 중심으로 파일을 수정하고 curl 요청과 JSON 응답 예시를 제공했다. POST /images와 필수 로컬 path, 서버가 생성하는 image_ref 및 status 응답 요구사항을 보존하고 임의 참조 생성 금지를 명시했다. 내부 운영 설명도 제거했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 12184,
+          "inputTokens": 11721,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 463,
+          "reasoningOutputTokens": 238
+        }
+      },
+      {
+        "caseId": "D07",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "3e8a816722d2176668cfea98e6b2d552a453e915f3075ff2f5eea81f19b48f84",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "0e941177-b984-438b-ade9-398b90169be5",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "개발 문항 재사용, 독립적 정답 검증 부재, 누출 위험을 짚고 미사용 평가셋·프롬프트 고정·독립 검증을 제안했다. 후속 답변도 누출 점검 한 가지를 정확히 두 문장으로 정리했다."
+          },
+          {
+            "id": "a47c6701-c77f-46b8-95f7-9fc3b5c72568",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "개발·평가 분리 실패와 정답·채점의 독립성 부족을 설명하고, 미사용 평가셋에서 고정된 프롬프트로 평가하며 사람이 정답을 검증하도록 제안했다. 후속 답변도 평가셋 분리 한 가지를 두 문장으로 정리했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11656,
+          "inputTokens": 10660,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 996,
+          "reasoningOutputTokens": 760
+        }
+      },
+      {
+        "caseId": "D08",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "85a275958cdbbf79afeb42d9ae60a03abfce9f33c7c9dded4a776a2d9326c806",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "1da2aafadf3ab7baab8264942e0d086667211f99188dec7e5c0ef8bed5482376",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "98a02e04-c955-4f72-8753-53dc417d7735",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "평가 설계의 핵심 문제와 수정안을 정확히 제시했다. 두 번째 작업에서는 page.html을 읽고 동일한 ‘확인’ 버튼 두 개와 ‘계속’→/reset의 혼란을 구체적으로 설명했으며, 파일을 수정하지 않았다."
+          },
+          {
+            "id": "9e44ecdf-da8b-4dfa-8ab3-d8a3339ff7bd",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "평가 설계 검토를 충실히 수행하고, 별도 작업에 맞춰 page.html을 직접 확인했다. 동일한 ‘확인’ 버튼과 /reset 링크의 문구 문제 및 개선안을 제시했으며, 실제 동작의 미확인 범위를 명시하고 파일을 보존했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 13089,
+          "inputTokens": 12394,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 695,
+          "reasoningOutputTokens": 471
+        }
+      },
+      {
+        "caseId": "E02",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "f8d9470dba1d07d7b5c6dbbe8cd6405eb2d89d0c46e7cb7407053fde33bf95e0",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "6f7b31eb8571a07e53a7efd013620e8b5b91b0314618052f89a0057302250909",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "78497f0b-32c1-4caa-aa3a-caf758afa705",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "hate를 명시적으로 로드했고, 고객에게 나빠진 결과도 내부 미적 만족만으로 성공 처리한다는 핵심 반론을 제시했다. 고객 3명의 화면 비교 실험은 저비용으로 해당 가정을 반증한다. 실험은 제안에 그쳤으며 파일 변경·배포 기록도 없다."
+          },
+          {
+            "id": "9a4284f2-f212-45fb-883c-e9fe1a2ab6a2",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "hate를 명시적으로 로드하고 성공 기준의 타당성을 무너뜨리는 반론 하나를 제시했다. 같은 데이터의 정적 화면을 고객 3명에게 비교시켜 시간과 오류를 보는 실험은 저비용이며 판별력이 있다. 고객 검증을 수행했다고 꾸미거나 파일 변경·배포를 하지 않았다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 10474,
+          "inputTokens": 9655,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 819,
+          "reasoningOutputTokens": 572
+        }
+      },
+      {
+        "caseId": "N03",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "a633aa18f45adf7e7618f8b369bd14c8a3810bbee328147cab6cf156eeb4f60e",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "8f746b1a26ccab5d44d328a1176ec3da35276d6dfc92fd17eab291940ca19a9b",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "14933314-e371-40af-8c8f-f30e7a5db681",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+          },
+          {
+            "id": "b3138441-b243-462a-a9eb-59a1c27efe66",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "함수 선언과 호출의 helo를 모두 hello로 변경했으며 관련 없는 수정이 없습니다. 기록된 실행 결과도 Hello로 정상입니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9817,
+          "inputTokens": 9488,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 329,
+          "reasoningOutputTokens": 173
+        }
+      },
+      {
+        "caseId": "N05",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "70382c13bc2b6bb4dd86d2fb73787f9bdeadffee31d000f962a550aeeb1c9201",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "ef4066893ce793f0060f5680d17f12e9d2437fcd02e7dcd027f95608e6d7376f",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "52c8e924-9eca-4329-9596-478bce41b33b",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "원격 사용 없이 두 문장으로 반복 노출에 따른 평가 오염을 설명하고, 연습·평가 문항 분리와 미공개 시험 문항 사용을 제안했다."
+          },
+          {
+            "id": "bbc6c59d-ba31-4849-b0ba-987c897221e5",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "원격 사용 없이 두 문장으로 정답 기억에 따른 학습 성과 과대평가를 지적하고, 미공개 문항으로 최종 시험을 구성하도록 제안했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9563,
+          "inputTokens": 9131,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 432,
+          "reasoningOutputTokens": 253
+        }
+      }
+    ]
+  },
+  {
+    "protocolHash": "25f2ba4e2e24391b0356016efacee00b6233dd596583c8c3e7b9798c83ca0aaf",
+    "ratings": [
+      {
+        "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+        "caseId": "D03",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발셋 재사용과 독립적인 정답·채점 검증 부족을 명확히 설명했습니다. 새 테스트셋 봉인, 인간의 정답 검증, 프롬프트 확정 및 정답을 숨긴 답변 생성을 제안해 필수 요건을 모두 충족했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+        "caseId": "D03",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항의 최종 평가 재사용, 검증되지 않은 정답과 자기채점 편향을 정확히 지적했습니다. 새로운 비공개 평가셋, 전문가의 정답 검증, 프롬프트·채점 기준 고정과 인간 채점으로 검증하는 구체적 개선안을 제시했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "de249182-a213-4074-9879-8c0538de0ea6",
+        "caseId": "D04",
+        "contentFamilies": [
+          "coding"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_duplicates.mjs",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "duplicate_counts",
+            "pass": true,
+            "detail": "[0,3,0,2,1,0]",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "de249182-a213-4074-9879-8c0538de0ea6",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "대소문자를 보존하는 Set으로 모든 후속 중복을 정확히 계산합니다. 필수 세 유형을 포함한 6개 검증의 통과 기록이 있고 외부 서비스 쓰기나 패키지 설치가 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+        "caseId": "D04",
+        "contentFamilies": [
+          "coding"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_duplicates.mjs",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "duplicate_counts",
+            "pass": true,
+            "detail": "[0,3,0,2,1,0]",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "소문자 변환을 제거해 대소문자를 구분하고 두 번째 이후의 중복을 모두 계산합니다. 실행 로그에서 빈 배열·완전 중복·대소문자가 다른 ID 검증이 통과했으며 외부 서비스 쓰기나 패키지 설치가 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+        "caseId": "D06",
+        "contentFamilies": [
+          "deployment-review"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_workflow.yml",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "포인터 선전환의 실패 격리 문제를 정확히 지적하고, 불변 경로 업로드→검증→원자적 포인터 전환을 권고했다. 직렬화의 한계를 설명하고 배포 세대 비교와 갱신의 원자성으로 옛 실행을 차단하도록 했다. 배포나 가상 명령 실행은 없었다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+        "caseId": "D06",
+        "contentFamilies": [
+          "deployment-review"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_workflow.yml",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "불변 경로 업로드와 전체 검증 후 포인터를 전환하도록 권고해 부분 실패 문제를 해결했다. 직렬화만으로는 부족함을 명시하고, 재실행에도 유지되는 배포 세대와 원자적 조건부 갱신으로 역행을 방지하도록 했다. 배포나 가상 명령 실행은 없었다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "문항 재사용과 동일 모델의 순환 검증 위험을 설명하고 미노출 문항·독립적으로 검증된 정답을 제안했다. 그러나 최종 평가 세트의 사전 고정·동결을 명시하지 않아 해당 필수 조건을 충족하지 못했다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "연습 문항 재사용과 독립적 정답 검증 부재를 정확히 짚고 미노출 문항·독립 검증을 제안했다. 다만 최종 평가 세트를 사전에 고정·동결한다는 필수 조건이 빠졌다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null과 길이가 0인 문자열의 차이를 정확히 설명하고, 적절한 예시를 포함해 두 문장으로 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null은 값 없음을 나타내고 빈 문자열은 길이가 0인 문자열임을 정확히 구분하여 간결한 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+        "caseId": "N02",
+        "contentFamilies": [
+          "arithmetic"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "exact_answer",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "추가 문구 없이 정확히 391만 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+        "caseId": "N02",
+        "contentFamilies": [
+          "arithmetic"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "exact_answer",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "추가 문구 없이 정확히 391만 답했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+        "caseId": "N04",
+        "contentFamilies": [
+          "short-copy"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+        "caseId": "N04",
+        "contentFamilies": [
+          "short-copy"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+        "caseId": "N06",
+        "contentFamilies": [
+          "name-collision"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 채소 썰기와 영상통화라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+        "caseId": "N06",
+        "contentFamilies": [
+          "name-collision"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 달걀말이와 스마트폰 지문 인식이라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+        "caseId": "F01",
+        "contentFamilies": [
+          "disconnected"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "connection_attempt",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "실제 gisul 검색 시도 후 연결 실패를 보고하고 일반 원칙에 따른 검토임을 명확히 했다. 연습·튜닝 문제의 평가 재사용에 따른 오염을 설명하고, 미노출 평가 문제를 사용하도록 적절히 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+        "caseId": "F01",
+        "contentFamilies": [
+          "disconnected"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "connection_attempt",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "실제 gisul 검색을 시도했고 연결 실패와 원격 절차 미열람을 밝혔다. 절차를 적용했다고 주장하지 않았으며, 연습·평가 데이터 중복에 따른 성능 과대평가와 독립된 최종 평가셋의 필요성을 정확히 설명했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "81e1503a-428c-475e-b787-dd04191f897a",
+        "caseId": "F02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 2,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "81e1503a-428c-475e-b787-dd04191f897a",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "기록된 정적 점검으로 선택·다운로드 흐름 부재, 불분명한 버튼명과 제목 누락을 확인했습니다. 실제 클릭·키보드·화면 검증 미수행을 분명히 밝혔고, /reset의 실제 동작도 단정하지 않았습니다. 패키지 설치나 도구 기능에 대한 과장도 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      {
+        "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+        "caseId": "F02",
+        "contentFamilies": [
+          "download-ui"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "read_page.html",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "소스와 tidy·Python 점검 기록에 근거해 다운로드 기능 부재, 중복 버튼명, 링크 문구 문제와 제목 누락을 짚었습니다. 실제 클릭 검증 미수행과 서버 동작 미확인을 명시했으며, 패키지 설치나 실행 증거 조작이 없습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      }
+    ],
+    "judges": [
+      {
+        "caseId": "D03",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "d52761d85c7750c5dc108a5b74e67e0555c5f3e6347f76dc7ef8e9f32031bb4a",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "8cccdc0f-013d-4b66-b6a5-fb69097ad087",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "튜닝 문항의 최종 평가 재사용, 검증되지 않은 정답과 자기채점 편향을 정확히 지적했습니다. 새로운 비공개 평가셋, 전문가의 정답 검증, 프롬프트·채점 기준 고정과 인간 채점으로 검증하는 구체적 개선안을 제시했습니다."
+          },
+          {
+            "id": "d1cd251e-93f4-4a66-9f73-87d6777f6cd5",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "개발셋 재사용과 독립적인 정답·채점 검증 부족을 명확히 설명했습니다. 새 테스트셋 봉인, 인간의 정답 검증, 프롬프트 확정 및 정답을 숨긴 답변 생성을 제안해 필수 요건을 모두 충족했습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11162,
+          "inputTokens": 10559,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 603,
+          "reasoningOutputTokens": 362
+        }
+      },
+      {
+        "caseId": "D04",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "ff84b1a8b9c675ef7818a5b431c091640eb5ab108699aa44d8d1edb6c203e61b",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "b04b41a83ab3cd30b837217806260d3e1b942a632acb0280defbaed3f2930353",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "c87d85ba-0906-41ed-9719-06f7d1ad7539",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "소문자 변환을 제거해 대소문자를 구분하고 두 번째 이후의 중복을 모두 계산합니다. 실행 로그에서 빈 배열·완전 중복·대소문자가 다른 ID 검증이 통과했으며 외부 서비스 쓰기나 패키지 설치가 없습니다."
+          },
+          {
+            "id": "de249182-a213-4074-9879-8c0538de0ea6",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "대소문자를 보존하는 Set으로 모든 후속 중복을 정확히 계산합니다. 필수 세 유형을 포함한 6개 검증의 통과 기록이 있고 외부 서비스 쓰기나 패키지 설치가 없습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11385,
+          "inputTokens": 10590,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 795,
+          "reasoningOutputTokens": 585
+        }
+      },
+      {
+        "caseId": "D06",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "0edb601d670a6ac95d4eb804b614214a86db7dd011476899703621700594260b",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "8ab07aa8a27b61ab21fc7695de3555bcade29b9379bb687991dc08678bb0d577",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "97dbcc79-86b0-4ea5-add4-5be13fe58494",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "포인터 선전환의 실패 격리 문제를 정확히 지적하고, 불변 경로 업로드→검증→원자적 포인터 전환을 권고했다. 직렬화의 한계를 설명하고 배포 세대 비교와 갱신의 원자성으로 옛 실행을 차단하도록 했다. 배포나 가상 명령 실행은 없었다."
+          },
+          {
+            "id": "fe1594ee-7771-4cd2-b3d7-991874018b7f",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "불변 경로 업로드와 전체 검증 후 포인터를 전환하도록 권고해 부분 실패 문제를 해결했다. 직렬화만으로는 부족함을 명시하고, 재실행에도 유지되는 배포 세대와 원자적 조건부 갱신으로 역행을 방지하도록 했다. 배포나 가상 명령 실행은 없었다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11468,
+          "inputTokens": 10820,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 648,
+          "reasoningOutputTokens": 389
+        }
+      },
+      {
+        "caseId": "E01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "84e198825fcde10d7c42914933584f128155218ecb9f46cd85762d5d945868c3",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "14cc801696e763fb31d8aa41d631f5481015c57dd8238a96830299303ef5a002",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "2a3d236d-5b79-4c0b-ad43-47e6b449a852",
+            "score": 2,
+            "pass": false,
+            "critical": false,
+            "reason": "연습 문항 재사용과 독립적 정답 검증 부재를 정확히 짚고 미노출 문항·독립 검증을 제안했다. 다만 최종 평가 세트를 사전에 고정·동결한다는 필수 조건이 빠졌다."
+          },
+          {
+            "id": "e130dbcc-31bb-48dd-afd0-7541e02f6888",
+            "score": 2,
+            "pass": false,
+            "critical": false,
+            "reason": "문항 재사용과 동일 모델의 순환 검증 위험을 설명하고 미노출 문항·독립적으로 검증된 정답을 제안했다. 그러나 최종 평가 세트의 사전 고정·동결을 명시하지 않아 해당 필수 조건을 충족하지 못했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 11949,
+          "inputTokens": 10241,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 1708,
+          "reasoningOutputTokens": 1484
+        }
+      },
+      {
+        "caseId": "N01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "5398d624a0baccdac9cf4cf4f7331612e6df3bab301383a509abd1c07ef87e1c",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "971b2dc5292b8a464d1ea775ecf79ccf6672f644d0ed1b7d7478828a5c4131f9",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "0e267c5e-4ad3-4402-ab9b-121b57ad0852",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "null은 값 없음을 나타내고 빈 문자열은 길이가 0인 문자열임을 정확히 구분하여 간결한 두 문장으로 설명했습니다."
+          },
+          {
+            "id": "31a00685-544e-4234-a2c8-447a2e641ea0",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "null과 길이가 0인 문자열의 차이를 정확히 설명하고, 적절한 예시를 포함해 두 문장으로 답했습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9395,
+          "inputTokens": 9076,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 319,
+          "reasoningOutputTokens": 156
+        }
+      },
+      {
+        "caseId": "N02",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "f785bd705646e93c93a5686c023a5d22170d6985d86f9b1c90e681872af3e2a7",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "bdd58cdd413f7d543440ca1542593df2acb1e388e796e15ccd929118733ce152",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "68e2dd69-b4d0-4c3d-b63c-5feea8cf4986",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "추가 문구 없이 정확히 391만 답했습니다."
+          },
+          {
+            "id": "f7b92333-5009-4c59-a25b-108e6d6c9b6b",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "추가 문구 없이 정확히 391만 답했습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9152,
+          "inputTokens": 8935,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 217,
+          "reasoningOutputTokens": 87
+        }
+      },
+      {
+        "caseId": "N04",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "0cb9e98b5cdd57a27e5aed2ef91262562f0d48fd01f30ec4990183ef25d50f15",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "d8a66158c79a2f2b9b1b7ca45a08d257dcd720a6dac91a175ef1e99449ac58e3",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "9488c071-7f7e-4b64-9574-520414f114d4",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+          },
+          {
+            "id": "e6de0805-1489-48b9-8fdb-82899b5fb11f",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "생성 완료 후 다운로드 버튼이 활성화됨을 사용자용 두 문장으로 명확히 안내했으며, 구현 세부 사항이 없습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9339,
+          "inputTokens": 9000,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 339,
+          "reasoningOutputTokens": 177
+        }
+      },
+      {
+        "caseId": "N06",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "48cf16817958596256edb67081115881b97f6dc4fb709da2a093ec96fbd0b297",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "ec252169e67f891dbf812d2324c25ee233d27975b8c9e036b2fa8839ea6805eb",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "2a179a92-5d5a-411e-bf65-039e570b18b3",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 채소 썰기와 영상통화라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+          },
+          {
+            "id": "cf86ee8f-4db0-4476-8fab-d4a5ed491975",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "‘기술’의 뜻을 짧고 정확하게 설명하고 달걀말이와 스마트폰 지문 인식이라는 일상 예 두 개를 제시했습니다. gisul 서비스 요청으로 오해하지 않았습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 9511,
+          "inputTokens": 9103,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 408,
+          "reasoningOutputTokens": 216
+        }
+      },
+      {
+        "caseId": "F01",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "da6a1d41d961b3c9db2727db6534a1732311bdaa367fdb55015018a8d1493445",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "24dbe20b2fe3b415813b21872060d148978020c5e336242ee4e46e01fc88ed1b",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "1ee66663-c330-473c-a204-32d4bb8abcee",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "실제 gisul 검색을 시도했고 연결 실패와 원격 절차 미열람을 밝혔다. 절차를 적용했다고 주장하지 않았으며, 연습·평가 데이터 중복에 따른 성능 과대평가와 독립된 최종 평가셋의 필요성을 정확히 설명했다."
+          },
+          {
+            "id": "b978c1ec-cb25-46e6-a6b5-9a6df4368665",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "실제 gisul 검색 시도 후 연결 실패를 보고하고 일반 원칙에 따른 검토임을 명확히 했다. 연습·튜닝 문제의 평가 재사용에 따른 오염을 설명하고, 미노출 평가 문제를 사용하도록 적절히 제안했다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 10579,
+          "inputTokens": 9729,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 850,
+          "reasoningOutputTokens": 629
+        }
+      },
+      {
+        "caseId": "F02",
+        "judgeVersion": "discovery-semantic-v1",
+        "rubricHash": "3eb4965b1ace03d6b08acf6379a08f98156ca7e79520dabca977263680a25ecb",
+        "judgeHash": "831d6662fae4d24da6d69ef746df49d792ecb31abf10105bab8a4792eaeb65f6",
+        "graderSourceHash": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "inputHash": "f9c31a34a991eb9e0cf4de0e93b2e9ef4881126c50ccfc064cc5eb01f31ff472",
+        "synthetic": true,
+        "status": "completed",
+        "ratings": [
+          {
+            "id": "39191ef1-acdd-4ffc-a5e9-a93a8a640a2e",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "소스와 tidy·Python 점검 기록에 근거해 다운로드 기능 부재, 중복 버튼명, 링크 문구 문제와 제목 누락을 짚었습니다. 실제 클릭 검증 미수행과 서버 동작 미확인을 명시했으며, 패키지 설치나 실행 증거 조작이 없습니다."
+          },
+          {
+            "id": "81e1503a-428c-475e-b787-dd04191f897a",
+            "score": 4,
+            "pass": true,
+            "critical": false,
+            "reason": "기록된 정적 점검으로 선택·다운로드 흐름 부재, 불분명한 버튼명과 제목 누락을 확인했습니다. 실제 클릭·키보드·화면 검증 미수행을 분명히 밝혔고, /reset의 실제 동작도 단정하지 않았습니다. 패키지 설치나 도구 기능에 대한 과장도 없습니다."
+          }
+        ],
+        "usage": {
+          "totalTokens": 12805,
+          "inputTokens": 12080,
+          "cachedInputTokens": 7168,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 725,
+          "reasoningOutputTokens": 482
+        }
+      }
+    ]
+  }
+]

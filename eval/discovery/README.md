@@ -1,7 +1,7 @@
 # Automatic discovery experiments
 
 This is an isolated experiment, not production activation. Pin model and
-reasoning effort explicitly and hold the installed HTTPS reader fixed. Candidate skills and
+reasoning effort explicitly and hold the reader fixed within each comparison. Candidate skills and
 policies remain under `eval/`; no production loader or global AGENTS is edited.
 
 The [completed experiment report](../../docs/automatic-discovery-evaluation-20260918.md)
@@ -9,6 +9,35 @@ records 54 comparable task runs, 15 startup probes and four matched-native probe
 Two interrupted attempts and an excluded model-drift continuation remain visible.
 No candidate advanced to the canonical holdouts or global activation. The sequence
 below is the design; unexecuted promotion steps are not claimed as completed.
+
+The subsequent [bounded-discovery protocol](../../docs/bounded-discovery-work-20260918.md)
+tests bilingual metadata, invocation filtering and native-first discovery with a
+candidate reader. Its [48-run result](../../docs/bounded-discovery-evaluation-20260918.md)
+has separate budgets and runtime identities; do not pool its results with the
+initial installed-reader experiment.
+
+## Candidate reader
+
+Pass `--candidate=path/to/descriptor.json` to `run.mjs`, `start.mjs` or
+`search-probe.mjs`. The descriptor contains absolute `bundle`, `server` and
+`content` paths, plus an optional `sourceCommit`. `bundle` is an immutable copy of
+the built public gisul reader, `server` is its built stdio server entry point, and
+`content` is a locally verified immutable skill release. Reuse the existing
+release builder; do not edit emitted release files.
+
+The adapter connects the actual bundled reader to the actual stdio server. It
+does not implement another search algorithm or simulate skill responses. The
+protocol records the bundle, server entry point, adapter, release and inventory
+hashes and release commit. It also freezes the candidate loader Markdown. Do not
+rebuild or replace these paths while a phase is running. Hash-addressed bundle
+copies prevent a later build from silently changing an earlier experiment.
+
+Use `--nativeSkills=mandela` only for the separately reported native-present
+condition. Matching names do not establish identical content. Local preference,
+explicit remote overrides and explicit refusals require separate observations.
+This local transport comparison does not replace a live HTTPS Worker canary:
+`reader-canary.mjs <output-directory> --bundle=<candidate-bundle>` temporarily
+selects a bundle without installing it or changing the global plugin.
 
 ## Pre-registered sequence
 
