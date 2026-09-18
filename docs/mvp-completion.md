@@ -1,54 +1,22 @@
 # Bounded MVP completion
 
-`scripts/mvp-completion.mjs` finishes the already authorized dev-tools MVP
-verification after evidence becomes available. It is specific to IYEN-25 (E-03),
-IYEN-36 (E-14), and parent IYEN-20. It cannot create issues or modify another
-project. It uses the installed Linear connector through a Codex app-server
-ephemeral thread without starting a model turn. It sends no comments or messages.
+`scripts/mvp-completion.mjs` completes IYEN-36 (E-14) after its production-day audit passes, then checks whether parent IYEN-20 can close. It reads IYEN-25 (E-03) but cannot change it. It cannot create issues or modify another project. It uses the installed Linear connector through a Codex app-server ephemeral thread without starting a model turn. It sends no comments or messages.
 
-The local manifest and receipts live in ignored `eval/out/mvp-completion-20260917/`.
-They contain issue fingerprints, evidence paths, hashes and timing, never connector
-credentials or Langfuse prompt/completion bodies. The canonical source is this
-repository; the launch agent must execute it from this checkout.
+The existing laptop launch agent owns these writes; do not start a competing writer from another checkout or device. Its manifest and receipts live in ignored `eval/out/mvp-completion-20260917/`. They contain issue fingerprints, evidence paths, hashes and timing, never connector credentials or Langfuse prompt/completion bodies. This repository is the source; the scheduled checkout must receive a reviewed update before runtime behavior changes.
+
+Use that job's existing manifest, not a new manifest inferred from these examples. Its absolute path is the final script argument in `~/Library/LaunchAgents/com.iyendev.dev-tools-mvp-completion-20260917.plist` on the owner laptop. The [completion source](../scripts/mvp-completion.mjs) defines the manifest fields, exact fourteen child IDs and trusted hook identity. Review changed requirements before updating `guards`; regenerating fingerprints alone does not authorize completion.
 
 ```sh
 node scripts/mvp-completion.mjs /absolute/path/manifest.json --preflight
 node scripts/mvp-completion.mjs /absolute/path/manifest.json
 ```
 
-Preflight only reads the three issues, comments, actual Done state and installed
-hooks. Review its fingerprints against the intended issue bodies before storing
-them in the manifest. The runtime refuses changed requirements or comments.
-Current blockers must be completed in the same project immediately before a write.
-The target project's milestone, team and parent are checked again on readback.
+Preflight reads the three issues and their comments, the child list, actual Done state, installed hooks and exporter bundle. It does not need an SSH sleep log or write to Linear. Review its fingerprints against the intended issue bodies before storing them in the manifest. The runtime refuses changed requirements or comments. Current blockers must be completed in the same project immediately before a write. The target project's milestone, team and parent are checked again on readback.
 
-E-03 requires the retained, hashed idle and isolated-sshd records plus the sleep
-observer's actual Sleep/full-Wake record, corroborated against the system power
-log, and calls on the old and fresh bridges. Failed calls are valid diagnostic
-results. Process pauses, DarkWake alone and observer timeouts cannot pass.
-The shared macOS SSH service was not restarted and the original disconnect cause
-remains unknown. A person must perform the laptop sleep/wake; this job never does.
+E-03 uses the Worker HTTPS acceptance recorded in the current Linear issue and the [deployment evidence](worker-r2-deployment-20260917.md). Read both before completing E-03 through the installed connector. The old SSH sleep/wake transformation is removed from this job. Legacy manifest fields such as `sleepLog`, `priorDiagnosticEvidence` and `gisulPlugin` are ignored; retained logs and receipts remain historical evidence. On a non-preflight run, an explicitly configured legacy sleep observer is retired by its exact label. No sleep, wake or SSH service restart is requested.
 
-E-14 starts no earlier than 2026-09-18 09:10 KST and queries all of September 17
-in Asia/Seoul. It uses its own retained checkpoint, respecting Retry-After, and
-requires attribution schema 2, a nonempty Codex production population, zero
-duplicates/unknown identities/unfinished Codex roots/unattributed producers and
-complete pagination. It also verifies the installed exporter bundle and one
-trusted Stop hook. The separate overall quality result is retained, not relabeled
-as a pass. A failed metric does not cause automatic code or data modification.
+E-14 starts no earlier than 2026-09-18 09:10 KST and queries all of September 17 in Asia/Seoul. It uses its own retained checkpoint, respecting Retry-After, and requires attribution schema 2, a nonempty Codex production population, zero duplicates/unknown identities/unfinished Codex roots/unattributed producers and complete pagination. It also verifies the installed exporter bundle and one trusted Stop hook. The separate overall quality result is retained, not relabeled as a pass. A failed metric does not cause automatic code or data modification, change the audit date or exclude failing records.
 
-Before each mutation the durable receipt records intent. After any response,
-including a timeout, the job reads back Linear. An ambiguous write is never
-repeated automatically. The parent closes only after querying exactly the
-fourteen expected children and confirming all are completed, not canceled.
-Existing descriptions retain the first outcome sentence, acceptance, dependencies
-and source references; the completed pending-observation section is replaced by
-the measured result and a digest marker.
+Before each mutation the durable receipt records intent. After any response, including a timeout, the job reads back Linear. An ambiguous write is never repeated automatically. Once E-14 has a confirmed receipt, the parent check queries exactly the fourteen expected children and requires all to be completed, not canceled. E-03 may have been completed by its separate Worker verification flow; no local E-03 receipt is required. Existing descriptions retain the first outcome sentence, acceptance, dependencies and source references; the completed pending-observation section is replaced by the measured result and a digest marker.
 
-The one-shot launch agent has `KeepAlive=false`, a ten-minute interval, and an
-expiry at 2026-09-20 09:10 KST. Before evidence is due it only checks local state.
-It removes its plist and unloads itself after all work completes or it expires.
-`state.json`, `expired.json` and `schedule-finished.json` record the result.
-Offline hosts delay execution; an expired job does not extend its authority.
-Stop it early by booting out its exact GUI-domain label and removing its plist.
-The independent read-only daily quality schedule continues unchanged.
+The bounded launch agent has `KeepAlive=false`, a ten-minute interval, and an expiry at 2026-09-20 09:10 KST. Before evidence is due it only checks local state and retires its configured legacy observer. It removes its own plist and unloads itself after all work completes or it expires. `state.json`, `expired.json` and `schedule-finished.json` record the result. Offline hosts delay execution; an expired job does not extend its authority. To stop it early on the owner laptop, boot out `gui/$(id -u)/com.iyendev.dev-tools-mvp-completion-20260917` and remove the matching plist above. The independent read-only daily quality schedule continues unchanged.

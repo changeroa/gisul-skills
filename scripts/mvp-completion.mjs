@@ -8,7 +8,7 @@ import { CodexLinear } from './codex-linear.mjs';
 import { collectQuality, windowFor } from './langfuse-quality.mjs';
 import { langfuseApi } from './langfuse-api.mjs';
 
-export const TARGET = Object.freeze({ project: 'b86d7139-c2bd-4075-b720-20d5f20dcc81', team: 'be395db1-8ee7-4c30-9fe8-f7a2ba8404c5', milestone: '1d58f2aa-52ac-4e1b-a113-284d39930f38', parent: 'IYEN-20', sleep: 'IYEN-25', quality: 'IYEN-36', done: '5a7a8261-4996-40ee-a350-f7f7abdcfd72' });
+export const TARGET = Object.freeze({ project: 'b86d7139-c2bd-4075-b720-20d5f20dcc81', team: 'be395db1-8ee7-4c30-9fe8-f7a2ba8404c5', milestone: '1d58f2aa-52ac-4e1b-a113-284d39930f38', parent: 'IYEN-20', connection: 'IYEN-25', quality: 'IYEN-36', done: '5a7a8261-4996-40ee-a350-f7f7abdcfd72' });
 const childQuery = { parentId: TARGET.parent, project: TARGET.project, includeArchived: true, limit: 100, fields: ['id', 'projectId', 'parentId', 'teamId', 'projectMilestone', 'statusType'] };
 export const digest = value => createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex');
 export const fingerprint = issue => digest({ title: issue.title, description: issue.description, projectId: issue.projectId, teamId: issue.teamId, parentId: issue.parentId ?? null, milestone: issue.projectMilestone?.id, status: issue.status, relations: issue.relations });
@@ -31,26 +31,6 @@ export function qualityEvidence(report, config, now = Date.now()) {
   for (const key of ['unknown_turn_identity', 'duplicate_turn_traces', 'unfinished_codex', 'unattributed_roots', 'repeated_identity_rows']) assert.equal(gate[key], 0, `Failed ${key}`);
   return `${report.date} KST 전체 날짜의 Codex 비합성·비-heartbeat root ${gate.roots}개, 식별된 턴 ${gate.identified_turns}개를 조회했다. 중복·식별자 미상·미완료·producer 미상·반복 행은 모두 0이다. 전체 에이전트 품질 통과 여부는 ${report.passed}이며 E-14의 Codex 중복 기준과 구분한다.`;
 }
-export function sleepEvidence(text, powerLog, plugin) {
-  const events = text.trim().split('\n').map(line => JSON.parse(line));
-  const observedIndex = events.findIndex(event => event.event === 'sleep-wake-observed');
-  assert.ok(observedIndex >= 0, 'No real sleep/wake observed');
-  const prior = events.slice(0, observedIndex), armed = prior.findLast(event => event.event === 'armed');
-  assert.equal(armed?.plugin, plugin); assert.ok(!prior.slice(prior.lastIndexOf(armed)).some(event => event.event === 'baseline-lost'));
-  const observed = events[observedIndex], after = events.slice(observedIndex + 1);
-  assert.equal(observed.sleep.type, 'Sleep'); assert.equal(observed.wake.type, 'Wake');
-  assert.ok(Date.parse(observed.sleep.time) >= Date.parse(armed.ts) && Date.parse(observed.wake.time) > Date.parse(observed.sleep.time));
-  assert.match(observed.sleep.line, /\sSleep\s+.*Entering Sleep state/); assert.match(observed.wake.line, /\sWake\s+.*(?:Wake from|DarkWake to FullWake)/);
-  assert.ok(powerLog.includes(observed.sleep.line) && powerLog.includes(observed.wake.line), 'Power log does not confirm recorded events');
-  for (const tool of ['search_skills', 'load_skill']) {
-    assert.ok(prior.some(event => event.event === 'call' && event.phase === 'before' && event.tool === tool && event.ok === true));
-    assert.ok(after.some(event => event.event === 'call' && event.phase === 'after-existing' && event.tool === tool));
-    assert.ok(after.some(event => event.event === 'fresh-connect-failed' || (event.event === 'call' && event.phase === 'after-fresh' && event.tool === tool)));
-  }
-  assert.ok(after.some(event => event.event === 'finished' && event.scenario_executed === true));
-  const calls = after.filter(event => event.event === 'call').map(event => `${event.phase}/${event.tool}: ${event.ok ? '성공' : '실패'}`).join(', ');
-  return `실제 시스템 절전 ${observed.sleep.time} → full Wake ${observed.wake.time}를 pmset 원본 로그로 확인했다. ${calls}${after.some(event => event.event === 'fresh-connect-failed') ? ', 새 연결 수립 실패' : ''}. 실패 결과도 재현 기록이며 최초 연결 단절의 원인을 이 결과만으로 단정하지 않는다.`;
-}
 export function hookEvidence(result, config) {
   assert.equal(result.data?.length, config.hookCwds.length);
   for (const cwd of config.hookCwds) {
@@ -68,7 +48,7 @@ export async function snapshot(api, id) {
   return { issue, commentsHash: digest(comments.comments) };
 }
 export async function completeIssue({ api, id, guard, receipt, evidence, marker, transform, persist, verifyDependencies = true }) {
-  assert.ok([TARGET.sleep, TARGET.quality, TARGET.parent].includes(id), 'Writes are limited to three MVP issues');
+  assert.ok([TARGET.quality, TARGET.parent].includes(id), 'Writes are limited to E14 and the MVP parent');
   const current = await snapshot(api, id); scope(current.issue, id === TARGET.parent ? null : TARGET.parent);
   if (current.issue.statusType === 'completed') return { confirmed: true, alreadyCompleted: true, id };
   // An ambiguous previous write is always read back before any further action, never retried blindly.
@@ -110,7 +90,7 @@ async function retireSleepObserver(config) {
   catch { return; }
   execFileSync('/bin/launchctl', ['bootout', `gui/${process.getuid()}/${label}`], { stdio: 'pipe' });
 }
-async function run(configFile, preflight) {
+export async function runCompletion(configFile, preflight = false, { createLinear = config => new CodexLinear(config.codex, config.cwd).start(), collect = collectQuality, createLangfuse = langfuseApi } = {}) {
   const config = await json(configFile), statePath = join(dirname(configFile), 'state.json');
   assert.equal(config.version, 1); assert.equal(config.project, TARGET.project);
   assert.ok(Number.isFinite(Date.parse(config.notBefore)) && Number.isFinite(Date.parse(config.expiresAt)));
@@ -123,18 +103,17 @@ async function run(configFile, preflight) {
     let state; try { state = await json(statePath); } catch (error) { if (error.code !== 'ENOENT') throw error; state = { receipts: {} }; }
     if (state.complete && !preflight) return { terminal: true, config };
     const save = async () => { state.updatedAt = new Date().toISOString(); await atomicJson(statePath, state); };
-    const sleepLog = await readFile(config.sleepLog, 'utf8');
-    const hasSleep = sleepLog.includes('"event":"finished","scenario_executed":true');
     const qualityDue = now >= Date.parse(config.notBefore);
-    if (!preflight && (hasSleep || sleepLog.includes('"event":"observation-timeout"'))) await retireSleepObserver(config);
-    if (!preflight && !hasSleep && !qualityDue) { state.waiting = 'Actual sleep/wake and completed calendar day'; await save(); return; }
+    // E03 moved to Worker HTTPS. The old observer is retired, never a gate for E14.
+    if (!preflight) await retireSleepObserver(config);
+    if (!preflight && !qualityDue) { state.waiting = 'Completed calendar day'; await save(); return; }
     delete state.waiting;
-    api = await new CodexLinear(config.codex, config.cwd).start();
+    api = await createLinear(config);
     const statuses = await api.call('list_issue_statuses', { team: TARGET.team });
     assert.ok(statuses.some(status => status.id === TARGET.done && status.type === 'completed'), 'Done state changed');
     if (preflight) {
       const guards = {};
-      for (const id of [TARGET.sleep, TARGET.quality, TARGET.parent]) {
+      for (const id of [TARGET.connection, TARGET.quality, TARGET.parent]) {
         const item = await snapshot(api, id); scope(item.issue, id === TARGET.parent ? null : TARGET.parent);
         guards[id] = { fingerprint: fingerprint(item.issue), commentsHash: item.commentsHash };
       }
@@ -148,19 +127,9 @@ async function run(configFile, preflight) {
       const persist = async receipt => { state.receipts[id] = receipt; await save(); };
       state.receipts[id] = await completeIssue({ api, id, guard: config.guards[id], receipt: state.receipts[id], evidence, marker, transform, persist }); await save();
     };
-    if (!state.receipts[TARGET.sleep]?.confirmed && hasSleep) {
-      try {
-        for (const record of config.priorDiagnosticEvidence) assert.equal(digest(await readFile(record.path, 'utf8')), record.digest, 'Prior diagnostic evidence changed');
-        const power = execFileSync('/usr/bin/pmset', ['-g', 'log'], { encoding: 'utf8', timeout: 15000, maxBuffer: 32 * 1024 * 1024 });
-        const evidence = sleepEvidence(sleepLog, power, config.gisulPlugin);
-        const marker = `mvp-e03-${digest(sleepLog)}`;
-        await finish(TARGET.sleep, `${evidence}\n\n30분 유휴와 Mac mini 격리 sshd 재시작은 기존 기록으로 검증했다. 공유 macOS SSH 서비스 재시작은 실행하지 않았다. 증거: \`${config.sleepLog}\`.`, marker, description => replaceOnce(description, '[ ] sshd 재시작, 절전 복귀, 30분 유휴 각각의 재현 절차를 실행하고 브리지 stderr를 수집한다.', '[X] sshd 재시작, 절전 복귀, 30분 유휴 각각의 재현 절차를 실행하고 브리지 stderr를 수집한다.').replace(/### 절전 관찰 대기[\s\S]*?(?=\*\*선행:)/, ''));
-        delete state.sleepError;
-      } catch (error) { state.sleepError = String(error); await save(); }
-    }
     if (!state.receipts[TARGET.quality]?.confirmed && qualityDue) {
       try {
-        const report = await collectQuality({ api: await langfuseApi(), projectId: config.langfuseProject, date: config.date, tz: 'Asia/Seoul', out: config.qualityOut });
+        const report = await collect({ api: await createLangfuse(), projectId: config.langfuseProject, date: config.date, tz: 'Asia/Seoul', out: config.qualityOut });
         const evidence = qualityEvidence(report, config);
         hookEvidence(await api.rpc('hooks/list', { cwds: config.hookCwds }), config);
         assert.equal(digest(await readFile(config.exporterBundle, 'utf8')), config.exporterDigest, 'Exporter bundle changed');
@@ -168,11 +137,11 @@ async function run(configFile, preflight) {
         delete state.qualityError;
       } catch (error) { state.qualityError = String(error); await save(); }
     }
-    if (state.receipts[TARGET.sleep]?.confirmed && state.receipts[TARGET.quality]?.confirmed) {
+    if (state.receipts[TARGET.quality]?.confirmed) {
       try {
         const page = await api.call('list_issues', childQuery);
         assert.equal(page.hasNextPage, false); childrenComplete(page.issues);
-        await finish(TARGET.parent, 'MVP 하위 14개 티켓을 Linear API로 다시 조회해 모두 완료됨을 확인했다. E-03 실제 절전 재현과 E-14 완료된 하루의 Codex 중복 0 검증 기록은 각 하위 티켓에 있다.', 'mvp-all-14-verified-20260917', description => replaceOnce(description, '[ ] MVP 하위 14개 작업의 수용 기준을 충족한다.', '[X] MVP 하위 14개 작업의 수용 기준을 충족한다.').replace(/### 현재 상태[^\n]*[\s\S]*?(?=\*\*PR:)/, '### 완료 상태\n\nMVP 하위 14개 작업을 완료했다. 배포 버전과 검증 결과는 각 하위 티켓에 기록했다.\n\n'));
+        await finish(TARGET.parent, 'MVP 하위 14개 티켓을 Linear API로 다시 조회해 모두 완료됨을 확인했다. E-03 연결 검증과 E-14 완료된 하루의 Codex 중복 0 검증 기록은 각 하위 티켓에 있다.', 'mvp-all-14-verified-20260917', description => replaceOnce(description, '[ ] MVP 하위 14개 작업의 수용 기준을 충족한다.', '[X] MVP 하위 14개 작업의 수용 기준을 충족한다.').replace(/### 현재 상태[^\n]*[\s\S]*?(?=\*\*PR:)/, '### 완료 상태\n\nMVP 하위 14개 작업을 완료했다. 배포 버전과 검증 결과는 각 하위 티켓에 기록했다.\n\n'));
         state.complete = true; delete state.parentError; await save();
       } catch (error) { state.parentError = String(error); await save(); }
     }
@@ -182,7 +151,7 @@ async function run(configFile, preflight) {
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   assert.ok(process.argv[2], 'Usage: node mvp-completion.mjs <bounded-manifest.json> [--preflight]');
-  const result = await run(resolve(process.argv[2]), process.argv.includes('--preflight'));
+  const result = await runCompletion(resolve(process.argv[2]), process.argv.includes('--preflight'));
   if (result?.terminal && result.config.launchAgent) {
     const { label, plist } = result.config.launchAgent;
     assert.equal(label, 'com.iyendev.dev-tools-mvp-completion-20260917');
