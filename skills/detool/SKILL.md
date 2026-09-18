@@ -1,5 +1,6 @@
 ---
 name: detool
+keywords: [documentation, user documentation, portable documentation, internal terminology, 문서, 내부 용어, 도구 의존성]
 description: "Make durable artifacts portable by replacing incidental stack, vendor, model, CLI, path, quota, or harness nouns with the mechanism they mean, while keeping provenance, runbooks, and tool-subject claims concrete."
 ---
 

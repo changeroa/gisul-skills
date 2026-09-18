@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 // Labels stay with the runner/judge. Only prompts and input files reach a task agent.
 const evaluationPrompt = '다음 평가 설계를 검토하고, 결과를 믿기 어렵게 만드는 핵심 문제와 수정안을 알려줘. 같은 모델이 연습 문제 20개와 정답을 만들고, 프롬프트를 그 20개에서 계속 고친 뒤 같은 20개를 다시 풀어 성공률 95%를 얻었다. 채점도 같은 모델이 정답을 보면서 했고 실제 사용자 검토는 없었다. 정답이 프롬프트에 들어갔을 가능성은 확인하지 않았다.';
 const evaluationRubric = 'Must identify reuse of tuned development questions as the final evaluation and lack of independent ground truth or answer leakage. Propose a frozen unseen evaluation set and independently validated labels or human calibration. Merely recommending more questions or another run is insufficient. A valid answer need not call any particular skill.';
@@ -39,10 +40,13 @@ export const variants = {
   baseline: { description: null, policy: '' },
   description: { description: 'Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.', policy: '' },
   selective: { description: 'Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.', policy: 'At the start of a new substantive task, apply the gisul discovery workflow before substantive work. Reuse the selected skills for follow-up requests in the same task. Skip discovery for greetings, status questions, simple factual answers and small self-contained edits. Search again when the objective changes or a new phase needs a different procedure. Respect an explicit user request not to use remote skills.\n' },
+  bounded: { markdown: readFileSync(new URL('../candidates/discovery/bounded/SKILL.md', import.meta.url), 'utf8'),
+    policy: 'For a new substantive task, use relevant available native skills first. If they do not cover the task, use gisul to discover suitable remote guidance. Reuse guidance within the same task; skip discovery for simple questions and small self-contained edits. Explicit remote requests and refusals take precedence.\n' },
 };
 
 export function candidateLoader(installedMarkdown, variant) {
   if (!variants[variant]) throw new Error('Unknown variant: ' + variant);
+  if (variants[variant].markdown) return variants[variant].markdown;
   if (!variants[variant].description) return installedMarkdown;
   const line = /^description:.*$/m;
   if (!line.test(installedMarkdown)) throw new Error('Loader description not found');

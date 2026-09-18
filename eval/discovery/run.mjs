@@ -10,6 +10,7 @@ import { CodexSession } from './codex-session.mjs';
 import { inspectInstalled, isolatedConfig, writeLoader, sha256, readyServers, verifyReadBoundary } from './environment.mjs';
 import { cases, variants, candidateLoader } from './scenarios.mjs';
 import { validateProvenance, failureType, stopCondition } from './evidence.mjs';
+import { configureCandidate } from './candidate-config.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '../..');
@@ -168,7 +169,9 @@ async function main() {
   const installed = await inspectInstalled(REPO);
   if (options.model) installed.model = options.model;
   if (options.effort) installed.effort = options.effort;
+  if (options.candidate) await configureCandidate(installed, options.candidate);
   const expectedCommit = await pinInstalled(installed, phaseRoot);
+  if (installed.candidate) assert.equal(expectedCommit, installed.candidate.commit, 'Candidate preflight selected unexpected content');
   const nativeSkills = (options.nativeSkills ?? '').split(',').filter(Boolean);
   for (const name of nativeSkills) assert.equal(installed.skills.filter(skill => skill.name === name).length, 1, 'Native skill must identify exactly one installation');
   const schedule = [];
@@ -181,12 +184,12 @@ async function main() {
   }
   const harnessFiles = {};
   await mkdir(join(phaseRoot, 'harness'), { recursive: true });
-  for (const name of ['run.mjs', 'scenarios.mjs', 'codex-session.mjs', 'environment.mjs', 'offline-reader.mjs', 'evidence.mjs']) {
+  for (const name of ['run.mjs', 'scenarios.mjs', 'codex-session.mjs', 'environment.mjs', 'offline-reader.mjs', 'evidence.mjs', 'candidate-config.mjs', 'candidate-reader.mjs']) {
     const bytes = await readFile(join(HERE, name));
     harnessFiles[name] = sha256(bytes);
     await writeFile(join(phaseRoot, 'harness', name), bytes);
   }
-  const protocol = { version: 'discovery-v2', phase, frozenAt: new Date().toISOString(), model: installed.model, effort: installed.effort, runtimeHash: installed.runtimeHash, expectedCommit, harnessFiles, scenariosHash: sha256(JSON.stringify(selection)), variantsHash: sha256(JSON.stringify(variants)), schedule: schedule.map(({ scenario, variant, repeat, id, workspace }) => ({ id, caseId: scenario.id, variant, repeat, workspace })), maxTokens, concurrency, tokenPrices: TOKEN_PRICES, nativeSkills };
+  const protocol = { version: 'discovery-v3', phase, frozenAt: new Date().toISOString(), model: installed.model, effort: installed.effort, runtimeHash: installed.runtimeHash, expectedCommit, candidate: installed.candidate ?? null, harnessFiles, scenariosHash: sha256(JSON.stringify(selection)), variantsHash: sha256(JSON.stringify(variants)), variants, schedule: schedule.map(({ scenario, variant, repeat, id, workspace }) => ({ id, caseId: scenario.id, variant, repeat, workspace })), maxTokens, concurrency, tokenPrices: TOKEN_PRICES, nativeSkills };
   protocol.hash = sha256(JSON.stringify(protocol));
   await json(join(phaseRoot, 'protocol.json'), protocol);
   await json(join(phaseRoot, 'scenarios.private.json'), selection);
