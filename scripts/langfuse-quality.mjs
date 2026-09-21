@@ -20,7 +20,10 @@ export function summarizeRoot(row) {
   const declaredAgents = [...new Set(tags.filter(tag => tag.startsWith("agent:")).map(tag => tag.slice(6)))];
   const legacyAgents = ["codex", "openclaw"].filter(agent => tags.includes(agent));
   const agents = declaredAgents.length ? declaredAgents : legacyAgents;
-  const turn = Number.isInteger(run.turn_index) ? `index:${run.turn_index}` : typeof meta["codex.turn_id"] === "string" ? `id:${meta["codex.turn_id"]}` : null;
+  // Legacy OpenClaw run_id can be a collector-generated random fallback. Only
+  // the canonical producer's explicit turn_id establishes a stable identity.
+  const openclawTurn = agents.length === 1 && agents[0] === "openclaw" && run.agent_kind === "openclaw" && typeof run.turn_id === "string" && run.turn_id.trim() ? run.turn_id : null;
+  const turn = Number.isInteger(run.turn_index) ? `index:${run.turn_index}` : typeof meta["codex.turn_id"] === "string" ? `id:${meta["codex.turn_id"]}` : openclawTurn ? `id:${openclawTurn}` : null;
   return { id: row.id, trace_id: row.traceId, session_id: row.sessionId ?? meta["codex.thread_id"] ?? null, turn, start_time: row.startTime,
     missing_input: missing(row.input), missing_output: missing(row.output), synthetic, heartbeat,
     agent: agents.length === 1 ? agents[0] : "unknown",

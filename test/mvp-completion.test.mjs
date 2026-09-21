@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TARGET, childrenComplete, completeIssue, digest, fingerprint, hookEvidence, qualityEvidence, sleepEvidence } from '../scripts/mvp-completion.mjs';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { TARGET, childrenComplete, completeIssue, digest, fingerprint, hookEvidence, qualityEvidence, runCompletion } from '../scripts/mvp-completion.mjs';
 import { windowFor } from '../scripts/langfuse-quality.mjs';
 
 const config = { langfuseProject: 'project', langfuseOrigin: 'https://example.com', date: '2026-09-17', notBefore: '2026-09-18T00:10:00Z' };
@@ -52,21 +55,62 @@ test('parent completion requires all and only the 14 actual completed children',
   children[0].statusType = 'canceled'; assert.throws(() => childrenComplete(children));
   children[0].statusType = 'completed'; children[0].projectId = 'other'; assert.throws(() => childrenComplete(children));
 });
-test('sleep evidence requires real Sleep/full Wake corroboration and both connection probes', () => {
-  const sleep = { type: 'Sleep', time: '2026-09-17T04:01:00Z', line: '2026-09-17 13:01:00 +0900 Sleep Entering Sleep state due to Software Sleep' };
-  const wake = { type: 'Wake', time: '2026-09-17T04:02:00Z', line: '2026-09-17 13:02:00 +0900 Wake Wake from Normal Sleep' };
-  const events = ['search_skills', 'load_skill'].map(tool => ({ event: 'call', phase: 'before', tool, ok: true }));
-  events.push({ event: 'armed', plugin: '/plugin', ts: '2026-09-17T04:00:00Z' }, { event: 'sleep-wake-observed', sleep, wake });
-  for (const phase of ['after-existing', 'after-fresh']) for (const tool of ['search_skills', 'load_skill']) events.push({ event: 'call', phase, tool, ok: phase === 'after-fresh' });
-  events.push({ event: 'finished', scenario_executed: true });
-  const serialize = () => events.map(event => JSON.stringify(event)).join('\n'), power = sleep.line + '\n' + wake.line;
-  assert.match(sleepEvidence(serialize(), power, '/plugin'), /after-existing\/search_skills: 실패/);
-  assert.throws(() => sleepEvidence(serialize(), '', '/plugin'));
-  events[3].event = 'observation-timeout'; assert.throws(() => sleepEvidence(serialize(), power, '/plugin'));
+test('the legacy job cannot complete E03 from superseded SSH evidence', async () => {
+  const api = client();
+  await assert.rejects(completeIssue({ ...args(api), id: 'IYEN-25' }), /Writes are limited/);
+  assert.equal(api.writes, 0);
 });
 test('multiple or changed Stop hooks block acceptance', () => {
   const settings = { hookCwds: ['/repo'], hookCommand: 'node hook', hookHash: 'sha256:expected' };
   const hook = { enabled: true, eventName: 'stop', pluginId: 'langfuse-masked@personal', trustStatus: 'trusted', command: settings.hookCommand, currentHash: settings.hookHash };
   const result = { data: [{ cwd: '/repo', errors: [], warnings: [], hooks: [hook] }] };
   hookEvidence(result, settings); result.data[0].hooks.push({ ...hook, pluginId: 'legacy' }); assert.throws(() => hookEvidence(result, settings));
+});
+
+test('E14 and parent reconcile without a sleep log or a local E03 receipt', async t => {
+  for (const connectionDone of [false, true]) await t.test(`E03 completed in Linear: ${connectionDone}`, async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'mvp-worker-transition-'));
+    try {
+      const now = Date.now();
+      const quality = { ...issue(), description: 'Outcome\n\n- [ ] 하루치 trace의 중복이 0임을 확인한다.' };
+      const parent = { ...issue(TARGET.parent), parentId: null, description: 'Outcome\n\n- [ ] MVP 하위 14개 작업의 수용 기준을 충족한다.', relations: { blockedBy: [] } };
+      const records = new Map([[quality.id, quality], [parent.id, parent]]);
+      const writes = [];
+      const settings = { ...config, version: 1, project: TARGET.project, createdAt: new Date(now - 3600000).toISOString(), expiresAt: new Date(now + 3600000).toISOString(),
+        sleepLog: join(dir, 'retired-and-absent-sleep.jsonl'), hookCwds: ['/repo'], hookCommand: 'node hook', hookHash: 'sha256:expected',
+        exporterBundle: join(dir, 'bundle.mjs'), exporterDigest: digest('exporter'), qualityOut: join(dir, 'quality'), guards: {} };
+      for (const record of records.values()) settings.guards[record.id] = { fingerprint: fingerprint(record), commentsHash: digest([]) };
+      let closed = false;
+      const api = {
+        async call(tool, params) {
+          if (tool === 'list_issue_statuses') return [{ id: TARGET.done, type: 'completed' }];
+          if (tool === 'get_issue') return structuredClone(records.get(params.id) ?? { projectId: TARGET.project, statusType: 'completed' });
+          if (tool === 'list_comments') return { comments: [], hasNextPage: false };
+          if (tool === 'save_issue') {
+            writes.push(params.id);
+            Object.assign(records.get(params.id), { description: params.description, status: '완료', statusType: 'completed' });
+            return {};
+          }
+          if (tool === 'list_issues') return { hasNextPage: false, issues: Array.from({ length: 14 }, (_, n) => ({ ...issue(`IYEN-${n + 23}`), statusType: n === 2 && !connectionDone ? 'started' : 'completed' })) };
+          throw new Error(tool);
+        },
+        async rpc(method) {
+          assert.equal(method, 'hooks/list');
+          return { data: [{ cwd: '/repo', errors: [], warnings: [], hooks: [{ enabled: true, eventName: 'stop', pluginId: 'langfuse-masked@personal', trustStatus: 'trusted', command: settings.hookCommand, currentHash: settings.hookHash }] }] };
+        },
+        async close() { closed = true; },
+      };
+      await writeFile(settings.exporterBundle, 'exporter');
+      const manifest = join(dir, 'manifest.json');
+      await writeFile(manifest, JSON.stringify(settings));
+      await runCompletion(manifest, false, { createLinear: async () => api, createLangfuse: async () => ({}), collect: async () => good() });
+      const state = JSON.parse(await readFile(join(dir, 'state.json'), 'utf8'));
+      assert.deepEqual(writes, connectionDone ? [TARGET.quality, TARGET.parent] : [TARGET.quality]);
+      assert.equal(state.receipts[TARGET.quality].confirmed, true);
+      assert.equal(Boolean(state.complete), connectionDone);
+      if (connectionDone) assert.doesNotMatch(parent.description, /절전/);
+      else assert.match(state.parentError, /IYEN-25 incomplete/);
+      assert.ok(closed);
+    } finally { await rm(dir, { recursive: true, force: true }); }
+  });
 });

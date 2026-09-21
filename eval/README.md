@@ -5,7 +5,8 @@ must not be used to tune a candidate. Source traces support the observed failure
 scenario inputs are redacted fixtures, not complete historical replays.
 
 `candidates/bootstrap/AGENTS.md` and `gisul-SKILL.md` are instruction candidates.
-`candidates/workflows/skills/` contains linear-delivery and agent-improvement.
+`candidates/workflows/skills/` contains linear-delivery, agent-improvement and
+project-runtime.
 They are not installed globally and are excluded from production release builds.
 
 `node eval/materialize-candidate.mjs` creates an isolated serving tree under
@@ -13,7 +14,9 @@ They are not installed globally and are excluded from production release builds.
 manifest resources inside linear-delivery; generated copies are not editing
 sources. This avoids invalid `../../policies` skill URIs. Load the project index,
 then only the matching project and policy. Runtime state names were read from the
-team API on 2026-09-17; GitHub merge automation remains unverified.
+team API on 2026-09-17. On September 18, the existing verification state and
+PR-merge → In Review setting were confirmed in the team UI after reload;
+see [reconciliation evidence](../docs/linear-triage-20260918.md).
 
 Keep baseline/candidate model, tools, fixtures and evaluator fixed. Change one
 variable per comparison. Do not promote based on static Markdown validation or

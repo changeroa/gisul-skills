@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+import { verifyFlow } from './flow.mjs';
+const [name, flag, root] = process.argv.slice(2);
+if (!name || (flag && flag !== '--root') || (flag && !root)) throw new Error('Usage: verify-flow FLOW [--root PROJECT]');
+verifyFlow(name, root ?? process.cwd()).then(result => { console.log(JSON.stringify(result, null, 2)); process.exitCode = result.passed ? 0 : 1; }).catch(error => { console.error(error.message); process.exitCode = 1; });

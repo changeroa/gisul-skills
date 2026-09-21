@@ -60,3 +60,15 @@ test("E-14 audits the whole Codex population without treating an incomplete day 
   delete state.schema_version;assert.equal(gate().passed,false); // Recollect legacy checkpoints with full attribution.
   assert.equal(summarizeRoot(row("ambiguous",{tags:["codex","openclaw"]})).agent,"unknown");
 });
+
+test("OpenClaw declared turn identity detects duplicates without trusting legacy random fallback IDs", () => {
+  const native = (id, turn_id) => summarizeRoot(row(id, { tags: ['openclaw'], metadata: { run: { agent_kind: 'openclaw', turn_id } } }));
+  const state = { schema_version: 2, window: windowFor('2020-01-01', 'UTC'), rows: { a: native('a', 'native-run') }, repeated_rows: 0, pages: 1, complete: true };
+  assert.equal(reportFor(state).counts.unknown_turn_identity, 0);
+  state.rows.b = native('b', 'native-run');
+  assert.equal(reportFor(state).counts.duplicate_turn_traces, 1);
+  assert.equal(reportFor(state).passed, false);
+  assert.equal(native('no-id', null).turn, null);
+  assert.equal(summarizeRoot(row('legacy', { tags: ['openclaw'], metadata: { run_id: 'possibly-random' } })).turn, null);
+  assert.equal(summarizeRoot(row('other-producer', { tags: ['codex'], metadata: { run: { agent_kind: 'openclaw', turn_id: 'native-run' } } })).turn, null);
+});

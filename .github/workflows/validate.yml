@@ -20,6 +20,8 @@ jobs:
           ref: 132cadd6ddc27f3f8dde763da8e1b67fec34dc96
           path: .ci/gisul
       - run: npm ci
+      - name: Install the runtime example browser
+        run: npx playwright install --with-deps chromium
       - run: npm run validate
       - name: Prepare the pinned server and actual Worker runtime
         run: |
