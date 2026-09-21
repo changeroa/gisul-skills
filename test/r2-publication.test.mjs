@@ -53,7 +53,7 @@ test("R2 adaptation preserves the existing builder inventory and verifies with t
   await assert.rejects(requireGitContentParity(repo, identity.commit, output), /Emitted bytes differ from Git/);
 });
 
-test("the publication gate admits unchanged migrations and fails closed on behavior changes", async t => {
+test("publication admits content changes without model ratings while preserving ancestry", async t => {
   const repo = await fixture(t), baseline = git(repo, ["rev-parse", "HEAD"]);
   await mkdir(join(repo, "eval/candidates/new-skill"), { recursive: true });
   await writeFile(join(repo, "eval/candidates/new-skill/SKILL.md"), "Not a production skill");
@@ -64,7 +64,11 @@ test("the publication gate admits unchanged migrations and fails closed on behav
   assert.equal(JSON.parse(await readFile(join(output, "inventory.json"))).skills.length, 1);
   await writeFile(join(repo, "skills/demo/references/guide.md"), "Changed instructions");
   git(repo, ["add", "."]); git(repo, ["commit", "-m", "Behavior change without model evaluation"]);
-  assert.throws(() => requirePublicationGate(repo, git(repo, ["rev-parse", "HEAD"]), baseline), /Behavioral content changed/);
+  const candidate = git(repo, ["rev-parse", "HEAD"]);
+  const gate = requirePublicationGate(repo, candidate, baseline);
+  assert.equal(gate.kind, "validated-content-change");
+  assert.equal(gate.human_rating_required, false);
+  assert.throws(() => requirePublicationGate(repo, baseline, candidate));
 });
 
 test("a superseded workflow cannot publish an older main commit", async t => {

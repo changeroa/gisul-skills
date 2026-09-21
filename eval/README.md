@@ -1,4 +1,4 @@
-# Evaluation before promotion
+# Optional behavioral evaluation
 
 `cases/` is the versioned dataset source. Holdout cases are marked explicitly and
 must not be used to tune a candidate. Source traces support the observed failure;
@@ -18,8 +18,12 @@ team API on 2026-09-17. On September 18, the existing verification state and
 PR-merge → In Review setting were confirmed in the team UI after reload;
 see [reconciliation evidence](../docs/linear-triage-20260918.md).
 
+Publication policy (2026-09-21): model evaluations and human ratings are optional.
+Publishing approved skill changes still requires the validation and integrity workflow.
+The guidance below governs claims of evaluation success, not permission to publish.
+
 Keep baseline/candidate model, tools, fixtures and evaluator fixed. Change one
-variable per comparison. Do not promote based on static Markdown validation or
+variable per comparison. Do not claim behavioral improvement based on static Markdown validation or
 mock unit tests: require no new critical failures, no holdout regression, no missing
 ratings, at least baseline total passes and mean cost at most 130% of baseline.
 Record judge version and agreement with ten genuine human ratings. Global startup

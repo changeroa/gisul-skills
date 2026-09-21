@@ -8,7 +8,8 @@ Code, deployment and observation are separate evidence. A synthetic fixture can
 validate transport/integrity but cannot establish real user behavior or three days
 of stable operation. Keep observation gates open until the required period exists.
 
-Global instructions and behavioral skill changes pass baseline/candidate comparison
-before promotion. Preserve unchanged skill bytes during structural migration.
-Keep drafts outside the live skills directory. Do not replace a required human
-rating with an agent's self-rating, or treat missing evaluations as passes.
+Skill content publication requires validation, Git-byte/manifest integrity, latest-main
+checks, and conditional release activation. Model comparisons and human ratings are
+optional quality evidence, not mandatory publication gates (user decision 2026-09-21).
+Keep unapproved drafts outside the live skills directory. Never report an evaluation
+or human rating as completed unless it actually ran.
