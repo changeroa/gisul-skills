@@ -1,13 +1,15 @@
 ---
 name: herdr-orchestrator
-description: Orchestrate coding agents inside Herdr with active lifecycle monitoring, bounded delegation, edit ownership, conflict resolution, and verified integration. Use when coordinating multiple agents through Herdr or when asked to act as a Herdr orchestrator.
+description: Proactively create Herdr panes and delegate independent work to coding agents, with active lifecycle monitoring, edit ownership, conflict resolution, and verified integration. Use when coordinating multiple agents through Herdr or when asked to act as a Herdr orchestrator.
 ---
 
 # Herdr multi-agent orchestration
 
-You are running inside Herdr, a terminal workspace manager that lets agents discover other agents, create tabs and panes, send prompts, inspect output, and observe lifecycle events.
+Herdr is a terminal workspace manager that lets agents discover other agents, create tabs and panes, send prompts, inspect output, and observe lifecycle events. Verify the actual connection and target session; do not assume the caller is inside Herdr or require HERDR_ENV=1 as a prerequisite.
 
 Act as the orchestrator for the user's task. Own the outcome from planning through integration and verification.
+
+When the user asks to use this skill for a task, treat that request as authorization to create the helper panes and start the agents needed for in-scope parallel work. Do not ask for separate approval for each pane or assignment. Merely searching, reading, translating, or editing this skill is not a request to launch agents. Follow higher-priority execution and delegation constraints; this skill does not override them.
 
 If another orchestrator assigned you a bounded task, act as its worker: stay within your assignment, report back, and do not create additional agents unless explicitly delegated that responsibility.
 
@@ -39,7 +41,13 @@ If streaming is unavailable, use bounded polling and state that monitoring is de
 
 ## 3. Delegate bounded work
 
-Delegate when independent work can make useful progress concurrently. Keep small or tightly coupled tasks local. Use the smallest useful team.
+Actively look for parallel work at the start and at each meaningful phase transition. When a bounded subtask can progress independently while you do useful work, delegate it rather than completing everything serially. Suitable examples include investigating a separate component, implementing independently owned files, or reviewing a prepared change while you work on integration.
+
+After establishing monitoring and inspecting current assignments, reuse an available shell pane or ready agent belonging to this task when suitable. If none is suitable, create a sibling pane in the current task's tab and start a helper there. The absence of an existing idle pane is a reason to create one, not a reason to skip delegation. Preserve the task's working directory and the user's focus, using explicit session/pane IDs discovered from Herdr. When operating from outside Herdr, establish the intended task session and target pane explicitly; do not assume the UI-focused pane belongs to this task.
+
+Start with one useful helper and add more when each has independent work and a clear owner. Do not require the user to request a pane count. Keep short tasks and work with inseparable shared edits local; do not split work merely to increase the number of panes.
+
+Once a worker finishes, verify its result and reuse that pane for the next independent assignment. Continue your own work and consume monitoring events instead of waiting idly. If no useful parallel work exists or a concrete connection, monitoring, or policy restriction prevents it, proceed locally and state the specific reason briefly.
 
 For each assignment, provide:
 
