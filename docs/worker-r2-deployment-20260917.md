@@ -56,6 +56,6 @@ Work used Herdr w3:p5 with `HERDR_ENV=1` and its own event monitor, whose PID an
 
 ## Remaining gates
 
-Behavioral skill changes remain blocked until the real model, critical-case, holdout, cost and genuine human-rating evidence gate in [eval/README.md](../eval/README.md) is connected. Unchanged-content migration and infrastructure publication are enabled; static tests do not approve behavioral changes.
+Historical gate, superseded by the user decision on 2026-09-21: model evaluations and human ratings are now optional for publication. Validation and integrity checks still apply; see [current publication policy](r2-publication.md). Static checks do not establish behavioral improvement.
 
 E03/IYEN-25 now has live Worker evidence, but this Mac's Linear connector is unavailable, so its completion has not been written. Update only the dev-tools project through the Linear API/plugin after connection and a fresh issue read. E14/IYEN-36 remains owned by the laptop job `com.iyendev.dev-tools-mvp-completion-20260917` after **2026-09-18 09:10 KST**; see its [completion runbook](mvp-completion.md). Leave the MVP parent open until the actual completed-day gate passes; synthetic canaries do not satisfy it.

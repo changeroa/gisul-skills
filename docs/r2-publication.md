@@ -14,20 +14,22 @@ inventory, every object's size/digest, the exact object set, release manifests a
 SKILL.md frontmatter before marking a release complete.
 
 The migration baseline is content commit
-`1ce932b32750d0df3ca74939189dc1d575a3a700`, including dont-make-me-think from
-`20260917.3`. Publication currently accepts only unchanged published content:
-`skills/`, `aliases.json`, `projects/` and `policies/` must match the baseline, or
-the last promoted commit after the first release. Git ancestry is also required.
-Infrastructure changes can publish automatically; behavioral changes fail closed.
-Before upload, a separate check hashes every emitted content file as a Git blob
-and compares its object ID, path and executable mode with the candidate's Git
-tree. A builder change cannot silently transform otherwise unchanged content.
+`1ce932b32750d0df3ca74939189dc1d575a3a700`. As of the user's 2026-09-21 policy
+change, approved content changes may publish after validation. Model comparisons
+and human ratings are optional, not publication requirements. Git ancestry and
+latest-main checks remain mandatory. Before upload, every emitted content file is
+hashed as a Git blob and compared with the candidate's Git tree, including path
+and executable mode. The builder cannot silently transform content.
 
-The real model evaluation/evidence gate in [eval/README.md](../eval/README.md) is
-not yet automated. Static tests do not substitute for its critical-case, holdout,
-cost, evaluator and genuine human-rating requirements. Connect that evidence gate
-before enabling behavioral changes; do not update the baseline to bypass it.
-Candidates under `eval/` remain outside the published catalog.
+The optional evaluation guidance in [eval/README.md](../eval/README.md) governs
+claims of behavioral improvement. Do not report an evaluation as completed when
+it was not run. Candidates under `eval/` remain outside the published catalog.
+
+Authenticated HTTP `create_skill` and `update_skill` commit to canonical main;
+they do not modify active R2 objects. `accepted` means saved to Git. Check
+`get_skill_write_status` and verify the published manifest before reporting the
+change as live. Creation can include supporting files; updates check the loaded
+SKILL.md digest and preserve other files.
 
 ## Publication and concurrency
 

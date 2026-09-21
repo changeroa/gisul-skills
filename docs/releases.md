@@ -1,5 +1,9 @@
 # Content releases
 
+The Mac-based procedure below is retained for rollback history. Current production
+uses [GitHub Actions and private R2](r2-publication.md), including authenticated HTTP
+creation and updates through canonical Git main.
+
 The authoring source is this private Git repository. Change a Git draft, validate it,
 commit it and explicitly promote it. Remote `create_skill` / `update_skill` cannot
 edit an immutable published release. Uncommitted edits are never served.
@@ -34,7 +38,6 @@ Each activation has a remote journal and a local receipt in `dist/receipts/`.
 After success, commit `releases/CHANGELOG.md` and push `release/<id>`; the tag points
 to the exact content commit, not the later changelog commit.
 
-Behavior changes (skills and bootstrap instructions) require the evaluation gate
-before production promotion. A structural migration of unchanged skill bytes uses
-manifest parity and release/rollback integration checks. Evaluation candidates are
-kept outside `skills/` until promoted.
+Since the 2026-09-21 user decision, model evaluations and human ratings are optional
+for skill publication. Validation, manifest parity and release integrity checks remain
+required. Evaluation candidates stay outside `skills/` until explicitly promoted.
