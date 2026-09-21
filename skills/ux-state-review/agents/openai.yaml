@@ -1,0 +1,4 @@
+interface:
+  display_name: "상태별 UX 검토"
+  short_description: "선행조건·빈 화면·오류와 요청 흐름의 모순을 찾아 검증"
+  default_prompt: "$ux-state-review로 이 흐름의 상태별 화면과 데이터 요청, 다음 행동을 검토하고 UX 누락을 잡아줘."
