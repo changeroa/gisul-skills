@@ -12,6 +12,7 @@ import { collectQuality, windowFor } from './langfuse-quality.mjs';
 const exec = promisify(execFile), repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const readJSON = async path => JSON.parse(await readFile(path, 'utf8'));
 const writeJSON = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n', { mode: 0o600 });
+const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export function analysisGate(report, projectId, date) {
   return report.project_id === projectId && report.date === date && report.timezone === 'Asia/Seoul' && report.source === 'observations-v2-logical-roots' && report.complete === true && report.full_day === true && report.passed === true && report.counts?.non_synthetic_roots > 0;
 }
@@ -83,7 +84,12 @@ export async function runDaily(config, date, { collect = collectQuality, createA
       await writeJSON(join(out, 'status.json'), blocked); return blocked;
     }
     let input, response;
-    try { response = await readJSON(join(out, 'response.json')); input = await readJSON(join(out, 'input.json')); }
+    try {
+      response = await readJSON(join(out, 'response.json')); input = await readJSON(join(out, 'input.json'));
+      const completed = await readJSON(join(out, 'model-completed.json'));
+      assert.equal(completed.response_sha256, digest(response), 'Completed model response changed');
+      assert.equal(completed.input_sha256, digest(input), 'Completed model input changed');
+    }
     catch (e) {
       if (e.code !== 'ENOENT') throw e;
       assert.ok(!await access(join(out, 'model-started.json')).then(() => true, () => false), 'A prior model invocation is unresolved; inspect it before retrying');
@@ -108,6 +114,7 @@ export async function runDaily(config, date, { collect = collectQuality, createA
         response = await readJSON(join(out, 'response.json'));
       }
       await writeJSON(join(out, 'response.json'), response);
+      await writeJSON(join(out, 'model-completed.json'), { completed_at: new Date().toISOString(), input_sha256: digest(input), response_sha256: digest(response) });
     }
     const invocation = await readJSON(join(out, 'model-started.json'));
     assert.equal(invocation.model, config.model, 'Existing model receipt uses another model');

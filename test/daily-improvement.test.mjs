@@ -39,3 +39,19 @@ test('a failed invocation is retained and cannot silently spend again', async t 
   await assert.rejects(runDaily(config(dir), date, deps), /unresolved/);
   assert.equal(calls, 1);
 });
+
+test('a response file left by a failed invocation cannot be published on the next run', async t => {
+  const dir = await mkdtemp(join(tmpdir(), 'improvement-')); t.after(() => rm(dir, { recursive: true, force: true }));
+  let calls = 0, publications = 0;
+  const deps = { createApi: async () => api, collect,
+    analyze: async ({ out }) => {
+      calls++;
+      await writeFile(join(out, 'response.json'), JSON.stringify(response));
+      throw new Error('failed after writing output');
+    },
+    publish: async () => { publications++; return 'https://example.test/pr/1'; },
+  };
+  await assert.rejects(runDaily(config(dir), date, deps), /failed after writing output/);
+  await assert.rejects(runDaily(config(dir), date, deps), /unresolved/);
+  assert.equal(calls, 1); assert.equal(publications, 0);
+});

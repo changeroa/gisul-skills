@@ -49,12 +49,15 @@ The wrapper rejects citations outside the sampled trace IDs, creates only
 PRs are read back before retrying creation. Nothing is merged or promoted.
 
 The model-start receipt prevents an interrupted or failed call from silently
-running again. Inspect its logs and response before an explicit retry; do not
+running again. A retained response is reusable only after successful process exit
+and a matching `model-completed.json` receipt for both input and response.
+A response file left by a failed or interrupted call cannot be published.
+Inspect its logs and response before an explicit retry; do not
 erase receipts to make the schedule appear successful. Concurrent runs of the
 same date stop at its lock. A generated response is reused only with the same
 date, project, model and reasoning. A dirty candidate worktree requires inspection.
 Receipts and logs live in `<outputRoot>/<date>/`: `status.json`,
-`model-started.json`, `input.json`, `response.json`, `events.jsonl` and
+`model-started.json`, `model-completed.json`, `input.json`, `response.json`, `events.jsonl` and
 `model.stderr.log`. An intentional new model attempt must retain the entire old
 directory and select a new `outputRoot`, initially with `publishDraftPR: false`.
 It is a new budgeted attempt, not evidence of another scheduled day. An abandoned

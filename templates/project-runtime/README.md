@@ -58,6 +58,9 @@ another worktree from being mistaken for this one. Choose a different
 `RUNTIME_PORT_BASE` in each worktree. `--restart` and `--stop` only signal an identified
 instance matching this worktree's saved ownership receipt. Services use argv
 arrays, never shell command strings; their stdout/stderr goes to local logs.
+Shutdown waits for the owned process group to exit and the health endpoint to
+close before reporting success or starting its replacement. Slow cleanup times
+out with the ownership receipt retained for diagnosis.
 
 Optional `dependencies` accepts `lockfile`, `checkPath` and an install `command`
 array. Installation runs when the lockfile hash changes or `checkPath` is absent.

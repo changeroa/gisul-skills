@@ -51,6 +51,15 @@ async function probe(service, project) {
   } catch { return { healthy: false, reachable: false, conflict: false }; }
 }
 
+async function waitForExit(service, pid) {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    try { process.kill(-pid, 0); }
+    catch (e) { if (e.code === 'ESRCH') return; throw e; }
+    await delay(50);
+  }
+  throw new Error(`${service.name}: shutdown timed out`);
+}
+
 async function stopService(service, receipt, project) {
   const health = await probe(service, project);
   if (health.conflict) throw new Error(`${service.name}: this port belongs to another runtime`);
@@ -64,11 +73,8 @@ async function stopService(service, receipt, project) {
   }
   if (!receipt?.pid || receipt.instance !== health.instance) throw new Error(`${service.name}: cannot stop a service without its matching ownership receipt`);
   process.kill(-receipt.pid, 'SIGTERM');
-  for (let attempt = 0; attempt < 50; attempt++) {
-    if (!(await probe(service, project)).healthy) return;
-    await delay(50);
-  }
-  throw new Error(`${service.name}: shutdown timed out`);
+  await waitForExit(service, receipt.pid);
+  if ((await probe(service, project)).reachable) throw new Error(`${service.name}: health endpoint remains reachable after shutdown`);
 }
 
 async function startService(service, project, log, receipts) {
@@ -98,6 +104,7 @@ async function startService(service, project, log, receipts) {
     await delay(100);
   }
   try { process.kill(-child.pid, 'SIGTERM'); } catch (e) { if (e.code !== 'ESRCH') throw e; }
+  await waitForExit(service, child.pid);
   delete receipts[service.name];
   await writeJSON(join(project.directory, 'processes.json'), receipts);
   throw new Error(`${service.name}: readiness failed; inspect ${log}`);

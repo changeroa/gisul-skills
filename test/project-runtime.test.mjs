@@ -5,6 +5,7 @@ import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promi
 import { createServer } from 'node:net';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
+import { setTimeout as delay } from 'node:timers/promises';
 
 const exec = promisify(execFile), template = resolve('templates/project-runtime');
 async function availablePort() {
@@ -88,4 +89,34 @@ test('a different worktree cannot reuse or stop this service; bad login remains 
     } finally { await writeFile(configFile, config); }
     assert.equal((await p.run('ensure-ready')).data.services[0].pid, first.data.services[0].pid);
   } finally { await p.close(); await other.close(); }
+});
+
+test('restart waits for the owned process to finish cleanup after its health endpoint closes', { timeout: 60000 }, async () => {
+  const p = await project();
+  const server = join(p.root, 'example/apps/api/server.mjs');
+  await writeFile(server, await readFile(server, 'utf8') + "\nprocess.on('SIGTERM', () => { setTimeout(() => {}, 500); });\n");
+  try {
+    const first = await p.run('ensure-ready');
+    assert.equal(first.code, 0);
+    const restarted = await p.run('ensure-ready', ['--restart']);
+    assert.equal(restarted.code, 0, JSON.stringify(restarted.data.unmet));
+    assert.notEqual(restarted.data.services[0].pid, first.data.services[0].pid);
+    assert.equal(restarted.data.services[0].reused, false);
+    assert.throws(() => process.kill(first.data.services[0].pid, 0), { code: 'ESRCH' });
+  } finally { await delay(650); await p.close(); }
+});
+
+test('failed startup retains process ownership until shutdown cleanup finishes', { timeout: 60000 }, async () => {
+  const p = await project();
+  const config = join(p.root, 'runtime.config.mjs'), server = join(p.root, 'example/apps/api/server.mjs');
+  await writeFile(config, (await readFile(config, 'utf8')).replace('/healthz', '/missing-health').replace('command: [', 'timeoutMs: 200, command: ['));
+  await writeFile(server, await readFile(server, 'utf8') + "\nimport { writeFile } from 'node:fs/promises';\nawait writeFile('.agent-runtime/started-pid', String(process.pid));\nprocess.on('SIGTERM', () => { setTimeout(() => {}, 500); });\n");
+  try {
+    const failed = await p.run('ensure-ready');
+    assert.equal(failed.code, 2);
+    assert.match(failed.data.unmet.join(' '), /readiness failed/);
+    const pid = Number(await readFile(join(p.root, '.agent-runtime/started-pid'), 'utf8'));
+    assert.throws(() => process.kill(pid, 0), { code: 'ESRCH' });
+    assert.deepEqual(JSON.parse(await readFile(join(p.root, '.agent-runtime/processes.json'), 'utf8')), {});
+  } finally { await delay(650); await p.close(); }
 });
