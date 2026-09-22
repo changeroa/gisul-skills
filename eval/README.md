@@ -91,9 +91,22 @@ evidence does not count as a pass. `export.mjs` validates the hosted dataset and
 project before using the supported OpenTelemetry experiment attributes. Stable
 trace/span IDs support upload reconciliation without running the model again.
 It verifies every experiment item's identity and actual output by readback.
+Readback also compares input, expected output, files, tool/mock evidence, grading,
+usage and release metadata. Stopped runs can be exported as explicitly partial
+experiments: unexecuted and no-model failures are recorded as missing cases and
+never fabricated as model traces.
 All exported traces are synthetic and use the `evaluation` environment; they are
 excluded from production daily quality evidence. No scheduler or global setting
 is installed by the runner.
+
+After reviewing a token-stopped run's actual cost, an explicit
+`node eval/continue.mjs --run DIR` permits one further phase of at most 600k
+observed tokens. It selects only `not_run` cases, preserves the initial ledger
+and summary, imports and re-verifies the original frozen execution code, and
+records a separate immutable continuation protocol. Completed or failed cases
+are never retried. The final experiment records both phases and their total cost;
+the extra budget is not a relaxation of a candidate promotion gate. Other stop
+reasons and already-started continuations are rejected.
 
 Contracts: [Codex profile files](https://learn.chatgpt.com/docs/config-file/config-reference),
 [Langfuse experiment attributes](https://langfuse.com/integrations/native/opentelemetry/experiments),

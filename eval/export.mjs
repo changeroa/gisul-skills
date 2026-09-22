@@ -8,7 +8,7 @@ import { langfuseApi } from '../scripts/langfuse-api.mjs';
 const digest = value => createHash('sha256').update(value).digest('hex');
 const nano = value => (BigInt(Date.parse(value)) * 1000000n).toString();
 const attr = (key, value) => ({ key, value: Array.isArray(value) ? { arrayValue: { values: value.map(x => ({ stringValue: String(x) })) } } : typeof value === 'boolean' ? { boolValue: value } : typeof value === 'number' ? { doubleValue: value } : { stringValue: typeof value === 'string' ? value : JSON.stringify(value) } });
-export function experimentSpan(protocol, item, result, datasetId) {
+export function experimentSpan(protocol, item, result, datasetId, cohort = null) {
   const traceId = digest(protocol.id + ':' + item.id).slice(0, 32), spanId = digest(traceId + ':root').slice(0, 16);
   const run = { source: 'codex', session_id: result.threadId, turn_id: result.turnId ?? null, synthetic: true, experiment: protocol.id, case_id: item.id, protocol_hash: protocol.hash };
   const gisul = { release: protocol.reader.release, commit: protocol.reader.commit, reader_sha256: protocol.reader.bundleHash, observations: result.gisulEvents.filter(x => x.commit).map(({ event, uri, commit, release, manifest_digest }) => ({ event, uri, commit, release, manifest_digest })) };
@@ -33,6 +33,8 @@ export function experimentSpan(protocol, item, result, datasetId) {
     'langfuse.experiment.metadata.release': protocol.reader.release,
     'langfuse.experiment.metadata.human_ratings': 0,
     'langfuse.experiment.metadata.promotion': 'not_evaluated',
+    'langfuse.experiment.metadata.source_commit': protocol.sourceCommit,
+    ...(cohort ? { 'langfuse.experiment.metadata.execution': cohort } : {}),
     'langfuse.experiment.item.id': 'agent-env-v1:' + item.id,
     'langfuse.experiment.item.root_observation_id': spanId,
     'langfuse.experiment.item.expected_output': item.expected,
@@ -40,31 +42,53 @@ export function experimentSpan(protocol, item, result, datasetId) {
     'langfuse.experiment.item.metadata.critical': item.critical,
     'langfuse.experiment.description': 'Frozen formal evaluation; observable checks only. Semantic review and genuine human ratings pending. No production promotion.',
   };
-  return { traceId, spanId, name: 'formal-evaluation-item', kind: 1, startTimeUnixNano: nano(result.startedAt), endTimeUnixNano: nano(result.endedAt), attributes: Object.entries(attributes).map(([key,value]) => attr(key,value)), status: { code: result.status === 'completed' ? 1 : 2, ...(result.failure ? { message: result.failure.message } : {}) } };
+  return { traceId, spanId, name: 'formal-evaluation-item', kind: 1, startTimeUnixNano: nano(result.startedAt), endTimeUnixNano: nano(result.endedAt), attributes: Object.entries(attributes).filter(([,value]) => value !== undefined).map(([key,value]) => attr(key,value)), status: { code: result.status === 'completed' ? 1 : 2, ...(result.failure ? { message: result.failure.message } : {}) } };
 }
 
-export async function exportRun(root, projectId, { api, apply = false } = {}) {
+function jsonAttribute(span, key) {
+  return JSON.parse(span.attributes.find(x => x.key === key).value.stringValue);
+}
+
+export function verifyItem(actual, span, protocol, datasetId) {
+  assert.equal(actual?.traceId, span.traceId);
+  assert.equal(actual?.id, span.spanId);
+  assert.equal(actual?.experimentDatasetId, datasetId);
+  assert.equal(actual?.environment, 'evaluation');
+  assert.equal(actual?.experimentMetadata?.protocol_hash, protocol.hash);
+  for (const [field, attribute] of [['input','langfuse.observation.input'], ['output','langfuse.observation.output'], ['expectedOutput','langfuse.experiment.item.expected_output']]) {
+    assert.deepEqual(actual[field], jsonAttribute(span, attribute), 'Remote evidence differs: ' + field);
+  }
+  for (const [key, expected] of Object.entries(jsonAttribute(span, 'langfuse.observation.metadata'))) assert.deepEqual(actual.metadata?.[key], expected, 'Remote metadata differs: ' + key);
+  const execution = span.attributes.find(x => x.key === 'langfuse.experiment.metadata.execution');
+  if (execution) assert.deepEqual(actual.experimentMetadata.execution, JSON.parse(execution.value.stringValue), 'Execution completeness differs');
+}
+
+export async function exportRun(root, projectId, { api, apply = false, readbackAttempts = 6, wait = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
   const protocol = JSON.parse(await readFile(join(root, 'protocol.json')));
   if (protocol.preflight) throw new Error('Preflight is not a model experiment');
   const cases = JSON.parse(await readFile(join(root, 'cases.private.json')));
   const phase = JSON.parse(await readFile(join(root, 'phase.json')));
+  const summary = JSON.parse(await readFile(join(root, 'summary.json')));
   assert.equal(phase.protocolHash, protocol.hash);
+  assert.equal(summary.protocolHash, protocol.hash);
   const { hash: expectedHash, ...body } = protocol;
   assert.equal(digest(JSON.stringify(body)), expectedHash, 'Protocol changed after freeze');
-  const results = [];
+  const results = [], notRun = [];
   for (const slot of phase.runs) {
-    if (!['completed','failed'].includes(slot.status)) throw new Error('Experiment contains unexecuted cases');
+    if (slot.status === 'not_run') { notRun.push({ caseId: slot.caseId, status: slot.status, reason: phase.stopped ?? 'not_executed' }); continue; }
+    if (!['completed','failed'].includes(slot.status)) throw new Error('Experiment has not settled');
     const bytes = await readFile(join(root, 'runs', slot.id, 'result.json'));
     assert.equal(digest(bytes), slot.resultHash, 'Result changed after execution');
     const result = JSON.parse(bytes);
     assert.equal(result.protocolHash, protocol.hash);
     assert.equal(result.caseId, slot.caseId);
-    assert.ok(result.threadId, 'No real model thread');
-    assert.ok(result.items.length || result.usage, 'No actual model execution evidence');
+    if (!result.threadId || !(result.items?.length || result.usage)) { notRun.push({ caseId: slot.caseId, status: slot.status, reason: 'no_model_execution_evidence' }); continue; }
     results.push(result);
   }
-  assert.equal(results.length, cases.length);
-  if (!apply) return { dryRun: true, experimentId: protocol.id, cases: results.length, projectId };
+  assert.equal(results.length + notRun.length, cases.length);
+  if (!results.length) throw new Error('No actual model executions to export');
+  const cohort = { scheduled: cases.length, executed: results.length, completed: results.filter(x => x.status === 'completed').length, failed: results.filter(x => x.status === 'failed').length, notRun, stopReason: phase.stopped ?? null, fullDatasetExecuted: protocol.fullDataset && results.length === protocol.dataset.totalCases, continuation: phase.continuation ?? null };
+  if (!apply) return { dryRun: true, experimentId: protocol.id, cases: results.length, projectId, execution: cohort };
   api ??= await langfuseApi();
   const projects = await api.request('/api/public/projects');
   assert.deepEqual(projects.data.map(x => x.id), [projectId], 'Langfuse project mismatch');
@@ -77,7 +101,7 @@ export async function exportRun(root, projectId, { api, apply = false } = {}) {
     assert.equal(actual.metadata.version, protocol.dataset.version, 'Dataset version mismatch');
     assert.deepEqual(actual.input, item.input); assert.deepEqual(actual.expectedOutput, item.expected);
   }
-  const spans = results.map(result => experimentSpan(protocol, cases.find(x => x.id === result.caseId), result, dataset.id));
+  const spans = results.map(result => experimentSpan(protocol, cases.find(x => x.id === result.caseId), result, dataset.id, cohort));
   // Deterministic trace/span IDs make timeout reconciliation safe. Re-running
   // export sends the same identities; it never launches another model turn.
   for (let i = 0; i < spans.length; i += 5) {
@@ -87,12 +111,16 @@ export async function exportRun(root, projectId, { api, apply = false } = {}) {
   const from = new Date(Math.min(...results.map(x => Date.parse(x.startedAt))) - 60000).toISOString();
   const to = new Date(Math.max(...results.map(x => Date.parse(x.endedAt))) + 60000).toISOString();
   let observed, experiment, lastError;
-  for (let attempt = 0; attempt < 6; attempt++) {
-    if (attempt) await new Promise(resolve => setTimeout(resolve, 5000));
+  for (let attempt = 0; attempt < readbackAttempts; attempt++) {
+    if (attempt) {
+      const delay = Math.max(5000, lastError?.status === 429 ? Number(lastError.retryAfter ?? 5) * 1000 : 0);
+      if (!Number.isFinite(delay) || delay > 60000) break;
+      await wait(delay);
+    }
     try {
       const runs = await api.request('/api/public/experiments?' + new URLSearchParams({ id: protocol.id, fromStartTime: from, toStartTime: to, fields: 'metadata', limit: '100' }));
       experiment = runs.data.find(x => x.id === protocol.id);
-      const data = await api.request('/api/public/experiment-items?' + new URLSearchParams({ experimentId: protocol.id, fromStartTime: from, toStartTime: to, fields: 'io,dataset,experimentMetadata', limit: '100' }));
+      const data = await api.request('/api/public/experiment-items?' + new URLSearchParams({ experimentId: protocol.id, fromStartTime: from, toStartTime: to, fields: 'io,dataset,metadata,experimentMetadata', limit: '100' }));
       observed = data.data;
       if (data.meta?.cursor) throw new Error('Unexpected experiment pagination');
       assert.equal(experiment?.datasetId, dataset.id);
@@ -100,17 +128,13 @@ export async function exportRun(root, projectId, { api, apply = false } = {}) {
       assert.equal(observed.length, results.length);
       for (let n = 0; n < results.length; n++) {
         const result = results[n], actual = observed.find(x => x.experimentItemId === protocol.dataset.name + ':' + result.caseId);
-        assert.equal(actual?.traceId, spans[n].traceId);
-        assert.equal(actual?.id, spans[n].spanId);
-        assert.equal(actual?.output?.finalText, result.finalText);
-        assert.equal(actual?.environment, 'evaluation');
-        assert.equal(actual?.experimentMetadata?.protocol_hash, protocol.hash);
+        verifyItem(actual, spans[n], protocol, dataset.id);
       }
       lastError = null; break;
     } catch (error) { lastError = error; if (error.status && error.status !== 429) break; }
   }
   if (lastError) throw new Error('Upload sent, readback pending; reconcile the same IDs before retrying: ' + String(lastError));
-  const receipt = { checkedAt: new Date().toISOString(), projectId, datasetId: dataset.id, experimentId: protocol.id, protocolHash: protocol.hash, verifiedItems: observed.length, url: `${api.origin}/project/${projectId}/datasets/${dataset.id}`, items: observed.map(x => ({ itemId: x.experimentItemId, traceId: x.traceId, observationId: x.id })), synthetic: true, humanRatings: 0, promotion: 'not_evaluated' };
+  const receipt = { checkedAt: new Date().toISOString(), projectId, datasetId: dataset.id, experimentId: protocol.id, protocolHash: protocol.hash, verifiedItems: observed.length, verification: 'identity_io_tool_evidence_grading_usage_provenance', exporterHash: digest(await readFile(fileURLToPath(import.meta.url))), execution: cohort, url: `${api.origin}/project/${projectId}/datasets/${dataset.id}`, items: observed.map(x => ({ itemId: x.experimentItemId, traceId: x.traceId, observationId: x.id })), synthetic: true, humanRatings: 0, promotion: 'not_evaluated' };
   await writeFile(join(root, 'langfuse-receipt.json'), JSON.stringify(receipt,null,2) + '\n', { mode: 0o600 });
   return receipt;
 }

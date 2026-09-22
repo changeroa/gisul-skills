@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, rm, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { experimentSpan, exportRun } from '../eval/export.mjs';
+import { experimentSpan, exportRun, verifyItem } from '../eval/export.mjs';
 
 const protocol = { id: 'frozen-run', hash: 'frozen-protocol', dataset: { version: 'dataset-hash' }, model: 'fixed-model', effort: 'max', profile: 'baseline', reader: { release: '20260922.26', commit: 'a'.repeat(40), bundleHash: 'reader-hash' }, prices: { kind: 'standard_api_equivalent_not_account_bill' } };
 const item = { id: 'F-01', input: { prompt: 'Read the API contract' }, expected: { must_read: ['api.js'] }, split: 'development', critical: true };
@@ -28,4 +29,62 @@ test('no-model preflight cannot be uploaded as an experiment', async () => {
     await writeFile(join(root,'protocol.json'),JSON.stringify({preflight:true}));
     await assert.rejects(exportRun(root,'project',{apply:true,api:{request:()=>assert.fail('must not call remote')}}),/not a model experiment/);
   } finally { await rm(root,{recursive:true,force:true}); }
+});
+
+function readback(span) {
+  const values = Object.fromEntries(span.attributes.map(x => [x.key,x.value.stringValue]));
+  return { id:span.spanId, traceId:span.traceId, environment:'evaluation', experimentDatasetId:'dataset-id',
+    experimentItemId:values['langfuse.experiment.item.id'],
+    input:JSON.parse(values['langfuse.observation.input']), output:JSON.parse(values['langfuse.observation.output']),
+    expectedOutput:JSON.parse(values['langfuse.experiment.item.expected_output']), metadata:JSON.parse(values['langfuse.observation.metadata']),
+    experimentMetadata:{protocol_hash:values['langfuse.experiment.metadata.protocol_hash'],...(values['langfuse.experiment.metadata.execution']?{execution:JSON.parse(values['langfuse.experiment.metadata.execution'])}:{})} };
+}
+test('readback rejects lost structured evidence even when final text and identities match', () => {
+  const span=experimentSpan(protocol,item,{...result,files:{'api.js':'modified'},mockEvents:[{phase:'applied',tool:'save_issue',result:{id:'EVAL-1'}}]},'dataset-id');
+  const row=readback(span);
+  verifyItem(row,span,protocol,'dataset-id');
+  for(const field of ['grading','files','mockEvents','toolCalls','status']) {
+    const bad=structuredClone(row); delete bad.output[field];
+    assert.throws(()=>verifyItem(bad,span,protocol,'dataset-id'),/Remote evidence/);
+  }
+  for(const field of ['usage','gisul','quality']) {
+    const bad=structuredClone(row); delete bad.metadata[field];
+    assert.throws(()=>verifyItem(bad,span,protocol,'dataset-id'),/Remote metadata/);
+  }
+  assert.throws(()=>verifyItem({...row,input:{}},span,protocol,'dataset-id'),/Remote evidence/);
+  assert.throws(()=>verifyItem({...row,expectedOutput:{}},span,protocol,'dataset-id'),/Remote evidence/);
+});
+test('stopped runs export only actual executions, with missing cases explicit and stable retry identities', async () => {
+  const root=await mkdtemp(join(tmpdir(),'partial-eval-export-'));
+  const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+  try {
+    const p={...protocol,fullDataset:true,dataset:{name:'agent-env-v1',version:'dataset-hash',totalCases:2}};
+    delete p.hash; p.hash=sha(JSON.stringify(p));
+    const r={...result,caseId:item.id,protocolHash:p.hash,items:[{type:'agentMessage',text:'actual output'}]};
+    const other={...item,id:'F-02'};
+    const bytes=JSON.stringify(r);
+    await mkdir(join(root,'runs','actual'),{recursive:true});
+    await writeFile(join(root,'protocol.json'),JSON.stringify(p));
+    await writeFile(join(root,'summary.json'),JSON.stringify({protocolHash:p.hash}));
+    await writeFile(join(root,'cases.private.json'),JSON.stringify([item,other]));
+    await writeFile(join(root,'runs','actual','result.json'),bytes);
+    await writeFile(join(root,'phase.json'),JSON.stringify({protocolHash:p.hash,stopped:'observed_token_limit',runs:[{id:'actual',caseId:item.id,status:'completed',resultHash:sha(bytes)},{id:'absent',caseId:other.id,status:'not_run'}]}));
+    const posts=[]; let spans=[];
+    const api={origin:'https://example.test',request:async(path,options)=>{
+      if(path==='/api/public/projects')return {data:[{id:'project'}]};
+      if(path.startsWith('/api/public/v2/datasets/'))return {id:'dataset-id'};
+      if(path.startsWith('/api/public/dataset-items?'))return {meta:{totalPages:1},data:[item,other].map(x=>({id:'agent-env-v1:'+x.id,input:x.input,expectedOutput:x.expected,metadata:{version:p.dataset.version}}))};
+      if(path==='/api/public/otel/v1/traces'){posts.push(options.body);spans=options.body.resourceSpans[0].scopeSpans[0].spans;return {};}
+      if(path.startsWith('/api/public/experiments?'))return {data:[{id:p.id,datasetId:'dataset-id',itemCount:1}]};
+      if(path.startsWith('/api/public/experiment-items?'))return {meta:{},data:spans.map(readback)};
+      assert.fail('Unexpected request '+path);
+    }};
+    const first=await exportRun(root,'project',{api,apply:true,readbackAttempts:1});
+    assert.equal(first.verifiedItems,1); assert.equal(first.execution.fullDatasetExecuted,false);
+    assert.equal(first.execution.notRun[0].caseId,'F-02'); assert.equal(first.execution.stopReason,'observed_token_limit');
+    const second=await exportRun(root,'project',{api,apply:true,readbackAttempts:1});
+    assert.deepEqual(first.items,second.items); assert.deepEqual(posts[0],posts[1]);
+    await writeFile(join(root,'runs','actual','result.json'),JSON.stringify({...r,finalText:'changed later'}));
+    await assert.rejects(exportRun(root,'project',{api,apply:true,readbackAttempts:1}),/Result changed/);
+  } finally {await rm(root,{recursive:true,force:true});}
 });
