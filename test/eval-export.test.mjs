@@ -54,6 +54,22 @@ test('readback rejects lost structured evidence even when final text and identit
   assert.throws(()=>verifyItem({...row,input:{}},span,protocol,'dataset-id'),/Remote evidence/);
   assert.throws(()=>verifyItem({...row,expectedOutput:{}},span,protocol,'dataset-id'),/Remote evidence/);
 });
+test('native file evidence and incomplete recovery survive export and are required on readback', () => {
+  const nativeItems = [{ type: 'commandExecution', command: 'cat fixture.txt', aggregatedOutput: 'actual fixture bytes', exitCode: 0 }, { type: 'fileChange', changes: [{ path: 'copy.txt', kind: 'add' }] }];
+  const recovered = { ...result, status: 'failed', items: [...nativeItems, { type: 'agentMessage', text: 'stopped' }], evidenceComplete: false, usageComplete: false, recovery: { reason: 'ENOSPC', rawEventsSha256: 'retained-events' } };
+  const span = experimentSpan(protocol, item, recovered, 'dataset-id');
+  const row = readback(span);
+  verifyItem(row, span, protocol, 'dataset-id');
+  assert.deepEqual(row.output.nativeItems, nativeItems);
+  assert.equal(row.output.evidenceComplete, false);
+  assert.equal(row.metadata.usageComplete, false);
+  for (const key of ['nativeItems', 'evidenceComplete', 'usageComplete', 'recovery']) {
+    const bad = structuredClone(row); delete bad.output[key];
+    assert.throws(() => verifyItem(bad, span, protocol, 'dataset-id'), /Remote evidence/);
+  }
+  const bad = structuredClone(row); bad.metadata.usageComplete = true;
+  assert.throws(() => verifyItem(bad, span, protocol, 'dataset-id'), /usageComplete/);
+});
 test('v4 JSON IO and flattened string metadata preserve all evidence, with missing leaves rejected', () => {
   const cohort={scheduled:22,executed:1,assessment:{status:'not_reviewed'}};
   const span=experimentSpan(protocol,item,result,'dataset-id',cohort);

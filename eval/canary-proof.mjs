@@ -23,7 +23,7 @@ export function assertCanaryActions({ events, input, output, mockEvents }) {
 }
 
 export async function canaryFingerprint(reader) {
-  const files = ['runtime.mjs', 'reader.mjs', 'mock-linear.mjs', 'canary.mjs', 'canary-proof.mjs', 'profiles/eval-baseline.config.toml', 'profiles/eval-candidate.config.toml'];
+  const files = ['runtime.mjs', 'reader.mjs', 'mock-linear.mjs', 'canary.mjs', 'canary-proof.mjs', 'io.mjs', 'profiles/eval-baseline.config.toml', 'profiles/eval-candidate.config.toml'];
   const hashes = Object.fromEntries(await Promise.all(files.map(async file => [file, digest(await readFile(join(HERE, file)))])));
   const binary = await realpath(execFileSync('which', ['codex'], { encoding: 'utf8' }).trim());
   const binaries = {};

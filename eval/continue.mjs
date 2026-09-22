@@ -4,8 +4,14 @@ import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import { requireCanary } from './canary-proof.mjs';
+import { stopReason } from './run.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
+export function continuationStopReason(original, fresh, maxTokens) {
+  // Infrastructure/isolation/storage failures span the whole experiment;
+  // only the additional token allowance starts over for this phase.
+  return stopReason([...original, ...fresh], Infinity) ?? stopReason(fresh, maxTokens);
+}
 export function continuationSlots(protocol, phase) {
   assert.equal(phase.protocolHash, protocol.hash, 'Protocol mismatch');
   assert.equal(phase.stopped, 'observed_token_limit', 'Only a reviewed token stop can continue');
@@ -31,9 +37,16 @@ export async function continueRun(root, { maxTokens = 600000 } = {}) {
   for (const [path,expected] of Object.entries(protocol.fileHashes)) assert.equal(hash(await readFile(path)),expected,'Original execution source changed: '+path);
   const runner = Object.keys(protocol.fileHashes).find(x => x.endsWith('/eval/run.mjs'));
   assert.ok(runner,'Original runner is not pinned');
-  const {runCase,saveJson,stopReason} = await import(pathToFileURL(runner).href);
+  const {runCase,saveJson} = await import(pathToFileURL(runner).href);
   const selection = JSON.parse(await readFile(join(root,'cases.private.json')));
   const controllerHash = hash(await readFile(fileURLToPath(import.meta.url)));
+  const original = [];
+  for (const slot of phase.runs.filter(x => x.status !== 'not_run')) {
+    const bytes = await readFile(join(root,'runs',slot.id,'result.json'));
+    assert.equal(hash(bytes),slot.resultHash,'Prior result changed');
+    original.push(JSON.parse(bytes));
+  }
+  assert.equal(continuationStopReason(original, [], maxTokens), null, 'Initial phase contains a non-budget stop condition');
   const extension = { schema:1, createdAt:new Date().toISOString(), originalProtocolHash:protocol.hash, reason:'Reviewed initial execution cost; finish only previously unexecuted cases without retrying any outcome.', maxTokens, concurrency:protocol.concurrency, timeoutMs:protocol.timeoutMs, controllerHash, schedule };
   extension.hash = hash(JSON.stringify(extension));
   // Exclusive creation is also the continuation lock. A second controller must
@@ -41,12 +54,6 @@ export async function continueRun(root, { maxTokens = 600000 } = {}) {
   await writeFile(join(root,'continuation-protocol.json'),JSON.stringify(extension,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(root,'phase.initial.json'),phaseBytes,{flag:'wx',mode:0o600});
   await writeFile(join(root,'summary.initial.json'),summaryBytes,{flag:'wx',mode:0o600});
-  const original = [];
-  for (const slot of phase.runs.filter(x => x.status !== 'not_run')) {
-    const bytes = await readFile(join(root,'runs',slot.id,'result.json'));
-    assert.equal(hash(bytes),slot.resultHash,'Prior result changed');
-    original.push(JSON.parse(bytes));
-  }
   phase.continuation = { hash:extension.hash, maxTokens, initialStopReason:phase.stopped };
   phase.stopped = null;
   const fresh=[]; let cursor=0, writes=Promise.resolve();
@@ -63,7 +70,7 @@ export async function continueRun(root, { maxTokens = 600000 } = {}) {
         const result=await runCase({item:selection.find(x=>x.id===slot.caseId),slot,protocol,root});
         fresh.push(result);entry.status=result.status;entry.failure=result.failure;
         entry.resultHash=hash(await readFile(join(root,'runs',slot.id,'result.json')));
-        phase.stopped??=stopReason(fresh,maxTokens);
+        phase.stopped??=continuationStopReason(original,fresh,maxTokens);
         await update();
         console.log(JSON.stringify({event:'finished',caseId:slot.caseId,status:result.status,failure:result.failure,tokens:result.usage?.totalTokens}));
       }

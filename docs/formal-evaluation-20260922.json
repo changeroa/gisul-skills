@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-09-22T08:52:18.389505+00:00",
+  "recordedAt": "2026-09-22T10:34:29.049023+00:00",
   "scope": "Mac mini only; MacBook Pro and E14 historical evidence unchanged",
   "projectId": "cmu275pqc00i8ad0d79dddjgk",
   "content": {
@@ -44,7 +44,39 @@
       "datasetId": "cmu4sphcs001uad0dd0yf31le",
       "synthetic": true,
       "humanRatings": 0,
-      "promotion": "not_evaluated"
+      "promotion": "not_evaluated",
+      "harnessValidityScore": {
+        "data": [
+          {
+            "id": "f481c0d8325099ba6e95c901bebae38e9020011e199f8d533433e8deed1af890",
+            "projectId": "cmu275pqc00i8ad0d79dddjgk",
+            "name": "harness_valid_for_behavior",
+            "source": "API",
+            "timestamp": "2026-09-22T09:57:12.641Z",
+            "environment": "evaluation",
+            "createdAt": "2026-09-22T09:57:13.000Z",
+            "updatedAt": "2026-09-22T09:57:17.767Z",
+            "comment": "DIAGNOSTIC INVALID: mock writes were approval-blocked; model environment access was also disabled. Do not use this run for behavioral comparison. No human or semantic rating.",
+            "configId": null,
+            "metadata": {
+              "protocolHash": "68514aadb508c3b469592f1e5d9ca3cd559d8bbac9eceb596ea87af0e8acc0b2",
+              "synthetic": true,
+              "humanRatings": 0,
+              "meaning": "Execution harness validity, not task quality",
+              "evidence": "docs/formal-evaluation-20260922.md; local assessment-addendum.json"
+            },
+            "subject": {
+              "kind": "experiment",
+              "id": "agent-env-v1-baseline-46eed72d-7f37-485f-b0cf-8be40b2b782b"
+            },
+            "dataType": "BOOLEAN",
+            "value": false
+          }
+        ],
+        "meta": {
+          "limit": 10
+        }
+      }
     },
     {
       "directory": "baseline-02",
@@ -76,7 +108,124 @@
       "synthetic": true,
       "humanRatings": 0,
       "promotion": "not_evaluated",
-      "assessmentCorrection": "Post-export audit: environments: [] disabled model shell/file access. Preserve original partial-infrastructure receipt; assessment-addendum.json and separate Langfuse validity score record the correction."
+      "assessmentCorrection": "Post-export audit: environments: [] disabled model shell/file access. Preserve original partial-infrastructure receipt; assessment-addendum.json and separate Langfuse validity score record the correction.",
+      "harnessValidityScore": {
+        "data": [
+          {
+            "id": "905e6270cb011f02323a3dd9a905ae0950e97c2733916d02ba578bfa7984e068",
+            "projectId": "cmu275pqc00i8ad0d79dddjgk",
+            "name": "harness_valid_for_behavior",
+            "source": "API",
+            "timestamp": "2026-09-22T09:57:12.864Z",
+            "environment": "evaluation",
+            "createdAt": "2026-09-22T09:57:13.000Z",
+            "updatedAt": "2026-09-22T09:57:17.962Z",
+            "comment": "DIAGNOSTIC INVALID: environments: [] disabled actual model shell/file tools. F-01/F-05/F-06 confirm no file capability; controller command/exec preflight was insufficient. Provider-overload stop also remains true. No human or semantic rating.",
+            "configId": null,
+            "metadata": {
+              "protocolHash": "e8718d40d0630bae8c97f4aaaa039cd265d6f4762ec913cd1f820cfc1e8782e7",
+              "synthetic": true,
+              "humanRatings": 0,
+              "meaning": "Execution harness validity, not task quality",
+              "evidence": "docs/formal-evaluation-20260922.md; local assessment-addendum.json"
+            },
+            "subject": {
+              "kind": "experiment",
+              "id": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6"
+            },
+            "dataType": "BOOLEAN",
+            "value": false
+          }
+        ],
+        "meta": {
+          "limit": 10
+        }
+      }
+    },
+    {
+      "directory": "baseline-03",
+      "sourceCommit": "cf860ef9dd36978b06b76ab9a75fcccc6f98031a",
+      "protocolHash": "85660db379049b28338806b0cf24b7aebcc133ed985ff952b07734ea7b16305f",
+      "experimentId": "agent-env-v1-baseline-27a3171b-b575-4038-a7af-f176db3e66fd",
+      "assessment": "partial_storage_failure",
+      "summary": {
+        "protocolHash": "85660db379049b28338806b0cf24b7aebcc133ed985ff952b07734ea7b16305f",
+        "experimentId": "agent-env-v1-baseline-27a3171b-b575-4038-a7af-f176db3e66fd",
+        "scheduled": 22,
+        "completed": 11,
+        "failed": 3,
+        "stopped": "storage_failure",
+        "fullDataset": true,
+        "tokens": 1840110,
+        "estimatedCost": 7.099412000000001,
+        "missingUsage": 0,
+        "grading": {
+          "pass": 1,
+          "fail": 3,
+          "unverified": 10
+        },
+        "humanRatings": 0,
+        "promotion": "not_evaluated",
+        "incompleteUsage": 2,
+        "continuation": {
+          "hash": "607272f580e452479a3c50e660aa1e34bc2be01b73b74c2cf3c84864cb8582c3",
+          "maxTokens": 600000,
+          "initialStopReason": "observed_token_limit",
+          "executed": 2,
+          "tokens": 47775,
+          "interruptedBy": "ENOSPC"
+        },
+        "recovery": {
+          "recoveredAt": "2026-09-22T10:20:39.925Z",
+          "reason": "ENOSPC",
+          "cases": [
+            "L-07",
+            "L-08"
+          ]
+        }
+      },
+      "verifiedItems": 14,
+      "datasetId": "cmu4sphcs001uad0dd0yf31le",
+      "synthetic": true,
+      "humanRatings": 0,
+      "promotion": "not_evaluated",
+      "fullDatasetExecuted": false,
+      "rawReadback": {
+        "checkedAt": "2026-09-22T10:33:12.485Z",
+        "experimentId": "agent-env-v1-baseline-27a3171b-b575-4038-a7af-f176db3e66fd",
+        "expectedItems": 14,
+        "rawObservations": 14,
+        "uniqueIdentities": 14,
+        "synthetic": true,
+        "reconciledWithoutResubmission": true,
+        "scope": "Only this experiment; not a complete-day quality result",
+        "pages": 1
+      },
+      "recovery": {
+        "recoveredAt": "2026-09-22T10:20:39.925Z",
+        "reason": "ENOSPC",
+        "processesCheckedAbsent": true,
+        "temporaryAuthFilesRemoved": 2,
+        "prior12ResultsUnchanged": true,
+        "recovered": [
+          {
+            "id": "e75bfbef-764f-4e67-a99d-3140dfdd84f8",
+            "caseId": "L-07",
+            "tokens": 15099,
+            "cost": 0.16751,
+            "eventsSha256": "80b89c74e34911ffd71460458674594a5a68dc144b9f5c4df3e8045c9f66ee58"
+          },
+          {
+            "id": "5ddb4cee-5eca-43bd-80c6-58abdb19b779",
+            "caseId": "L-08",
+            "tokens": 32676,
+            "cost": 0.220664,
+            "eventsSha256": "faed85f022a19528ee53b2f59bf591e7173168040661795dc209a83486ddad4c"
+          }
+        ],
+        "rawLogsUnchanged": true,
+        "rerun": false
+      }
     }
   ],
   "fixedRunRawReadback": {
@@ -94,8 +243,8 @@
     "tokens": 39626,
     "estimatedCost": 0.31886
   },
-  "knownCostEquivalent": 11.966318,
-  "costLimitation": "Not account bill; one failed attempt lacks a usage receipt. Includes invalid diagnostic run and canary.",
+  "knownCostEquivalent": 19.06573,
+  "costLimitation": "Lower bound from observed usage, not account bill; one baseline02 failure has no usage and two baseline03 storage-interrupted trials have incomplete usage. Includes all diagnostic runs and canaries.",
   "diagnosticRawRevisions": {
     "experimentItems": 22,
     "rawObservations": 44,
@@ -103,18 +252,25 @@
   },
   "tests": {
     "localFull": {
-      "passed": 103,
-      "skipped": 1
+      "passed": 112,
+      "skipped": 1,
+      "log": "storage-full-tests.log"
     },
-    "exportNullRegression": {
-      "passed": 6
+    "storageAndExportRegression": {
+      "passed": 16,
+      "log": "storage-recovery-tests.log"
+    },
+    "worker": {
+      "passed": 45,
+      "deployed": false
     }
   },
   "remaining": [
-    "Full valid 22-case baseline after provider capacity recovers",
+    "Adequate local disk capacity and a new matching capability receipt before a newly frozen full 22-case baseline; do not resume the aborted continuation",
     "Pinned semantic judge",
     "Ten genuine human ratings and agreement",
-    "Matched candidate comparison before any promotion"
+    "Matched candidate comparison before any promotion",
+    "Correct Cloudflare authorization, Worker55bc deployment and a successful gated Actions publication"
   ],
   "capabilityCanaries": [
     {
@@ -157,5 +313,18 @@
         ]
       }
     }
-  ]
+  ],
+  "publication": {
+    "workerReadyCommit": "55bc0ba351930aaa7552552e0e2e077d3f5108b4",
+    "workerDeployedCommit": "bc6ba43045fb6303c3b1a631e28a40381be63ad2",
+    "publisherMergeCommit": "31d0d397eff6025fff0a2efcea1d5c9e75a49a71",
+    "lastActionRun": "https://github.com/changeroa/gisul-skills/actions/runs/35711118986",
+    "lastOutcome": "failed: single 300s verification timeout",
+    "currentRelease": "20260922.26",
+    "currentRevision": 12,
+    "currentSequence": 17,
+    "auth": "Correct iyen.team account observed in browser; isolated Wrangler login expired awaiting action-time authorization",
+    "runnerPR": "https://github.com/changeroa/gisul-skills/pull/12",
+    "runnerMerged": false
+  }
 }

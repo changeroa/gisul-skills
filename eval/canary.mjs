@@ -8,6 +8,7 @@ import { randomUUID } from 'node:crypto';
 import { buildEnvironment, CodexSession, readyServers, verifyBoundary } from './runtime.mjs';
 import { estimateCost, hash, saveJson } from './run.mjs';
 import { assertCanaryActions, canaryFingerprint } from './canary-proof.mjs';
+import { requireDiskSpace } from './io.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), REPO = resolve(HERE, '..');
 export async function writeCanary(root, readerPath) {
@@ -20,6 +21,7 @@ export async function writeCanary(root, readerPath) {
   let api;
   const evidence = { kind: 'infrastructure_capability_canary', synthetic: true, model: 'gpt-6-astra', effort: 'max', startedAt: new Date().toISOString(), passed: false };
   try {
+    await requireDiskSpace(root);
     const built = await buildEnvironment({ home, workspace, agentsMarkdown: '', loaderMarkdown: await readFile(reader.loader, 'utf8'), model: evidence.model, effort: evidence.effort,
       deniedPaths: [root, REPO, join(homedir(), 'dev-tools')],
       servers: {

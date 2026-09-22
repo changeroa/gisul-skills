@@ -145,6 +145,14 @@ Each run allows two concurrent cases, 240 seconds per turn and at most 1.5M
 observed tokens before stopping new cases. Any isolation failure or two
 infrastructure failures stop launches. Existing output directories are rejected;
 there is no automatic model retry. In-flight usage and failures stay in the ledger.
+Before a paid canary or trial starts, its output filesystem must have at least
+512 MiB available. This is a startup check, not reserved capacity. An asynchronous
+event-log write failure stops the model, marks evidence and usage incomplete,
+and still runs session/auth cleanup. ENOSPC, quota and disk-preflight failures
+stop new cases immediately. A completely full filesystem may also prevent the
+final result from being saved: retain raw logs, confirm child processes stopped,
+remove temporary auth and record any supervisor recovery explicitly. Do not
+manufacture a completed turn, complete usage or an exact end time from partial logs.
 Native provider errors, including model-capacity errors, count as infrastructure
 failures and retain their reason. They do not measure the skill's semantic quality.
 Token cost is a dated standard API price equivalent, not the account bill. Cache
@@ -167,7 +175,9 @@ for new batches. A retry only verifies already-submitted batches; it never resen
 an ambiguous upload. Retain the intent file and investigate missing records.
 It verifies every experiment item's identity and actual output by readback.
 Readback also compares input, expected output, files, tool/mock evidence, grading,
-usage and release metadata. Stopped runs can be exported as explicitly partial
+native command/file actions, usage and release metadata. Recovery provenance and
+explicit incomplete-evidence/usage flags must also survive readback when present.
+Stopped runs can be exported as explicitly partial
 experiments: unexecuted and no-model failures are recorded as missing cases and
 never fabricated as model traces.
 If execution reveals a harness defect, retain the frozen results and add a
@@ -186,7 +196,10 @@ and summary, imports and re-verifies the original frozen execution code, and
 records a separate immutable continuation protocol. Completed or failed cases
 are never retried. The final experiment records both phases and their total cost;
 the extra budget is not a relaxation of a candidate promotion gate. Other stop
-reasons and already-started continuations are rejected.
+reasons and already-started continuations are rejected. Infrastructure, isolation,
+storage and missing-usage stop conditions are checked across both phases; only
+the additional token allowance starts over. A budget stop cannot hide a later
+in-flight non-budget failure.
 
 Contracts: [Codex profile files](https://learn.chatgpt.com/docs/config-file/config-reference),
 [Langfuse experiment attributes](https://langfuse.com/integrations/native/opentelemetry/experiments),

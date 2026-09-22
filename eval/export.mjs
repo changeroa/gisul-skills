@@ -12,6 +12,8 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
   const traceId = digest(protocol.id + ':' + item.id).slice(0, 32), spanId = digest(traceId + ':root').slice(0, 16);
   const run = { source: 'codex', session_id: result.threadId, turn_id: result.turnId ?? null, synthetic: true, experiment: protocol.id, case_id: item.id, protocol_hash: protocol.hash };
   const gisul = { release: protocol.reader.release, commit: protocol.reader.commit, reader_sha256: protocol.reader.bundleHash, observations: result.gisulEvents.filter(x => x.commit).map(({ event, uri, commit, release, manifest_digest }) => ({ event, uri, commit, release, manifest_digest })) };
+  const nativeItems = (result.items ?? []).filter(x => ['commandExecution', 'command_execution', 'fileChange', 'file_change'].includes(x.type));
+  const completeness = Object.fromEntries(['evidenceComplete', 'usageComplete', 'recovery'].filter(key => result[key] !== undefined).map(key => [key, result[key]]));
   const attributes = {
     'langfuse.environment': 'evaluation', 'langfuse.trace.name': 'agent-env-v1/' + item.id,
     'langfuse.trace.tags': ['synthetic', 'evaluation', 'agent-env-v1'],
@@ -19,8 +21,8 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
     'langfuse.trace.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, ...(cohort?.assessment ? { assessment: cohort.assessment } : {}) },
     'langfuse.observation.type': 'chain',
     'langfuse.observation.input': item.input,
-    'langfuse.observation.output': { status: result.status, finalText: result.finalText, files: result.files, grading: result.grading, failure: result.failure, toolCalls: (result.items ?? []).filter(x => ['mcpToolCall', 'dynamicToolCall'].includes(x.type)), mockEvents: result.mockEvents ?? [] },
-    'langfuse.observation.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, usage: result.usage, estimated_cost: result.estimatedCost, cost_kind: protocol.prices.kind, limitations: result.limitations },
+    'langfuse.observation.output': { status: result.status, finalText: result.finalText, files: result.files, grading: result.grading, failure: result.failure, toolCalls: (result.items ?? []).filter(x => ['mcpToolCall', 'dynamicToolCall'].includes(x.type)), mockEvents: result.mockEvents ?? [], ...(nativeItems.length ? { nativeItems } : {}), ...completeness },
+    'langfuse.observation.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, usage: result.usage, estimated_cost: result.estimatedCost, cost_kind: protocol.prices.kind, limitations: result.limitations, ...completeness },
     'langfuse.experiment.id': protocol.id, 'langfuse.experiment.name': protocol.id,
     'langfuse.experiment.dataset.id': datasetId,
     'langfuse.experiment.metadata.protocol_hash': protocol.hash,

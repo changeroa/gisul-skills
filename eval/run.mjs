@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { createWriteStream } from 'node:fs';
 import { readFile, writeFile, mkdir, readdir, rm, rename } from 'node:fs/promises';
 import { resolve, join, dirname } from 'node:path';
 import { homedir } from 'node:os';
@@ -10,6 +9,7 @@ import { dataset } from './dataset.mjs';
 import { prepareCase } from './prepare.mjs';
 import { scoreCase } from './score.mjs';
 import { requireCanary } from './canary-proof.mjs';
+import { eventJournal, requireDiskSpace } from './io.mjs';
 import { CodexSession, buildEnvironment, verifyBoundary, readyServers } from './runtime.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), REPO = resolve(HERE, '..');
@@ -46,6 +46,7 @@ async function files(root, prefix = '') {
   return found;
 }
 export function stopReason(results, maxTokens) {
+  if (results.some(x => x.failure?.type === 'storage')) return 'storage_failure';
   if (results.some(x => x.failure?.type === 'isolation')) return 'isolation_failure';
   if (results.filter(x => x.failure?.type === 'infrastructure').length >= 2) return 'two_infrastructure_failures';
   if (results.some(x => x.status === 'completed' && !x.usage)) return 'missing_usage';
@@ -53,6 +54,7 @@ export function stopReason(results, maxTokens) {
   return null;
 }
 export function classifyFailure(error, stage) {
+  if (['ENOSPC', 'EDQUOT', 'EVAL_DISK_SPACE'].includes(error.code)) return 'storage';
   // A failed startup assertion is an unproven boundary, regardless of its
   // wording. Stop immediately instead of spending a second trial to rediscover it.
   if (stage === 'preflight' || /Isolation|boundary|Frozen source|pin mismatch|content drift/i.test(String(error))) return 'isolation';
@@ -70,6 +72,7 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
   const startedAt = new Date().toISOString();
   const result = { id: slot.id, caseId: item.id, split: item.split, critical: item.critical, profile: slot.profile, synthetic: true, protocolHash: protocol.hash, model: protocol.model, effort: protocol.effort, startedAt, status: 'failed', items: [], mockEvents: [], gisulEvents: [], files: {}, finalText: '', usage: null };
   try {
+    await requireDiskSpace(root);
     await verifyFrozen(protocol);
     prepared = await prepareCase({ item, workspace: slot.workspace, privateDir });
     const servers = {
@@ -77,8 +80,14 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
       linear: { command: process.execPath, args: [join(HERE, 'mock-linear.mjs')], cwd: REPO, env: { EVAL_LINEAR_FIXTURE: prepared.linearFixture, EVAL_WRITE_LOG: join(privateDir, 'mock.jsonl'), EVAL_TIMEOUT_ONCE: prepared.timeoutOnce ? '1' : '0' }, startup_timeout_sec: 30, tool_timeout_sec: 5 },
     };
     const env = await buildEnvironment({ home, workspace: slot.workspace, agentsMarkdown: protocol.instructions[slot.profile], loaderMarkdown: protocol.loaderMarkdown, model: protocol.model, effort: protocol.effort, servers, deniedPaths: [REPO, root, resolve(REPO, '../../../../session-notes'), join(homedir(), 'dev-tools'), ...protocol.schedule.filter(x => x.id !== slot.id).map(x => x.workspace)], authSource: join(homedir(), '.codex/auth.json') });
-    log = createWriteStream(join(privateDir, 'events.jsonl'), { mode: 0o600 });
-    api = new CodexSession({ cwd: slot.workspace, config: env.config, env: env.env, record: event => log.write(JSON.stringify(event) + '\n') });
+    log = eventJournal(join(privateDir, 'events.jsonl'), error => {
+      const type = classifyFailure(error, 'evidence');
+      if (!failure || type === 'storage') failure = { type, code: error.code, message: String(error) };
+      result.evidenceComplete = false;
+      result.usageComplete = false;
+      api?.fail(error);
+    });
+    api = new CodexSession({ cwd: slot.workspace, config: env.config, env: env.env, record: event => log.write(event) });
     result.host = await api.initialize();
     const catalog = await api.rpc('skills/list', { cwds: [slot.workspace], forceReload: true });
     const enabled = catalog.data.flatMap(x => x.skills.filter(x => x.enabled));
@@ -98,10 +107,10 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
     }
     result.status = 'completed';
   } catch (error) {
-    failure = { type: classifyFailure(error, stage), message: String(error), ...(error.providerError ? { providerError: error.providerError } : {}) };
+    failure ??= { type: classifyFailure(error, stage), code: error.code, message: String(error), ...(error.providerError ? { providerError: error.providerError } : {}) };
   } finally {
     if (api) await api.close().catch(error => { failure ??= { type: 'infrastructure', message: String(error) }; });
-    if (log) await new Promise(resolve => log.end(resolve));
+    if (log) await log.close().catch(error => { failure ??= { type: classifyFailure(error, 'evidence'), code: error.code, message: String(error) }; });
     await rm(join(home, 'auth.json'), { force: true });
   }
   result.endedAt = new Date().toISOString();
