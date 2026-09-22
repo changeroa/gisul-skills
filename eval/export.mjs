@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -16,7 +16,7 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
     'langfuse.environment': 'evaluation', 'langfuse.trace.name': 'agent-env-v1/' + item.id,
     'langfuse.trace.tags': ['synthetic', 'evaluation', 'agent-env-v1'],
     'langfuse.trace.session_id': protocol.id,
-    'langfuse.trace.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul },
+    'langfuse.trace.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, ...(cohort?.assessment ? { assessment: cohort.assessment } : {}) },
     'langfuse.observation.type': 'chain',
     'langfuse.observation.input': item.input,
     'langfuse.observation.output': { status: result.status, finalText: result.finalText, files: result.files, grading: result.grading, failure: result.failure, toolCalls: (result.items ?? []).filter(x => ['mcpToolCall', 'dynamicToolCall'].includes(x.type)), mockEvents: result.mockEvents ?? [] },
@@ -40,13 +40,24 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
     'langfuse.experiment.item.expected_output': item.expected,
     'langfuse.experiment.item.metadata.split': item.split,
     'langfuse.experiment.item.metadata.critical': item.critical,
-    'langfuse.experiment.description': 'Frozen formal evaluation; observable checks only. Semantic review and genuine human ratings pending. No production promotion.',
+    'langfuse.experiment.description': (cohort?.assessment?.status === 'diagnostic_invalid_for_behavior' ? 'DIAGNOSTIC: harness defect; do not use for behavioral comparison. ' : '') + 'Frozen formal evaluation; observable checks only. Semantic review and genuine human ratings pending. No production promotion.',
   };
   return { traceId, spanId, name: 'formal-evaluation-item', kind: 1, startTimeUnixNano: nano(result.startedAt), endTimeUnixNano: nano(result.endedAt), attributes: Object.entries(attributes).filter(([,value]) => value !== undefined).map(([key,value]) => attr(key,value)), status: { code: result.status === 'completed' ? 1 : 2, ...(result.failure ? { message: result.failure.message } : {}) } };
 }
 
 function jsonAttribute(span, key) {
   return JSON.parse(span.attributes.find(x => x.key === key).value.stringValue);
+}
+
+// The v4 experiment API returns JSON-encoded IO and flattens metadata into
+// dotted string leaves. Compare every original value after that transport
+// representation; do not weaken verification to a final-text substring.
+function decodeJson(value) { return typeof value === 'string' ? JSON.parse(value) : value; }
+function metadataLeaves(value, prefix = '') {
+  if (value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length) {
+    return Object.assign({}, ...Object.entries(value).map(([key, item]) => metadataLeaves(item, prefix ? prefix + '.' + key : key)));
+  }
+  return { [prefix]: typeof value === 'string' ? value : JSON.stringify(value) };
 }
 
 export function verifyItem(actual, span, protocol, datasetId) {
@@ -56,14 +67,22 @@ export function verifyItem(actual, span, protocol, datasetId) {
   assert.equal(actual?.environment, 'evaluation');
   assert.equal(actual?.experimentMetadata?.protocol_hash, protocol.hash);
   for (const [field, attribute] of [['input','langfuse.observation.input'], ['output','langfuse.observation.output'], ['expectedOutput','langfuse.experiment.item.expected_output']]) {
-    assert.deepEqual(actual[field], jsonAttribute(span, attribute), 'Remote evidence differs: ' + field);
+    assert.deepEqual(decodeJson(actual[field]), jsonAttribute(span, attribute), 'Remote evidence differs: ' + field);
   }
-  for (const [key, expected] of Object.entries(jsonAttribute(span, 'langfuse.observation.metadata'))) assert.deepEqual(actual.metadata?.[key], expected, 'Remote metadata differs: ' + key);
+  const leaves = metadataLeaves(actual.metadata ?? {});
+  for (const [key, expected] of Object.entries(metadataLeaves(jsonAttribute(span, 'langfuse.observation.metadata')))) assert.equal(leaves[key], expected, 'Remote metadata differs: ' + key);
   const execution = span.attributes.find(x => x.key === 'langfuse.experiment.metadata.execution');
-  if (execution) assert.deepEqual(actual.experimentMetadata.execution, JSON.parse(execution.value.stringValue), 'Execution completeness differs');
+  if (execution) assert.deepEqual(decodeJson(actual.experimentMetadata.execution), JSON.parse(execution.value.stringValue), 'Execution completeness differs');
 }
 
-export async function exportRun(root, projectId, { api, apply = false, readbackAttempts = 6, wait = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
+export async function exportRun(root, projectId, options = {}) {
+  if (!options.apply) return exportUnlocked(root, projectId, options);
+  const lock = join(root, 'langfuse-export.lock');
+  await mkdir(lock); // One local writer; a crashed lock requires inspection.
+  try { return await exportUnlocked(root, projectId, options); }
+  finally { await rm(lock, { recursive: true }); }
+}
+async function exportUnlocked(root, projectId, { api, apply = false, readbackAttempts = 6, wait = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
   const protocol = JSON.parse(await readFile(join(root, 'protocol.json')));
   if (protocol.preflight) throw new Error('Preflight is not a model experiment');
   const cases = JSON.parse(await readFile(join(root, 'cases.private.json')));
@@ -87,7 +106,9 @@ export async function exportRun(root, projectId, { api, apply = false, readbackA
   }
   assert.equal(results.length + notRun.length, cases.length);
   if (!results.length) throw new Error('No actual model executions to export');
-  const cohort = { scheduled: cases.length, executed: results.length, completed: results.filter(x => x.status === 'completed').length, failed: results.filter(x => x.status === 'failed').length, notRun, stopReason: phase.stopped ?? null, fullDatasetExecuted: protocol.fullDataset && results.length === protocol.dataset.totalCases, continuation: phase.continuation ?? null };
+  const assessmentBytes = await readFile(join(root, 'assessment.json')).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+  const assessment = assessmentBytes ? JSON.parse(assessmentBytes) : { status: 'not_reviewed' };
+  const cohort = { scheduled: cases.length, executed: results.length, completed: results.filter(x => x.status === 'completed').length, failed: results.filter(x => x.status === 'failed').length, notRun, stopReason: phase.stopped ?? null, fullDatasetExecuted: protocol.fullDataset && results.length === protocol.dataset.totalCases, continuation: phase.continuation ?? null, assessment, assessmentHash: assessmentBytes ? digest(assessmentBytes) : null };
   if (!apply) return { dryRun: true, experimentId: protocol.id, cases: results.length, projectId, execution: cohort };
   api ??= await langfuseApi();
   const projects = await api.request('/api/public/projects');
@@ -102,14 +123,33 @@ export async function exportRun(root, projectId, { api, apply = false, readbackA
     assert.deepEqual(actual.input, item.input); assert.deepEqual(actual.expectedOutput, item.expected);
   }
   const spans = results.map(result => experimentSpan(protocol, cases.find(x => x.id === result.caseId), result, dataset.id, cohort));
-  // Deterministic trace/span IDs make timeout reconciliation safe. Re-running
-  // export sends the same identities; it never launches another model turn.
-  for (let i = 0; i < spans.length; i += 5) {
-    const response = await api.request('/api/public/otel/v1/traces', { method: 'POST', body: { resourceSpans: [{ resource: { attributes: [attr('service.name','gisul-formal-eval'),attr('langfuse.environment','evaluation')] }, scopeSpans: [{ scope: { name: 'gisul-formal-eval', version: '1' }, spans: spans.slice(i, i + 5) }] }] } });
-    if (Number(response.partialSuccess?.rejectedSpans ?? 0) !== 0 || response.partialSuccess?.errorMessage) throw new Error('OTLP ingestion partly rejected');
-  }
   const from = new Date(Math.min(...results.map(x => Date.parse(x.startedAt))) - 60000).toISOString();
   const to = new Date(Math.max(...results.map(x => Date.parse(x.endedAt))) + 60000).toISOString();
+  const itemPath = '/api/public/experiment-items?' + new URLSearchParams({ experimentId: protocol.id, fromStartTime: from, toStartTime: to, fields: 'io,dataset,metadata,experimentMetadata', limit: '100' });
+  const previous = await api.request(itemPath);
+  assert.ok(!previous.meta?.cursor, 'Unexpected existing experiment pagination');
+  const present = new Set();
+  for (const actual of previous.data) {
+    const span = spans.find(x => x.spanId === actual.id && x.traceId === actual.traceId);
+    assert.ok(span, 'Unexpected item already exists in experiment');
+    verifyItem(actual, span, protocol, dataset.id);
+    present.add(span.spanId);
+  }
+  // V4 may retain duplicate raw observations even with the same span identity.
+  // Reconcile before writing; persist intent BEFORE a request whose outcome may
+  // be ambiguous. A later invocation reads back that batch, never resends it.
+  const intentPath = join(root, 'langfuse-upload-intent.json');
+  const intent = await readFile(intentPath, 'utf8').then(JSON.parse).catch(error => { if (error.code === 'ENOENT') return { protocolHash: protocol.hash, spans: {} }; throw error; });
+  assert.equal(intent.protocolHash, protocol.hash);
+  for (const span of spans) if (intent.spans[span.spanId]) assert.equal(intent.spans[span.spanId], digest(JSON.stringify(span)), 'Submitted payload changed; reconciliation required');
+  const unsent = spans.filter(span => !present.has(span.spanId) && !intent.spans[span.spanId]);
+  for (let i = 0; i < unsent.length; i += 5) {
+    const batch = unsent.slice(i, i + 5);
+    for (const span of batch) intent.spans[span.spanId] = digest(JSON.stringify(span));
+    await writeFile(intentPath, JSON.stringify(intent, null, 2) + '\n', { mode: 0o600 });
+    const response = await api.request('/api/public/otel/v1/traces', { method: 'POST', body: { resourceSpans: [{ resource: { attributes: [attr('service.name','gisul-formal-eval'),attr('langfuse.environment','evaluation')] }, scopeSpans: [{ scope: { name: 'gisul-formal-eval', version: '1' }, spans: batch }] }] } });
+    if (Number(response.partialSuccess?.rejectedSpans ?? 0) !== 0 || response.partialSuccess?.errorMessage) throw new Error('OTLP ingestion partly rejected; reconcile recorded intent, do not resend');
+  }
   let observed, experiment, lastError;
   for (let attempt = 0; attempt < readbackAttempts; attempt++) {
     if (attempt) {
@@ -120,7 +160,7 @@ export async function exportRun(root, projectId, { api, apply = false, readbackA
     try {
       const runs = await api.request('/api/public/experiments?' + new URLSearchParams({ id: protocol.id, fromStartTime: from, toStartTime: to, fields: 'metadata', limit: '100' }));
       experiment = runs.data.find(x => x.id === protocol.id);
-      const data = await api.request('/api/public/experiment-items?' + new URLSearchParams({ experimentId: protocol.id, fromStartTime: from, toStartTime: to, fields: 'io,dataset,metadata,experimentMetadata', limit: '100' }));
+      const data = await api.request(itemPath);
       observed = data.data;
       if (data.meta?.cursor) throw new Error('Unexpected experiment pagination');
       assert.equal(experiment?.datasetId, dataset.id);

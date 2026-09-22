@@ -54,6 +54,22 @@ test('readback rejects lost structured evidence even when final text and identit
   assert.throws(()=>verifyItem({...row,input:{}},span,protocol,'dataset-id'),/Remote evidence/);
   assert.throws(()=>verifyItem({...row,expectedOutput:{}},span,protocol,'dataset-id'),/Remote evidence/);
 });
+test('v4 JSON IO and flattened string metadata preserve all evidence, with missing leaves rejected', () => {
+  const cohort={scheduled:22,executed:1,assessment:{status:'not_reviewed'}};
+  const span=experimentSpan(protocol,item,result,'dataset-id',cohort);
+  const row=readback(span);
+  for(const key of ['input','output','expectedOutput']) row[key]=JSON.stringify(row[key]);
+  const flat={};
+  function visit(value,key) {
+    if(value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length) for(const [k,v] of Object.entries(value)) visit(v,key?key+'.'+k:k);
+    else flat[key]=typeof value==='string'?value:JSON.stringify(value);
+  }
+  visit(row.metadata,''); row.metadata=flat;
+  row.experimentMetadata.execution=JSON.stringify(cohort);
+  verifyItem(row,span,protocol,'dataset-id');
+  delete row.metadata['usage.totalTokens'];
+  assert.throws(()=>verifyItem(row,span,protocol,'dataset-id'),/usage.totalTokens/);
+});
 test('stopped runs export only actual executions, with missing cases explicit and stable retry identities', async () => {
   const root=await mkdtemp(join(tmpdir(),'partial-eval-export-'));
   const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -66,24 +82,34 @@ test('stopped runs export only actual executions, with missing cases explicit an
     await mkdir(join(root,'runs','actual'),{recursive:true});
     await writeFile(join(root,'protocol.json'),JSON.stringify(p));
     await writeFile(join(root,'summary.json'),JSON.stringify({protocolHash:p.hash}));
+    await writeFile(join(root,'assessment.json'),JSON.stringify({status:'diagnostic_invalid_for_behavior',reason:'fixture write approval denied'}));
     await writeFile(join(root,'cases.private.json'),JSON.stringify([item,other]));
     await writeFile(join(root,'runs','actual','result.json'),bytes);
     await writeFile(join(root,'phase.json'),JSON.stringify({protocolHash:p.hash,stopped:'observed_token_limit',runs:[{id:'actual',caseId:item.id,status:'completed',resultHash:sha(bytes)},{id:'absent',caseId:other.id,status:'not_run'}]}));
-    const posts=[]; let spans=[];
+    const posts=[]; let spans=[],visible=true;
     const api={origin:'https://example.test',request:async(path,options)=>{
       if(path==='/api/public/projects')return {data:[{id:'project'}]};
       if(path.startsWith('/api/public/v2/datasets/'))return {id:'dataset-id'};
       if(path.startsWith('/api/public/dataset-items?'))return {meta:{totalPages:1},data:[item,other].map(x=>({id:'agent-env-v1:'+x.id,input:x.input,expectedOutput:x.expected,metadata:{version:p.dataset.version}}))};
       if(path==='/api/public/otel/v1/traces'){posts.push(options.body);spans=options.body.resourceSpans[0].scopeSpans[0].spans;return {};}
       if(path.startsWith('/api/public/experiments?'))return {data:[{id:p.id,datasetId:'dataset-id',itemCount:1}]};
-      if(path.startsWith('/api/public/experiment-items?'))return {meta:{},data:spans.map(readback)};
+      if(path.startsWith('/api/public/experiment-items?'))return {meta:{},data:visible?spans.map(readback):[]};
       assert.fail('Unexpected request '+path);
     }};
     const first=await exportRun(root,'project',{api,apply:true,readbackAttempts:1});
     assert.equal(first.verifiedItems,1); assert.equal(first.execution.fullDatasetExecuted,false);
     assert.equal(first.execution.notRun[0].caseId,'F-02'); assert.equal(first.execution.stopReason,'observed_token_limit');
+    assert.equal(first.execution.assessment.status,'diagnostic_invalid_for_behavior');
+    assert.ok(first.execution.assessmentHash);
+    assert.match(spans[0].attributes.find(x=>x.key==='langfuse.experiment.description').value.stringValue,/DIAGNOSTIC/);
     const second=await exportRun(root,'project',{api,apply:true,readbackAttempts:1});
-    assert.deepEqual(first.items,second.items); assert.deepEqual(posts[0],posts[1]);
+    assert.deepEqual(first.items,second.items); assert.equal(posts.length,1,'readback retry must not resubmit raw spans');
+    visible=false;
+    await assert.rejects(exportRun(root,'project',{api,apply:true,readbackAttempts:1}),/readback pending/);
+    assert.equal(posts.length,1,'ambiguous submitted intent must not be resent');
+    await mkdir(join(root,'langfuse-export.lock'));
+    await assert.rejects(exportRun(root,'project',{api,apply:true}),{code:'EEXIST'});
+    await rm(join(root,'langfuse-export.lock'),{recursive:true});
     await writeFile(join(root,'runs','actual','result.json'),JSON.stringify({...r,finalText:'changed later'}));
     await assert.rejects(exportRun(root,'project',{api,apply:true,readbackAttempts:1}),/Result changed/);
   } finally {await rm(root,{recursive:true,force:true});}

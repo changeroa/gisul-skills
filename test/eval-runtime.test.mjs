@@ -28,7 +28,7 @@ async function fixture(t, overrides = {}) {
   await writeFile(denied, 'private controller canary');
   const options = { home, workspace, agentsMarkdown: 'Chosen global instruction.\n', loaderMarkdown: LOADER,
     model: 'gpt-6-astra', effort: 'max', authSource: null, deniedPaths: [denied],
-    servers: { gisul: { command: '/usr/bin/true' }, linear: { command: '/usr/bin/true' } }, ...overrides };
+    servers: { gisul: { command: '/usr/bin/true' }, linear: { command: process.execPath, args: [join(REPO,'eval/mock-linear.mjs')] } }, ...overrides };
   return { root, denied, workspace, home, options };
 }
 
@@ -105,6 +105,8 @@ test('isolated files preserve chosen instructions, stable profiles and auth with
   assert.equal(built.config['permissions.eval'].filesystem[join(process.env.HOME,'.codex')],'deny');
   assert.equal(built.config['permissions.eval'].filesystem[f.home],'deny');
   assert.deepEqual(built.config['mcp_servers.gisul'].enabled_tools,names);
+  assert.deepEqual(built.config['mcp_servers.linear'].tools,{save_issue:{approval_mode:'approve'},send_slack_message:{approval_mode:'approve'}});
+  assert.equal(built.config['mcp_servers.gisul'].tools,undefined);
   await assert.rejects(buildEnvironment(f.options),/must be empty/);
 });
 
@@ -112,6 +114,8 @@ test('environment rejects external server names, non-mock transport and loader-d
   const f=await fixture(t);
   await assert.rejects(buildEnvironment({...f.options,servers:{...f.options.servers,slack:{command:'true'}}}),/Exactly/);
   await assert.rejects(buildEnvironment({...f.options,servers:{...f.options.servers,linear:{url:'https:\/\/linear.invalid'}}}),/local mock/);
+  await assert.rejects(buildEnvironment({...f.options,servers:{...f.options.servers,linear:{command:process.execPath,args:['/tmp/other-linear.mjs']}}}),/exact local mock/);
+  await assert.rejects(buildEnvironment({...f.options,servers:{...f.options.servers,linear:{...f.options.servers.linear,tools:{save_issue:{approval_mode:'approve'}}}}}),/Unsupported/);
   await assert.rejects(buildEnvironment({...f.options,deniedPaths:[f.root]}),/overlaps/);
   const alias=join(f.root,'workspace-alias'); await mkdir(f.workspace); await symlink(f.workspace,alias);
   await assert.rejects(buildEnvironment({...f.options,deniedPaths:[alias]}),/overlaps/);

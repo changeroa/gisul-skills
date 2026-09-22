@@ -7,6 +7,7 @@ import { chmod, lstat, mkdir, readFile, readdir, realpath, writeFile } from 'nod
 import { homedir } from 'node:os';
 import { isDeepStrictEqual } from 'node:util';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ENV_KEYS = ['PATH', 'HOME', 'USER', 'LOGNAME', 'SHELL', 'TMPDIR', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TERM'];
 const READER_TOOLS = ['search_skills', 'load_skill', 'read_skill_file'];
@@ -64,7 +65,7 @@ function mcpDescriptors(servers) {
   return Object.fromEntries(Object.entries(servers).map(([name, descriptor]) => {
     if (!descriptor || Object.keys(descriptor).some(key => !allowedKeys.has(key))) throw new Error(`Unsupported ${name} MCP descriptor`);
     if (Boolean(descriptor.command) === Boolean(descriptor.url)) throw new Error(`${name} needs exactly one MCP transport`);
-    if (name === 'linear' && !descriptor.command) throw new Error('linear must use the local mock stdio transport');
+    if (name === 'linear' && (descriptor.command !== process.execPath || !isDeepStrictEqual(descriptor.args, [fileURLToPath(new URL('./mock-linear.mjs', import.meta.url))]))) throw new Error('linear must use this checkout\'s exact local mock stdio transport');
     if (descriptor.env_vars?.length || descriptor.env_http_headers || descriptor.bearer_token_env_var) {
       throw new Error('MCP credentials must be explicit; inherited credential variables are unavailable');
     }
@@ -72,6 +73,9 @@ function mcpDescriptors(servers) {
       ...descriptor, enabled: true, startup_timeout_sec: descriptor.startup_timeout_sec ?? 30,
       tool_timeout_sec: descriptor.tool_timeout_sec ?? 30,
       ...(name === 'gisul' ? { enabled_tools: READER_TOOLS } : {}),
+      // These calls mutate only the pinned in-memory fixture. The application
+      // approval policy is independent of Codex's shell approval_policy=never.
+      ...(name === 'linear' ? { tools: { save_issue: { approval_mode: 'approve' }, send_slack_message: { approval_mode: 'approve' } } } : {}),
     }];
   }));
 }
