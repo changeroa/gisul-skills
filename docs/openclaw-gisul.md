@@ -52,9 +52,11 @@ roll back; preserve the queue and unrelated configuration.
 
 The configured `openai/gpt-5.6-luna` model performed real gisul search, load and
 supporting-file reads through the Gateway. [The Langfuse trace](https://jp.cloud.langfuse.com/project/cmu275pqc00i8ad0d79dddjgk/traces/a4ab2e12bcf5cb183334777151efe788)
-has 10 observations, three tool results and `gisul_join=complete`. Both the
-trace and root observation contain these values, independently checked through
-the API against the actual tool outputs:
+has 10 observations, three tool results and `gisul_join=complete`. The trace and
+root observation contain the native run ID and loaded skill's URI, release,
+content commit and digest. Those values match the actual tool outputs. The
+supporting-file details and Worker server commit were verified in child tool
+outputs. The API evidence is:
 
 | Field | Value |
 | --- | --- |
