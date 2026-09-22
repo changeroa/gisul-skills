@@ -55,6 +55,7 @@ export function classifyFailure(error, stage) {
   // A failed startup assertion is an unproven boundary, regardless of its
   // wording. Stop immediately instead of spending a second trial to rediscover it.
   if (stage === 'preflight' || /Isolation|boundary|Frozen source|pin mismatch|content drift/i.test(String(error))) return 'isolation';
+  if (error.code === 'EVAL_PROVIDER_FAILURE') return 'infrastructure';
   return /(?:Task|Model) turn|exceeded.*ms/.test(String(error)) ? 'execution' : 'infrastructure';
 }
 async function verifyFrozen(protocol) {
@@ -96,7 +97,7 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
     }
     result.status = 'completed';
   } catch (error) {
-    failure = { type: classifyFailure(error, stage), message: String(error) };
+    failure = { type: classifyFailure(error, stage), message: String(error), ...(error.providerError ? { providerError: error.providerError } : {}) };
   } finally {
     if (api) await api.close().catch(error => { failure ??= { type: 'infrastructure', message: String(error) }; });
     if (log) await new Promise(resolve => log.end(resolve));

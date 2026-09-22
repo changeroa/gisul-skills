@@ -126,6 +126,8 @@ Each run allows two concurrent cases, 240 seconds per turn and at most 1.5M
 observed tokens before stopping new cases. Any isolation failure or two
 infrastructure failures stop launches. Existing output directories are rejected;
 there is no automatic model retry. In-flight usage and failures stay in the ledger.
+Native provider errors, including model-capacity errors, count as infrastructure
+failures and retain their reason. They do not measure the skill's semantic quality.
 Token cost is a dated standard API price equivalent, not the account bill. Cache
 effects are reported separately. A candidate cost ratio needs a matched completed
 comparison; a baseline alone cannot meet the 130% gate.

@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:net';
 import { buildEnvironment, CodexSession, readyServers, verifyBoundary } from '../eval/runtime.mjs';
+import { classifyFailure, stopReason } from '../eval/run.mjs';
 
 const REPO = fileURLToPath(new URL('..', import.meta.url));
 const LOADER = '---\nname: gisul\ndescription: Read remote workflows.\n---\nUse the gisul reader.';
@@ -60,7 +61,7 @@ readline.createInterface({input:process.stdin}).on('line', line => {
  if(m.method==='turn/start') {
   const prompt=m.params.input[0].text;
   if(prompt==='hang-start') return;
-  const done=id=>send({method:'turn/completed',params:{threadId:'thread-1',turn:{id,status:prompt==='failed'?'failed':'completed'}}});
+  const done=id=>send({method:'turn/completed',params:{threadId:'thread-1',turn:{id,status:['failed','overloaded'].includes(prompt)?'failed':'completed',...(prompt==='overloaded'?{error:{message:'Selected model is at capacity.',codexErrorInfo:'serverOverloaded'}}:{})}}});
   if(prompt==='early') done('turn-1');
   ok({turn:{id:'turn-1'}});
   if(prompt==='wait') {done('stale-turn');return;}
@@ -185,6 +186,18 @@ test('completion before turn/start response is retained; failed turns reject', a
   assert.equal(result.turn.id,'turn-1');
   assert.ok(result.events.some(e=>e.method==='turn/completed'));
   await assert.rejects(api.turn('failed',{timeoutMs:1000}),/did not complete successfully/);
+});
+
+test('provider overload keeps its native reason and stops scheduling at two infrastructure failures', async t => {
+  const {api}=await prepared(t);
+  let observed;
+  await assert.rejects(api.turn('overloaded',{timeoutMs:1000}),error=>{
+    observed=error;
+    return error.code==='EVAL_PROVIDER_FAILURE' && error.providerError.codexErrorInfo==='serverOverloaded';
+  });
+  const failed={status:'failed',failure:{type:classifyFailure(observed,'execution')}};
+  assert.equal(failed.failure.type,'infrastructure');
+  assert.equal(stopReason([failed,failed],1500000),'two_infrastructure_failures');
 });
 
 test('boundary probe never prints content; readable, missing or inconclusive denied paths fail', async t => {

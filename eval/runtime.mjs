@@ -314,7 +314,14 @@ export class CodexSession extends EventEmitter {
       this.activeTurnId = started.turn?.id;
       if (!this.activeTurnId) throw new Error('turn/start omitted its turn id');
       const result = completed.find(item => item.turn?.id === this.activeTurnId) ?? await done;
-      if (result.turn?.status !== 'completed' || result.turn.error) throw new Error('Model turn did not complete successfully: ' + result.turn?.status);
+      if (result.turn?.status !== 'completed' || result.turn.error) {
+        const error = new Error('Model turn did not complete successfully: ' + result.turn?.status);
+        if (result.turn?.status === 'failed' || result.turn?.error) {
+          error.code = 'EVAL_PROVIDER_FAILURE';
+          error.providerError = result.turn.error ?? { codexErrorInfo: 'unknown' };
+        }
+        throw error;
+      }
       return { ...result, events: this.events.slice(startIndex) };
     } catch (error) { this.fail(error); throw error; }
     finally {
