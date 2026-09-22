@@ -38,4 +38,12 @@
 
 다음 실행은 공급자 용량이 확보된 뒤 별도 protocol로 계획한다. 실패한 사례를 몰래 재시도하거나 이번 인프라 중단을 토큰 예산 연장으로 우회하지 않는다. 시간·토큰 한도 때문에 끝나지 않은 사례는 계속 결과에 남긴다. 최초 진단의 비용은 예산 참고 자료이며 유효한 후보 비교 기준은 아니다.
 
-MacBook Pro, 예약 writer, 다른 Herdr pane, 운영 `/Users/iyen/gisul`은 변경하지 않았다. 영구 소스는 `/Users/iyen/dev-tools/{gisul,gisul-skills,langfuse-masked}`이며 기존 feature branch와 미발행 commit을 보존했다. 원시 실행 자료는 Mac mini의 `/Users/iyen/dev-tools/session-notes/local-evals-20260922/`에 남긴다. 이 변경은 평가 도구에만 해당하므로 Worker/R2 콘텐츠 release는 바꾸지 않는다.
+MacBook Pro, 예약 writer, 다른 Herdr pane, 운영 `/Users/iyen/gisul`은 변경하지 않았다. 영구 소스는 `/Users/iyen/dev-tools/{gisul,gisul-skills,langfuse-masked}`이며 기존 feature branch와 미발행 commit을 보존했다. 원시 실행 자료는 Mac mini의 `/Users/iyen/dev-tools/session-notes/local-evals-20260922/`에 남긴다. 평가 입력은 release `20260922.26`에 고정된다. 공용 Langfuse API 스크립트 변경은 기존 발행 검증 대상이므로, 스킬 내용이 같아도 main 배포가 새 immutable release를 만들 수 있다. 운영 발행과 평가에 사용한 버전은 구분한다.
+
+## 발행 실패와 복구 변경
+
+[PR10 main 발행](https://github.com/changeroa/gisul-skills/actions/runs/35707486689)은 262개 파일 업로드와 Git 원본 260개 파일 대조를 마친 뒤 전체 R2 검증에서 실패했다. 120초 제한의 검증 요청이 세 번 시간 초과했고, 포인터 변경에는 도달하지 않았다. 2026-09-22 18:23 KST 재조회에서 기존 `.26`의 revision `12`, sequence `17`, ETag가 그대로였고 새 `c14d8cf` / `.33`은 미완성으로 읽기를 거부했다.
+
+발행기는 전체 검증을 수행하는 verify/promote/rollback 요청에만 300초를 허용한다. 검증 시간 초과를 자동 재전송하지 않아 겹치는 전체 검사를 만들지 않는다. inventory 전체 대조, 실제 바이트 해시, frontmatter, Git parity, staged MCP 읽기, 최신 main 확인, ETag와 sequence 조건은 그대로다. 복구용 publisher/workerd 테스트 7개가 통과했다. 이것은 발행 검증 시간 예산 변경이며 모델 평가의 제한이나 승격 조건 변경이 아니다.
+
+Worker의 별도 수정 `cf562ca`는 R2 바이트 검사를 최대 4개씩 실행하고 실패 시 진행 중인 검사까지 정리한다. TypeScript와 Worker 테스트 45개가 통과했지만, 이 문서를 기록할 때는 Cloudflare 계정 인증이 없어 실제 배포하지 않았다. 기존 Worker source는 `bc6ba43045fb6303c3b1a631e28a40381be63ad2`다. MCP 읽기/발행 bearer는 Cloudflare 계정 로그인과 별개다. 실제 발행 성공 여부는 후속 Actions의 `r2-publication.json`과 installed-plugin 증거로 판단하며, 시간 제한 변경이나 단위 테스트만으로 성공을 선언하지 않는다.

@@ -129,7 +129,8 @@ try {
     await api("/admin/verify", {
       method: "POST",
       body: { ...identity, expected_etag: before.etag, sequence },
-      retry: true,
+      // A timed-out full scan is not a reason to start overlapping scans.
+      retry: false,
     });
     staged = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, {
       pinned: true,

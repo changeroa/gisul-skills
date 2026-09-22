@@ -11,9 +11,13 @@ export function releaseApi(base, token, fetcher = fetch) {
   assert.ok(token, "Missing publication token");
   return async (path, { method = "GET", body, retry = method === "GET" || method === "PUT" } = {}) => {
     assert.ok(path.startsWith("/admin/"));
+    // These operations reread the complete inventory. Keep ordinary requests
+    // bounded separately; the previous two-minute deadline aborted valid large
+    // release checks before they could seal the upload.
+    const timeoutMs = method === "POST" && ["/admin/verify", "/admin/promote", "/admin/rollback"].includes(path) ? 300000 : 120000;
     for (let attempt = 0; ; attempt++) {
       try {
-        const response = await fetcher(new URL(path, url), { method, redirect: "error", headers: { authorization: `Bearer ${token}`, "content-type": body instanceof Uint8Array ? "application/octet-stream" : "application/json" }, body: body === undefined ? undefined : body instanceof Uint8Array ? body : JSON.stringify(body), signal: AbortSignal.timeout(120000) });
+        const response = await fetcher(new URL(path, url), { method, redirect: "error", headers: { authorization: `Bearer ${token}`, "content-type": body instanceof Uint8Array ? "application/octet-stream" : "application/json" }, body: body === undefined ? undefined : body instanceof Uint8Array ? body : JSON.stringify(body), signal: AbortSignal.timeout(timeoutMs) });
         let data;
         try { data = await response.json(); }
         catch {
