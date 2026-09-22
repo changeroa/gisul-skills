@@ -7,14 +7,14 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { langfuseApi } from './langfuse-api.mjs';
-import { collectQuality, windowFor } from './langfuse-quality.mjs';
+import { CHECKPOINT_SCHEMA, collectQuality, windowFor } from './langfuse-quality.mjs';
 
 const exec = promisify(execFile), repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const readJSON = async path => JSON.parse(await readFile(path, 'utf8'));
 const writeJSON = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n', { mode: 0o600 });
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 export function analysisGate(report, projectId, date) {
-  return report.project_id === projectId && report.date === date && report.timezone === 'Asia/Seoul' && report.source === 'observations-v2-logical-roots' && report.complete === true && report.full_day === true && report.passed === true && report.counts?.non_synthetic_roots > 0;
+  return report.checkpoint_schema === CHECKPOINT_SCHEMA && report.project_id === projectId && report.date === date && report.timezone === 'Asia/Seoul' && report.source === 'observations-v2-logical-roots' && report.complete === true && report.full_day === true && report.passed === true && report.counts?.non_synthetic_primary_turn_roots > 0;
 }
 export function validateAnalysisConfig(config) {
   assert.match(config.projectId ?? '', /^[a-z0-9]+$/);
@@ -52,7 +52,9 @@ export function renderCandidate(response, input, date) {
 }
 const clipped = (value, max = 3000) => { const text = typeof value === 'string' ? value : JSON.stringify(value ?? null); return text.length > max ? `${text.slice(0, max)} [TRUNCATED]` : text; };
 async function sampleTraces(api, checkpoint, config) {
-  const rows = Object.values(checkpoint.rows).filter(row => !row.synthetic && !row.heartbeat && !row.unfinished).sort((a, b) => a.start_time.localeCompare(b.start_time) || a.id.localeCompare(b.id));
+  assert.equal(checkpoint.schema_version, CHECKPOINT_SCHEMA, 'Sampling requires a role-aware checkpoint');
+  const rows = Object.values(checkpoint.rows).filter(row => row.record_role === 'primary_turn' && !row.synthetic && !row.heartbeat && !row.unfinished).sort((a, b) => a.start_time.localeCompare(b.start_time) || a.id.localeCompare(b.id));
+  assert.ok(rows.length > 0, 'Sampling requires completed production primary turns');
   const count = Math.min(config.maxTraces, rows.length), selected = [];
   for (let i = 0; i < count; i++) selected.push(rows[Math.floor(rows.length * (i + 0.5) / count)]);
   const traces = [];
@@ -61,7 +63,7 @@ async function sampleTraces(api, checkpoint, config) {
     const trace = await api.request(`/api/public/traces/${id}`);
     traces.push({ id, input: clipped(trace.input), output: clipped(trace.output), observations: (trace.observations ?? []).slice(-12).map(item => ({ type: item.type, name: item.name, input: clipped(item.input, 500), output: clipped(item.output, 500), level: item.level })) });
   }
-  const input = { date: checkpoint.date, projectId: config.projectId, origin: api.origin, population: rows.length, sampling: 'Evenly spaced by root start time; no success/failure filtering', traces };
+  const input = { date: checkpoint.date, projectId: config.projectId, origin: api.origin, population: rows.length, sampling_contract: 'primary-turns-v3', sampling: 'Evenly spaced by completed production primary-turn start time; no success/failure filtering', traces };
   assert.ok(Buffer.byteLength(JSON.stringify(input)) <= config.maxInputBytes, 'Sample exceeds the configured input budget; reduce maxTraces');
   return input;
 }
@@ -120,6 +122,7 @@ export async function runDaily(config, date, { collect = collectQuality, createA
     assert.equal(invocation.model, config.model, 'Existing model receipt uses another model');
     assert.equal(invocation.reasoning, config.reasoning, 'Existing model receipt uses another reasoning level');
     assert.equal(input.projectId, config.projectId); assert.equal(input.date, date);
+    assert.equal(input.sampling_contract, 'primary-turns-v3', 'Existing analysis used another sampling contract; retain its evidence and use a new output directory');
     const candidate = renderCandidate(response, input, date), path = join(out, 'candidate.md');
     await writeFile(path, candidate, { mode: 0o600 });
     const status = { date, stage: 'candidate_ready', model_run: true, published: false, candidate: path, candidate_sha256: createHash('sha256').update(candidate).digest('hex') };
