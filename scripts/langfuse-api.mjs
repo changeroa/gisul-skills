@@ -11,7 +11,7 @@ export async function langfuseApi(configPath = process.env.LANGFUSE_CONFIG ?? jo
     origin: base.origin,
     async request(path, { method = "GET", body } = {}) {
       if (!path.startsWith("/api/public/")) throw new Error("Only project API paths are supported");
-      const response = await fetch(new URL(path, base), { method, headers: { Authorization: auth, ...(body ? { "Content-Type": "application/json" } : {}) }, body: body ? JSON.stringify(body) : undefined, signal: AbortSignal.timeout(20000), redirect: "error" });
+      const response = await fetch(new URL(path, base), { method, headers: { Authorization: auth, ...(body ? { "Content-Type": "application/json" } : {}), ...(path === "/api/public/otel/v1/traces" ? { "x-langfuse-ingestion-version": "4" } : {}) }, body: body ? JSON.stringify(body) : undefined, signal: AbortSignal.timeout(20000), redirect: "error" });
       if (!response.ok) {
         const error = new Error(`Langfuse ${method} ${path.split("?")[0]} returned HTTP ${response.status}`);
         error.status = response.status;
