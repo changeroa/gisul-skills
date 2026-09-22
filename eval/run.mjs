@@ -9,6 +9,7 @@ import { execFileSync } from 'node:child_process';
 import { dataset } from './dataset.mjs';
 import { prepareCase } from './prepare.mjs';
 import { scoreCase } from './score.mjs';
+import { requireCanary } from './canary-proof.mjs';
 import { CodexSession, buildEnvironment, verifyBoundary, readyServers } from './runtime.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), REPO = resolve(HERE, '..');
@@ -131,15 +132,16 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
 
 async function main() {
   const { parseArgs } = await import('node:util');
-  const { values } = parseArgs({ options: { out: { type: 'string' }, profile: { type: 'string', default: 'baseline' }, 'reader-config': { type: 'string' }, 'baseline-agents': { type: 'string', default: join(homedir(), '.codex/AGENTS.md') }, 'candidate-agents': { type: 'string', default: join(HERE, 'candidates/bootstrap/AGENTS.md') }, cases: { type: 'string' }, preflight: { type: 'boolean', default: false } } });
+  const { values } = parseArgs({ options: { out: { type: 'string' }, profile: { type: 'string', default: 'baseline' }, 'reader-config': { type: 'string' }, canary: { type: 'string' }, 'baseline-agents': { type: 'string', default: join(homedir(), '.codex/AGENTS.md') }, 'candidate-agents': { type: 'string', default: join(HERE, 'candidates/bootstrap/AGENTS.md') }, cases: { type: 'string' }, preflight: { type: 'boolean', default: false } } });
   if (!values.out || !values['reader-config'] || !['baseline', 'candidate'].includes(values.profile)) throw new Error('Usage: node eval/run.mjs --out ABSOLUTE --reader-config JSON --profile baseline|candidate [--preflight] [--cases N-01]');
   const root = resolve(values.out);
+  const reader = JSON.parse(await readFile(resolve(values['reader-config']), 'utf8'));
+  assert.equal(hash(await readFile(reader.bundle)), reader.bundleHash, 'Reader changed');
+  const canary = values.preflight ? null : await requireCanary(values.canary && resolve(values.canary), reader);
   await mkdir(root, { recursive: false }); // Existing evidence is never overwritten.
   const source = await dataset();
   const selection = values.preflight ? source.cases.filter(x => x.id === 'N-01') : values.cases ? source.cases.filter(x => values.cases.split(',').includes(x.id)) : source.cases;
   if (!selection.length || (values.cases && selection.length !== values.cases.split(',').length)) throw new Error('Unknown or duplicate case selection');
-  const reader = JSON.parse(await readFile(resolve(values['reader-config']), 'utf8'));
-  assert.equal(hash(await readFile(reader.bundle)), reader.bundleHash, 'Reader changed');
   await saveJson(join(root, 'reader.json'), reader);
   const id = 'agent-env-v1-' + values.profile + '-' + randomUUID();
   const workspaceRoot = join(homedir(), 'tmp/gisul-formal-eval', id);
@@ -150,6 +152,7 @@ async function main() {
   const tracked = execFileSync('git', ['ls-files', 'eval', 'package-lock.json'], { cwd: REPO, encoding: 'utf8' }).trim().split('\n');
   for (const path of new Set([...tracked.map(x => join(REPO, x)), ...['run.mjs','reader.mjs','runtime.mjs','prepare.mjs','score.mjs','profiles/eval-baseline.config.toml','profiles/eval-candidate.config.toml'].map(x => join(HERE, x)), reader.bundle])) fileHashes[path] = hash(await readFile(path));
   const protocol = { schema: 1, id, createdAt: new Date().toISOString(), dataset: { name: source.name, version: source.version, totalCases: source.cases.length }, profile: values.profile, sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: REPO, encoding: 'utf8' }).trim(), codexVersion: execFileSync('codex', ['--version'], { encoding: 'utf8' }).trim(), model: 'gpt-6-astra', effort: 'max', maxTokens: 1500000, concurrency: 2, timeoutMs: 240000, instructions, instructionHashes: Object.fromEntries(Object.entries(instructions).map(([key,value]) => [key,hash(value)])), loaderMarkdown: await readFile(reader.loader, 'utf8'), reader, prices: PRICES, fileHashes, commonInstructions: COMMON, schedule, preflight: values.preflight, fullDataset: !values.cases && !values.preflight, synthetic: true, humanRatings: 0, semanticJudge: null, promotion: 'not_evaluated' };
+  protocol.canary = canary;
   protocol.hash = hash(JSON.stringify(protocol));
   await saveJson(join(root, 'protocol.json'), protocol);
   await saveJson(join(root, 'cases.private.json'), selection);

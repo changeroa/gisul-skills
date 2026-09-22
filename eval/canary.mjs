@@ -1,12 +1,13 @@
 // Explicit, paid infrastructure check; this is not a scored dataset case.
 import assert from 'node:assert/strict';
-import { appendFile, mkdir, readFile, rm } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { buildEnvironment, CodexSession, readyServers, verifyBoundary } from './runtime.mjs';
 import { estimateCost, hash, saveJson } from './run.mjs';
+import { assertCanaryActions, canaryFingerprint } from './canary-proof.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), REPO = resolve(HERE, '..');
 export async function writeCanary(root, readerPath) {
@@ -17,7 +18,7 @@ export async function writeCanary(root, readerPath) {
   const home = join(root, 'codex-home'), log = join(root, 'mock.jsonl');
   const events = [], writes = [];
   let api;
-  const evidence = { kind: 'infrastructure_write_canary', synthetic: true, model: 'gpt-6-astra', effort: 'max', startedAt: new Date().toISOString(), passed: false };
+  const evidence = { kind: 'infrastructure_capability_canary', synthetic: true, model: 'gpt-6-astra', effort: 'max', startedAt: new Date().toISOString(), passed: false };
   try {
     const built = await buildEnvironment({ home, workspace, agentsMarkdown: '', loaderMarkdown: await readFile(reader.loader, 'utf8'), model: evidence.model, effort: evidence.effort,
       deniedPaths: [root, REPO, join(homedir(), 'dev-tools')],
@@ -25,18 +26,19 @@ export async function writeCanary(root, readerPath) {
         gisul: { command: process.execPath, args: [join(HERE, 'reader.mjs')], cwd: REPO, env: { EVAL_READER_CONFIG: readerPath, GISUL_EVENT_LOG_DIR: join(root, 'gisul-events') } },
         linear: { command: process.execPath, args: [join(HERE, 'mock-linear.mjs')], cwd: REPO, env: { EVAL_WRITE_LOG: log } },
       } });
+    const input = randomUUID() + '\n';
+    await writeFile(join(workspace, 'canary-input.txt'), input, { flag: 'wx', mode: 0o600 });
+    evidence.fingerprint = await canaryFingerprint(reader);
     api = new CodexSession({ cwd: workspace, config: built.config, env: built.env, record: event => { events.push(event); const pending = appendFile(join(root, 'events.jsonl'), JSON.stringify(event) + '\n', { mode: 0o600 }); writes.push(pending); return pending; } });
     evidence.host = await api.initialize();
-    await api.start(workspace, { developerInstructions: 'This is an authorized infrastructure canary against local in-memory tools. Perform only the requested two MCP calls, then report the result. Do not read files, search skills or contact other services.' });
+    const started = await api.start(workspace, { developerInstructions: 'This is an authorized infrastructure canary against local workspace files and in-memory tools. Perform only the requested local file operations and two MCP calls, then report the result. Do not search skills or contact other services.' });
+    evidence.environments = started.thread.environments;
     evidence.boundary = await verifyBoundary(api, { workspace, allowedPath: built.loaderPath, deniedPaths: [join(home, 'auth.json'), readerPath] });
     await readyServers(api);
-    const completed = await api.turn('Use linear.save_issue exactly once to create title "Evaluation write canary", team "IYEN Development", project "dev-tools", template "개발 작업". Then call linear.get_issue with the returned issue ID and confirm its title. These tools only change the local fixture.', { timeoutMs: 90000, responsesapiClientMetadata: { synthetic: 'true', gisul_eval_canary: 'fixture_write' } });
+    const completed = await api.turn('First use the local shell to print the exact contents of canary-input.txt, then copy its exact contents to canary-output.txt in this workspace. Next use linear.save_issue exactly once to create title "Evaluation write canary", team "IYEN Development", project "dev-tools", template "개발 작업". Then call linear.get_issue with the returned issue ID and confirm its title. These tools only change the local fixture.', { timeoutMs: 90000, responsesapiClientMetadata: { synthetic: 'true', gisul_eval_canary: 'file_and_fixture_write' } });
     evidence.turnId = completed.turn.id;
     const mock = (await readFile(log, 'utf8')).trim().split('\n').map(JSON.parse);
-    const creates = mock.filter(x => x.phase === 'applied' && x.tool === 'save_issue');
-    assert.equal(creates.length, 1, 'Exactly one fixture write must actually be applied');
-    assert.ok(mock.some(x => x.phase === 'applied' && x.tool === 'get_issue' && x.result.id === creates[0].result.id && x.result.title === 'Evaluation write canary'), 'Created issue must be read back');
-    assert.equal(events.filter(x => x.method === 'evaluation/interactiveRequestRejected').length, 0);
+    evidence.checks = assertCanaryActions({ events, input, output: await readFile(join(workspace, 'canary-output.txt'), 'utf8'), mockEvents: mock });
     evidence.mockEvents = mock;
     evidence.passed = true;
   } catch (error) { evidence.error = String(error); }

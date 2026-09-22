@@ -51,7 +51,7 @@
       "sourceCommit": "b672307f465ab928f2096a4215ec8ad0933b8c1e",
       "protocolHash": "e8718d40d0630bae8c97f4aaaa039cd265d6f4762ec913cd1f820cfc1e8782e7",
       "experimentId": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6",
-      "assessment": "partial_infrastructure_stop",
+      "assessment": "diagnostic_invalid_for_behavior",
       "summary": {
         "protocolHash": "e8718d40d0630bae8c97f4aaaa039cd265d6f4762ec913cd1f820cfc1e8782e7",
         "experimentId": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6",
@@ -75,7 +75,8 @@
       "datasetId": "cmu4sphcs001uad0dd0yf31le",
       "synthetic": true,
       "humanRatings": 0,
-      "promotion": "not_evaluated"
+      "promotion": "not_evaluated",
+      "assessmentCorrection": "Post-export audit: environments: [] disabled model shell/file access. Preserve original partial-infrastructure receipt; assessment-addendum.json and separate Langfuse validity score record the correction."
     }
   ],
   "fixedRunRawReadback": {
@@ -93,7 +94,7 @@
     "tokens": 39626,
     "estimatedCost": 0.31886
   },
-  "knownCostEquivalent": 11.624462,
+  "knownCostEquivalent": 11.966318,
   "costLimitation": "Not account bill; one failed attempt lacks a usage receipt. Includes invalid diagnostic run and canary.",
   "diagnosticRawRevisions": {
     "experimentItems": 22,
@@ -114,5 +115,47 @@
     "Pinned semantic judge",
     "Ten genuine human ratings and agreement",
     "Matched candidate comparison before any promotion"
+  ],
+  "capabilityCanaries": [
+    {
+      "directory": "capability-canary-01",
+      "passed": false,
+      "threadId": "01a0c887-94fa-72d0-8881-cc4ae3831ec4",
+      "usage": {
+        "totalTokens": 22854,
+        "inputTokens": 22238,
+        "cachedInputTokens": 10880,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 616,
+        "reasoningOutputTokens": 385
+      },
+      "estimatedCost": 0.15526,
+      "error": "Error: ENOENT: no such file or directory, open '/Users/iyen/dev-tools/session-notes/local-evals-20260922/capability-canary-01/mock.jsonl'"
+    },
+    {
+      "directory": "capability-canary-02",
+      "passed": true,
+      "threadId": "01a0c889-6efc-7d93-8f88-e179bd7ea89a",
+      "usage": {
+        "totalTokens": 46462,
+        "inputTokens": 45867,
+        "cachedInputTokens": 33536,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 595,
+        "reasoningOutputTokens": 294
+      },
+      "estimatedCost": 0.186596,
+      "checks": {
+        "fileRead": true,
+        "fileWrite": true,
+        "issueCreate": true,
+        "issueRead": true,
+        "inputDigest": "caba4f99cfbcd6426271e93302f8e2ee7d05fb79d93ebd44adc6c59b8a05097c",
+        "outputDigest": "caba4f99cfbcd6426271e93302f8e2ee7d05fb79d93ebd44adc6c59b8a05097c",
+        "readItemIds": [
+          "exec-055ec3a5-6a9f-46f9-9661-98069cec133c"
+        ]
+      }
+    }
   ]
 }

@@ -3,6 +3,7 @@ import { readFile, writeFile, rm } from 'node:fs/promises';
 import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
+import { requireCanary } from './canary-proof.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 export function continuationSlots(protocol, phase) {
@@ -25,6 +26,8 @@ export async function continueRun(root, { maxTokens = 600000 } = {}) {
   const phase = JSON.parse(phaseBytes), firstSummary = JSON.parse(summaryBytes);
   assert.equal(firstSummary.protocolHash,protocol.hash);
   const schedule = continuationSlots(protocol,phase);
+  const canary = await requireCanary(protocol.canary?.path, protocol.reader);
+  assert.equal(canary.receiptHash, protocol.canary.receiptHash, 'Original capability canary changed');
   for (const [path,expected] of Object.entries(protocol.fileHashes)) assert.equal(hash(await readFile(path)),expected,'Original execution source changed: '+path);
   const runner = Object.keys(protocol.fileHashes).find(x => x.endsWith('/eval/run.mjs'));
   assert.ok(runner,'Original runner is not pinned');

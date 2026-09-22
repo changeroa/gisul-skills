@@ -87,7 +87,8 @@ node eval/run.mjs --out /absolute/new/preflight-directory \
 node eval/canary.mjs --out /absolute/new/write-canary \
   --reader-config /private/reader.json
 node eval/run.mjs --out /absolute/new/baseline-directory \
-  --reader-config /private/reader.json --profile baseline
+  --reader-config /private/reader.json --profile baseline \
+  --canary /absolute/new/write-canary/receipt.json
 node eval/export.mjs --run /absolute/new/baseline-directory --project PROJECT_ID
 node eval/export.mjs --run /absolute/new/baseline-directory --project PROJECT_ID --apply
 ```
@@ -116,8 +117,26 @@ and Slack operations terminate at the local mock. L-08 injects a lost response
 after a successful create. F-02 lacks a browser fixture, so it cannot prove a live
 login-to-editor flow and remains explicitly limited.
 
-The paid write canary must actually create and read back one mock issue before a
-full experiment. Shell `approval_policy=never` alone does not authorize MCP writes.
+Every model experiment requires `--canary` from the same code, CLI binaries,
+model and reader. The paid capability canary must print an unpredictable file's
+contents through a successful model command, copy it to a new file, and create
+and read back one mock issue. A successful controller `command/exec` probe does
+not prove that file tools are exposed to the model. An old write-only receipt or
+model statement that it read a file is rejected.
+
+The thread must select exactly the local execution environment. Do not pass
+`environments: []`: in Codex 0.155.1 that disables environment access and removes
+the model's shell/file tools while controller probes can still succeed.
+Standalone CLI installations under the protected `~/.codex` directory cannot
+launch native filesystem helpers under these read-deny rules. Use a verified
+copy of **both** `codex` and its sibling `codex-code-mode-host` in a private runtime
+directory outside credentials, the denied checkout and the task workspace. Set
+`PATH` only for evaluation commands; keep the real credential directory denied.
+The canary records both executable hashes and checks the model's actual file IO.
+On this Mac mini the verified runtime is
+`/Users/iyen/.local/share/gisul-eval-runtime/0.155.1`; the global CLI is unchanged.
+
+Shell `approval_policy=never` alone does not authorize MCP writes.
 Per-tool `approval_mode=approve` applies only to the exact local mock executable;
 external or replacement Linear transports are rejected. The canary has no corpus
 answers and is recorded separately from behavioral results and their cost.
