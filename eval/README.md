@@ -155,9 +155,10 @@ If execution reveals a harness defect, retain the frozen results and add a
 separate `assessment.json` with `status: "diagnostic_invalid_for_behavior"` and
 the reason before export. The experiment records this assessment and its hash;
 it is not eligible for a behavioral comparison. Corrected runs get new protocols.
-All exported traces are synthetic and use the `evaluation` environment; they are
-excluded from production daily quality evidence. No scheduler or global setting
-is installed by the runner.
+All exported traces are synthetic and use the `evaluation` environment. They are
+excluded from production primary-turn metrics, while raw duplicate/revision
+checks still retain them. Evaluation exports cannot prove a zero-duplicate day.
+No scheduler or global setting is installed by the runner.
 
 After reviewing a token-stopped run's actual cost, an explicit
 `node eval/continue.mjs --run DIR` permits one further phase of at most 600k

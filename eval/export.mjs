@@ -57,7 +57,9 @@ function metadataLeaves(value, prefix = '') {
   if (value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length) {
     return Object.assign({}, ...Object.entries(value).map(([key, item]) => metadataLeaves(item, prefix ? prefix + '.' + key : key)));
   }
-  return { [prefix]: typeof value === 'string' ? value : JSON.stringify(value) };
+  // V4 retains an explicit null metadata leaf as an empty string. Missing keys
+  // still fail the comparison; this does not turn absent usage into zero usage.
+  return { [prefix]: value === null ? '' : typeof value === 'string' ? value : JSON.stringify(value) };
 }
 
 export function verifyItem(actual, span, protocol, datasetId) {

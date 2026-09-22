@@ -1,0 +1,118 @@
+{
+  "recordedAt": "2026-09-22T08:52:18.389505+00:00",
+  "scope": "Mac mini only; MacBook Pro and E14 historical evidence unchanged",
+  "projectId": "cmu275pqc00i8ad0d79dddjgk",
+  "content": {
+    "release": "20260922.26",
+    "commit": "c7955e405fc609282c6c3890f3ab152f42749a14",
+    "serverCommit": "bc6ba43045fb6303c3b1a631e28a40381be63ad2"
+  },
+  "experiments": [
+    {
+      "directory": "baseline-01",
+      "sourceCommit": "2145776f2c79c18656f76a43757e00bc99870a39",
+      "protocolHash": "68514aadb508c3b469592f1e5d9ca3cd559d8bbac9eceb596ea87af0e8acc0b2",
+      "experimentId": "agent-env-v1-baseline-46eed72d-7f37-485f-b0cf-8be40b2b782b",
+      "assessment": "diagnostic_invalid_for_behavior",
+      "summary": {
+        "protocolHash": "68514aadb508c3b469592f1e5d9ca3cd559d8bbac9eceb596ea87af0e8acc0b2",
+        "experimentId": "agent-env-v1-baseline-46eed72d-7f37-485f-b0cf-8be40b2b782b",
+        "scheduled": 22,
+        "completed": 19,
+        "failed": 3,
+        "stopped": "observed_token_limit",
+        "fullDataset": true,
+        "tokens": 2278535,
+        "estimatedCost": 9.24503,
+        "missingUsage": 0,
+        "grading": {
+          "pass": 0,
+          "fail": 4,
+          "unverified": 18
+        },
+        "humanRatings": 0,
+        "promotion": "not_evaluated",
+        "continuation": {
+          "hash": "863ba06b8e1e60cccd9e70bb6b94a6bc3ec6fe70235aa808b101cd7f828e4909",
+          "maxTokens": 600000,
+          "initialStopReason": "observed_token_limit",
+          "executed": 8,
+          "tokens": 611301
+        }
+      },
+      "verifiedItems": 22,
+      "datasetId": "cmu4sphcs001uad0dd0yf31le",
+      "synthetic": true,
+      "humanRatings": 0,
+      "promotion": "not_evaluated"
+    },
+    {
+      "directory": "baseline-02",
+      "sourceCommit": "b672307f465ab928f2096a4215ec8ad0933b8c1e",
+      "protocolHash": "e8718d40d0630bae8c97f4aaaa039cd265d6f4762ec913cd1f820cfc1e8782e7",
+      "experimentId": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6",
+      "assessment": "partial_infrastructure_stop",
+      "summary": {
+        "protocolHash": "e8718d40d0630bae8c97f4aaaa039cd265d6f4762ec913cd1f820cfc1e8782e7",
+        "experimentId": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6",
+        "scheduled": 22,
+        "completed": 5,
+        "failed": 3,
+        "stopped": "interrupted",
+        "fullDataset": true,
+        "tokens": 552382,
+        "estimatedCost": 2.060572,
+        "missingUsage": 1,
+        "grading": {
+          "pass": 0,
+          "fail": 3,
+          "unverified": 5
+        },
+        "humanRatings": 0,
+        "promotion": "not_evaluated"
+      },
+      "verifiedItems": 8,
+      "datasetId": "cmu4sphcs001uad0dd0yf31le",
+      "synthetic": true,
+      "humanRatings": 0,
+      "promotion": "not_evaluated"
+    }
+  ],
+  "fixedRunRawReadback": {
+    "checkedAt": "2026-09-22T08:50:04.211Z",
+    "experimentId": "agent-env-v1-baseline-c7b3d6ee-8ff8-4573-b2a0-2c21d1414df6",
+    "expectedItems": 8,
+    "rawObservations": 8,
+    "uniqueIdentities": 8,
+    "synthetic": true,
+    "reconciledWithoutResubmission": true
+  },
+  "canary": {
+    "passed": true,
+    "threadId": "01a0c83b-bdf9-7b83-804a-c8001ed3502e",
+    "tokens": 39626,
+    "estimatedCost": 0.31886
+  },
+  "knownCostEquivalent": 11.624462,
+  "costLimitation": "Not account bill; one failed attempt lacks a usage receipt. Includes invalid diagnostic run and canary.",
+  "diagnosticRawRevisions": {
+    "experimentItems": 22,
+    "rawObservations": 44,
+    "preserved": true
+  },
+  "tests": {
+    "localFull": {
+      "passed": 103,
+      "skipped": 1
+    },
+    "exportNullRegression": {
+      "passed": 6
+    }
+  },
+  "remaining": [
+    "Full valid 22-case baseline after provider capacity recovers",
+    "Pinned semantic judge",
+    "Ten genuine human ratings and agreement",
+    "Matched candidate comparison before any promotion"
+  ]
+}

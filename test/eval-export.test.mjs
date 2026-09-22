@@ -70,6 +70,14 @@ test('v4 JSON IO and flattened string metadata preserve all evidence, with missi
   delete row.metadata['usage.totalTokens'];
   assert.throws(()=>verifyItem(row,span,protocol,'dataset-id'),/usage.totalTokens/);
 });
+test('v4 explicit null usage stays unknown, and an absent usage key still fails', () => {
+  const span=experimentSpan(protocol,item,{...result,usage:null,estimatedCost:null},'dataset-id');
+  const row=readback(span);
+  row.metadata.usage=''; row.metadata.estimated_cost='';
+  verifyItem(row,span,protocol,'dataset-id');
+  delete row.metadata.usage;
+  assert.throws(()=>verifyItem(row,span,protocol,'dataset-id'),/usage/);
+});
 test('stopped runs export only actual executions, with missing cases explicit and stable retry identities', async () => {
   const root=await mkdtemp(join(tmpdir(),'partial-eval-export-'));
   const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
