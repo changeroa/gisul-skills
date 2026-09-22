@@ -27,7 +27,7 @@ Codex identity uses a nonnegative integer `run.turn_index`, falling back to a no
 
 ## Counts and gates
 
-Report version 2 keeps every fetched root in `counts.roots` and `by_agent`; these are record counts, not turn counts. `primary_turn_roots`, `tool_roots`, `subagent_lifecycle_roots`, `unknown_role_roots` and `by_agent_role` expose the classification. `non_synthetic_primary_turn_roots` and `primary_turns_by_agent` count primary turns after synthetic/heartbeat exclusion, including unfinished turns. Exclusion uses explicit metadata or tags only; unmarked tests remain in scope.
+Report version 3 declares `checkpoint_schema: 3` and keeps every fetched root in `counts.roots` and `by_agent`; these are record counts, not turn counts. `primary_turn_roots`, `tool_roots`, `subagent_lifecycle_roots`, `unknown_role_roots` and `by_agent_role` expose the classification. `non_synthetic_primary_turn_roots` and `primary_turns_by_agent` count primary turns after synthetic/heartbeat exclusion, including unfinished turns. Exclusion uses explicit metadata or tags only; unmarked tests remain in scope.
 
 IO rates, metadata checks and identity counts cover completed, non-synthetic, non-heartbeat primary turns. Known tools and lifecycle records do not enter those denominators. Unknown roles block overall quality; unknown roles attributed to Codex or an unknown producer also block E14. Unknown identities, missing input/output/run metadata, unfinished primary turns, empty primary populations and unfinished or partially collected calendar days cannot pass overall quality.
 
@@ -61,3 +61,19 @@ The replay checks the archive digest and supplied per-day counts, adapting its m
 On an Asia/Seoul macOS host, `node scripts/install-quality-schedule.mjs PROJECT_ID` installs `com.iyendev.langfuse-quality` at 09:00 daily in the user's launchd domain. It queries the previous completed Korean calendar day. Sleeping/offline machines may delay execution. A failed date can be resumed explicitly with `--date`. This job only reads Langfuse; it does not run a model, send messages, create PRs or promote instructions. Daily model analysis remains a separate evaluation-gated step.
 
 The workflow and bootstrap are reviewable candidates in `eval/candidates/`. See [evaluation](../eval/README.md) for promotion conditions. Three consecutive dated reports must be actual scheduled observations; backfilled dates do not prove three days of scheduler operation.
+
+### Verification on 2026-09-22
+
+A manual API audit of Sep21 (Asia/Seoul) completed all 40 pages, including a real
+HTTP 429 and successful checkpoint resume. It returned 3,913 logical roots and
+225 production primary turns: 135 Codex and 90 OpenClaw. Input omissions and
+duplicate turns were zero. Overall quality still failed: three aborted Codex
+turns lacked final output and all 90 legacy OpenClaw turns lacked canonical
+identity/run metadata. The OpenClaw collector deployment documented in
+[OpenClaw gisul](openclaw-gisul.md) affects new turns, not historical records.
+
+The existing 09:00 KST schedule remains on MacBook Pro. This manual audit is not
+evidence of three consecutive scheduled executions. Mac mini could reach that
+host but SSH authentication was denied, so its job receipts and deployment of
+this schema-3 update remain unverified. No replacement job was installed on Mac
+mini. IYEN-44 stays open; Sep17's frozen E14 failure is retained independently.
