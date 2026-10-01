@@ -1,6 +1,7 @@
 ---
 name: re0
 description: "Refresh an existing artifact into the current best v0. Use when the user asks to clean up, sync up, dedupe, de-noise, smooth, rewrite, or update an artifact after iteration; when nearby artifacts may have drifted; or when changes in one place should be reflected across related artifacts while keeping the result minimal."
+keywords: ["문서 정리", "최신 상태", "중복 제거", "반복 수정", "정합성", "artifact refresh", "rewrite cleanup", "deduplicate", "sync related artifacts"]
 ---
 
 Refresh the target artifact as if it were the first clean version.

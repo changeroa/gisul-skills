@@ -1,6 +1,7 @@
 ---
 name: re0-loop
 description: "Run repeated build -> QA -> re0-memo -> re0-work cycles while preserving learning and letting code die. Use for long agentic projects where progress must be measured by quality-cleared templates, reusable modules, and eliminated anti-patterns rather than hours spent or features accumulated."
+keywords: ["구현 검증 회고", "장기 프로젝트", "반복 개선", "품질 게이트", "iterative build QA", "continuous learning", "quality loop"]
 ---
 
 Run the cycle so learning compounds and code accumulation does not masquerade as progress.

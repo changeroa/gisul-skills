@@ -2,6 +2,7 @@
 name: aside-browser
 version: 3
 description: Read when you need a browser, or have to work across user's logged-in websites (e.g. Gmail, Slack, cloud consoles, etc.), or have to refer personal contexts like memory and browsing history.
+keywords: ["브라우저", "웹사이트", "로그인", "페이지 탐색", "버튼 클릭", "화면 열기", "browser automation", "authenticated website", "navigate click", "browsing history"]
 ---
 
 # Aside

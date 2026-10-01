@@ -2,6 +2,7 @@
 name: re0-plan
 description: "Open a paperthin iteration's casebook before re0-loop's first turn — seeded with real content the moment the folder exists, never an empty directory. User-invoked, paperthin-only: assumes the full skill package installed. Run when opening a new build cycle in this repo."
 disable-model-invocation: true
+keywords: ["paperthin", "반복 계획", "사례 기록", "시작 준비", "casebook", "iteration planning", "paperthin setup"]
 ---
 
 Open `.re0/iteration/<version>-<workname>/` and write into it in the same motion, before a single line of `re0-loop`'s cycle runs.

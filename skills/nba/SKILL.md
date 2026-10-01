@@ -1,6 +1,7 @@
 ---
 name: nba
 description: "Read the live cycle state and return the single highest-leverage next best action, not a menu. Use when a project is between phases, the author asks what to do next, too many valid threads are open, or the work needs re-entry into frame, build, drive, re0-memo, hate, re0-work, or ship."
+keywords: ["다음 행동", "우선순위", "가장 중요한", "프로젝트 재진입", "next best action", "highest leverage", "prioritization"]
 ---
 
 Find the next best action from state, not from vibes.

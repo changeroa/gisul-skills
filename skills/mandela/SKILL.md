@@ -1,6 +1,7 @@
 ---
 name: mandela
 description: "Audit any eval, metric, experiment, or benchmark for leakage — does external ground-truth enter independently, or are the model, scorer, and designer just confirming a result no outside truth ever produced? Use before trusting any 'how we'll know it worked' — an A/B, a holdout, a score, a validation — and whenever a result feels too clean or self-confirming. Walks an 8-pattern leakage taxonomy and returns only the patterns that fire, each with an independence fix. Read-only."
+keywords: ["벤치마크", "평가 누출", "정답 누출", "순환 검증", "독립 근거", "benchmark leakage", "evaluation audit", "independent ground truth"]
 ---
 
 Audit a validation for leakage: does outside ground-truth actually enter, or is everyone confirming a result no one independently produced?

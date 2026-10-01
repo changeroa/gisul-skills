@@ -1,6 +1,7 @@
 ---
 name: shower
 description: "Cold-read the artifact you're focused on from a fresh, zero-context sub-session to confirm it stands on its own — a shower-thought reset for accumulated session bias. Use when a long session has worn away your fresh eyes and you can no longer tell whether the artifact in focus is clear to someone with no prior context; before a handoff, publish, or merge; or when you want a clean-room comprehension smoke test. Spawns a separate context-free reviewer; it diagnoses, it does not fix."
+keywords: ["처음 보는", "맥락 없이", "새로운 시각", "독립 독해", "cold read", "fresh context", "standalone clarity"]
 ---
 
 Step out of the session and let a clean mind read it: does the artifact stand on its own?

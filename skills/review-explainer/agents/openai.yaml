@@ -1,0 +1,6 @@
+interface:
+  display_name: "리뷰를 흐름으로 설명하기"
+  short_description: "실제 코드 이름과 쉬운 설명을 연결한 문서형 UML 리뷰 웹"
+  default_prompt: "$review-explainer로 이 리뷰 결과를 시스템을 모르는 독자도 이해할 문서형 웹으로 만들어줘. 실제 코드 이름을 유지하고 이슈별로 적합한 UML을 써줘."
+policy:
+  allow_implicit_invocation: true

@@ -1,7 +1,7 @@
 ---
 name: dedash
-disable-model-invocation: true
 description: "Remove em-dashes and the dashes standing in for them from a user-owned scope, reading each occurrence in context and choosing the punctuation or wording that fits."
+keywords: ["대시", "구두점", "문장부호", "문맥", "em dash removal", "punctuation editing"]
 ---
 
 Remove em-dashes and the dashes standing in for them from the scope the user names, one occurrence at a time, while leaving hyphens, ranges, and deliberate marks alone.

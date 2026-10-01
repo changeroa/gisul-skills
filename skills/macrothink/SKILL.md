@@ -2,6 +2,7 @@
 name: macrothink
 disable-model-invocation: true
 description: "User-invoked read-only pass for checking whether the current direction is tunnel-visioned: strip the session's bait, fan out 2 to 5 same-model fresh reads, and report divergence first without treating convergence as proof."
+keywords: ["터널 시야", "거시적 방향", "현재 방향", "관점 확장", "tunnel vision", "direction audit", "fresh independent reads"]
 ---
 
 Step back from the session's chosen path and ask several fresh reads what the current direction might be missing.

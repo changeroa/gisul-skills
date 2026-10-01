@@ -6,6 +6,7 @@ metadata:
   version: "2.17"
   author: tt-a1i
   based_on: Cocoon-AI/architecture-diagram-generator (MIT, v1.0)
+keywords: ["아키텍처", "서비스 구조", "다이어그램", "데이터 흐름", "시퀀스", "상태도", "시각화", "architecture diagram", "data flow", "interactive export", "sequence diagram"]
 ---
 
 # Archify

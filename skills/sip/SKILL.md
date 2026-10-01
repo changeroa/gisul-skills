@@ -1,6 +1,7 @@
 ---
 name: sip
 description: "After you create or change an artifact or skill, taste-test it with our own skills instead of trusting your in-session judgment — recursive self-improvement, made automatic. Use right after writing or editing anything, before calling it done, committing, or handing it off."
+keywords: ["산출물", "자체 점검", "다른 스킬", "자기 개선", "artifact taste test", "recursive improvement", "skill assisted review"]
 ---
 
 Taste your own cooking: the moment you finish making something, check it with the very skills this repo ships before you serve it.

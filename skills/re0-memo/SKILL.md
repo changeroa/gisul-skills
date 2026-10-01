@@ -1,6 +1,7 @@
 ---
 name: re0-memo
 description: "Turn a finished, failed, or disappointing work cycle into portable lessons, anti-patterns, quality gates, and next-cycle vocabulary. Use after a build, QA pass, demo, user complaint, or abandoned attempt when the useful output is what the next pass must learn rather than the code itself."
+keywords: ["실패 교훈", "회고", "안티패턴", "다음 반복", "품질 기준", "lessons learned", "retrospective", "anti patterns", "quality gates"]
 ---
 
 Turn a completed cycle into lessons the next cycle can actually use.

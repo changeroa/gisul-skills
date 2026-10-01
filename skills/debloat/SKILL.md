@@ -1,7 +1,7 @@
 ---
 name: debloat
-disable-model-invocation: true
 description: "Compress an artifact that has accreted into bloat — padding, over-qualification, fused sentences, walls of enumeration, adjacent restatement — down to its load-bearing density, meaning preserved. Use when prose is correct and current but has grown verbose or patched-over and you want it tight without a full rewrite."
+keywords: ["중복 문장", "반복", "장황", "간결", "의미 보존", "안내문", "압축", "문장 축약", "prose compression", "concise", "shorten", "remove repetition"]
 ---
 
 Cut a bloated artifact to its load-bearing minimum: same meaning, fewer words.

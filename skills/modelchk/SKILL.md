@@ -1,6 +1,7 @@
 ---
 name: modelchk
 description: "Size a task's run before spending it: the cheapest sufficient capability tier (fast, standard, frontier) and the reasoning effort within it, on a neutral scale that binds to whatever levels the model exposes. Use when work seems over- or under-powered, costly, ambiguous, or high-risk, or asks which model class and how much thinking is enough."
+keywords: ["모델 선택", "추론 강도", "성능 등급", "작업 비용", "model selection", "reasoning effort", "capability tier", "compute budget"]
 ---
 
 Size the run before you spend it: how strong a model, and how hard it should think.

@@ -1,6 +1,7 @@
 ---
 name: ssotize
 description: "Audit and consolidate a fact that's scattered across places into one canonical source, after approval, and replace the rest with references. Use when asked to find duplication, check consistency, locate the source of truth, deduplicate, consolidate, unify, or establish SSOT across artifacts or platforms. Starts read-only, reports the map and plan, then mutates only after explicit approval."
+keywords: ["중복 문서", "기준 문서", "정책 통합", "단일 출처", "흩어진 사실", "single source of truth", "canonical source", "consolidate duplication"]
 ---
 
 Find where one truth lives, get approval for the consolidation plan, then collapse it into one canonical home.

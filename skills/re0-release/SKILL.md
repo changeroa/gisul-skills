@@ -2,6 +2,7 @@
 name: re0-release
 description: "Walk a pending change through this repo's shipping and releasing checklist end to end, then tag and publish once confirmed. User-invoked: run it when you've decided to ship."
 disable-model-invocation: true
+keywords: ["paperthin", "출시 체크리스트", "태그 게시", "릴리스", "release checklist", "tag publish", "shipping"]
 ---
 
 Run this repo's shipping and releasing checklist on a pending change, then tag and publish once confirmed.

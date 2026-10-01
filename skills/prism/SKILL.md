@@ -2,6 +2,7 @@
 name: prism
 disable-model-invocation: true
 description: "Split one artifact — a claim, plan, or file — across 2 to 5 independent lenses, one per genuinely distinct failure mode (correctness, security, readability, cost, adversarial-user), and return their convergence: where they agree, where they disagree, and the single next question that resolves the disagreement. Use when one reviewer isn't enough because the failure modes are heterogeneous, or a claim looks strong to its author and needs cross-lens pressure before it ships."
+keywords: ["독립 관점", "다각도 검토", "보안 정확성 비용", "설계 분석", "independent lenses", "security correctness cost", "multi perspective review"]
 ---
 
 Split one artifact across independent lenses and return where they converge and where they don't.

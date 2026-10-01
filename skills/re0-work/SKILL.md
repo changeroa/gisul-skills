@@ -1,6 +1,7 @@
 ---
 name: re0-work
 description: "Restart a project or artifact from v0 while preserving only proven lessons, contracts, gates, vocabulary, real-surface tests, and negative corpus. Use when the foundation is wrong, accumulated code is misleading progress, or a new pass should learn from the old one without inheriting its accidental architecture."
+keywords: ["처음부터", "잘못된 기반", "검증된 교훈", "재시작", "restart from scratch", "proven lessons", "rebuild foundation"]
 ---
 
 Start over from what the previous cycle proved, not from what it happened to build.

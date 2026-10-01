@@ -1,6 +1,7 @@
 ---
 name: development-status
 description: 개발 기록, PR, 이슈와 검증·배포 근거를 읽어 팀에 공유할 개발 현황을 작성한다. 개발자가 설명을 반복하지 않아도 기능별 진척, 남은 불확실성, 일정·범위 영향과 필요한 결정을 이해하게 한다. 주간 보고, 진행 상황 공유, 개발 인수인계에 사용하며 제품 기획이나 일반 코드 리뷰에는 적용하지 않는다.
+keywords: ["개발 현황", "진행 상황", "공유문", "팀 공유", "주간 보고", "진척", "일정 의존성", "완료", "미검증", "development progress", "weekly report", "deployment evidence", "pull requests"]
 ---
 
 # Development Status
