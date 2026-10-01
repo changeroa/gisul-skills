@@ -1,6 +1,7 @@
 ---
 name: herdr-orchestrator
 description: Proactively create Herdr panes and delegate independent work to coding agents, with active lifecycle monitoring, edit ownership, conflict resolution, and verified integration. Use when coordinating multiple agents through Herdr or when asked to act as a Herdr orchestrator.
+keywords: ["Herdr", "다중 에이전트", "코딩 에이전트", "독립 작업", "위임", "분담", "pane orchestration", "multi agent coordination", "delegate independent work"]
 ---
 
 # Herdr multi-agent orchestration

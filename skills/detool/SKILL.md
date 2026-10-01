@@ -1,6 +1,7 @@
 ---
 name: detool
 description: "Make durable artifacts portable by replacing incidental stack, vendor, model, CLI, path, quota, or harness nouns with the mechanism they mean, while keeping provenance, runbooks, and tool-subject claims concrete."
+keywords: ["특정 도구", "공급자 이름", "일반적인 개념", "이식성", "벤더 중립", "vendor neutral", "tool agnostic", "portable artifact"]
 ---
 
 Remove incidental tool coupling from artifacts that claim to outlive the stack that wrote them.

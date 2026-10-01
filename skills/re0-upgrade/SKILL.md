@@ -2,6 +2,7 @@
 name: re0-upgrade
 description: "Bring your installed paperthin skills up to the full current catalog in one step: retire what's been renamed, add every skill you don't have yet, and refresh the rest, all shown and confirmed before anything changes."
 disable-model-invocation: true
+keywords: ["paperthin", "스킬 묶음", "최신 카탈로그", "업그레이드", "skill suite upgrade", "catalog refresh", "installed skills"]
 ---
 
 Converge an install on the full current paperthin catalog in one step: retire renamed skills, add every skill not yet installed, refresh the rest, behind one confirmation.

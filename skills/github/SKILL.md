@@ -1,6 +1,7 @@
 ---
 name: github
 description: GitHub 저장소에서 코드 변경을 커밋·push하고 PR을 생성·갱신하거나 배포를 준비할 때 사용한다. 배포보다 GitHub 반영을 항상 먼저 완료하고 원격 커밋과 배포 소스의 일치를 확인한다. 로컬 구현 완료 후 배포 요청에도 적용한다.
+keywords: ["커밋", "push", "PR", "배포", "변경사항", "원격 반영", "commit push", "pull request", "deploy verified source", "GitHub release workflow"]
 ---
 
 # GitHub 반영 후 배포

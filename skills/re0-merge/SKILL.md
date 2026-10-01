@@ -2,6 +2,7 @@
 name: re0-merge
 disable-model-invocation: true
 description: "Review and land an external contribution the way this suite does: gate it against the thesis, land it with the author's credit intact, complete a new skill rather than merging it raw, then approve, credit, and explain before closing. Use when reviewing a pull request, as any collaborator or maintainer, not only the author."
+keywords: ["외부 기여", "기여자 보존", "병합 검토", "원저자", "contribution review", "author credit", "merge external contribution"]
 ---
 
 Land a contribution fairly: credit preserved, the maintainer's changes legible, accepted on the record.

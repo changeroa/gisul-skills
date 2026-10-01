@@ -1,7 +1,7 @@
 ---
 name: reorder
-disable-model-invocation: true
 description: "Realign a listing whose order has gone arbitrary — a list, table, catalog, sections, an enum — into a logical sequence under one stated principle. Move items only: nothing is reworded, added, or removed. Use when the order no longer helps a reader follow the set."
+keywords: ["목록", "순서", "재배열", "논리적 정렬", "내용 유지", "reorder listing", "logical sequence", "move items only"]
 ---
 
 Put a listing back into an order that carries meaning, moving items only.

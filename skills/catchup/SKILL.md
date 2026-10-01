@@ -1,6 +1,7 @@
 ---
 name: catchup
 description: "Rebuild the human's lost context on a project from live state, in plain language: what needs them, what changed, what new words mean. Use when the human returns after a gap, says they can't follow the project anymore, asks what happened or what a term means, or before deciding what to do next when their mental model is stale. Read-only; it briefs, it does not act."
+keywords: ["프로젝트 복귀", "오랜만", "그동안", "달라진 상황", "맥락 복원", "진행 이해", "project catchup", "context recovery", "return after gap"]
 ---
 
 Catch the human up at their eye level, from state, not from memory.

@@ -1,6 +1,7 @@
 ---
 name: aim
 description: "When data lands with a thin ask — files, a repo, a paste, a chat scrollback — read it and propose what the user is trying to do with it, as a proposal to confirm rather than a question to answer. Use the moment material arrives without a fully-formed ask, or when the ask reads thinner than the data suggests."
+keywords: ["의도 파악", "자료 해석", "요청 추론", "목적 제안", "얇은 요청", "자료", "무엇", "intent inference", "ambiguous material", "propose objective"]
 ---
 
 Read the data and propose the intent behind it, for the user to confirm.

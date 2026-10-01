@@ -2,6 +2,7 @@
 name: re0-git
 disable-model-invocation: true
 description: "Rewrite a finished commit's message into a clean, handoff-ready form in your own log style, so `git log` alone tells the story. User-invoked: run it after a commit."
+keywords: ["커밋 메시지", "변경 이력", "인수인계 로그", "commit message rewrite", "git log clarity"]
 ---
 
 Rewrite a finished commit message so the log hands off on its own — in the author's own voice, not an imposed one.

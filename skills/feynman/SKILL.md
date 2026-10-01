@@ -2,6 +2,7 @@
 name: feynman
 disable-model-invocation: true
 description: "Press a decision you just made until you can explain it to a skeptic in your own words, or surface the gap where you can't. The Feynman test aimed at a choice: understanding is cheapest to fake the moment after you decide, so a fresh critic presses for what you can't actually explain. Use right after picking an option, especially one an agent laid out without arguing for."
+keywords: ["결정 설명", "회의적인 사람", "내 말", "이해 점검", "skeptical explanation", "decision understanding", "Feynman test"]
 ---
 
 Press a decision you just made until you can explain it, or the gap where you can't is named.

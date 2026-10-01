@@ -1,6 +1,7 @@
 ---
 name: ux-state-review
 description: 온보딩, 권한, 선행정보 입력, 조건부 기능과 다단계 흐름을 구현하거나 검토할 때 상태별 UX 누락을 찾는다. 준비 전·대기·빈 결과·실패를 구분하고 화면, 다음 행동, 데이터 요청, 상태 전환을 함께 검증한다. 단순 스타일 변경이나 일반적인 코드 리뷰에는 적용하지 않는다.
+keywords: ["회원가입", "이메일 인증", "인증 링크 만료", "새로고침", "온보딩", "상태 전환", "권한", "선행정보", "다음 행동", "signup verification", "onboarding states", "prerequisites", "permission flow"]
 ---
 
 # UX State Review

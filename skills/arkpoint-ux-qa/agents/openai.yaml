@@ -1,0 +1,6 @@
+interface:
+  display_name: "아크포인트 탐색형 UX QA"
+  short_description: "QA 시계와 샘플을 준비해 아크포인트 사용자 여정과 HAR를 검증합니다"
+  default_prompt: "$arkpoint-ux-qa로 아크포인트 운영 QA를 수행하고, 필요한 QA 시계와 샘플을 준비해 사용자 여정·HAR·화면 증거를 보고해줘."
+policy:
+  allow_implicit_invocation: true

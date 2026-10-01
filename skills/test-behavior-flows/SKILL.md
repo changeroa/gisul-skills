@@ -1,6 +1,7 @@
 ---
 name: test-behavior-flows
 description: 여러 행동과 상태 변화가 이어지는 기능의 테스트를 설계·실행하고 검증 공백을 찾는다. 상호작용, 비동기 처리, 복구, 데이터 일관성이 중요한 기능의 검증과 회귀 테스트에 사용한다.
+keywords: ["비동기", "저장", "중복 클릭", "재시도", "회귀 테스트", "행동 흐름", "데이터 일관성", "asynchronous interactions", "regression tests", "data consistency", "retry recovery"]
 ---
 
 # 동작 흐름 테스트
