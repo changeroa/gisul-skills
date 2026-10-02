@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "skill-pack",
+  "name": "backend-pack",
+  "display_name": "백엔드·인프라 리뷰 팩",
+  "description": "백엔드 로직·데이터 정합성·보안·API·장애 복구·성능·배포 경로를 실제 인프라 맥락에 맞춰 검토한다.",
+  "scope": "Backend and supporting infrastructure for the requested behavior. Client code may be traced as a consumer; no standalone visual/frontend audit.",
+  "members": [
+    {
+      "uri": "skill://gisul/gisul/review-orchestrator/SKILL.md",
+      "phase": "scope",
+      "selection": "required",
+      "when": "Pin scope, code/deployment evidence and one shared investigation plan."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-correctness-state/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "Trace backend behavior and required invariants."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-tests/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "Assess relevant test oracles and actual verification coverage; execution still follows permissions."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-data-concurrency/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Persistent/shared state, concurrent writes, transactions, cache consistency or migrations."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-security-privacy/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "External input, uploads, authentication, authorization, tenants or sensitive data."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-api-contracts/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "API, event, file-format or consumer compatibility."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-failure-resilience/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Network calls, jobs, timeouts, retries, partial failure or external side effects."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-performance-resources/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Data scale, hot paths, buffering, caches, pools or resource lifetimes."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-operations-delivery/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Deployment/configuration/runtime limits, CI, rollback or observability affects the reviewed path."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-architecture/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Responsibility/abstraction boundaries materially affect behavior or remediation."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-verifier/SKILL.md",
+      "phase": "verify",
+      "selection": "required",
+      "when": "Verify findings and coverage even if no findings were produced."
+    },
+    {
+      "uri": "skill://gisul/gisul/preserve-decisions/SKILL.md",
+      "phase": "handoff",
+      "selection": "when_applicable",
+      "when": "Findings or decisions move to another agent/session, explanation or implementation; reuse the canonical evidence record."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-explainer/SKILL.md",
+      "phase": "explain",
+      "selection": "when_requested",
+      "when": "The user asks for a visual/web explanation of the findings; a review request alone is insufficient."
+    }
+  ]
+}

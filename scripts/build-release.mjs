@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readPacks } from "./packs.mjs";
 import { validate } from "./validate.mjs";
 import { inventory, releaseId, verifyRelease } from "./release-files.mjs";
 
@@ -20,11 +21,12 @@ export async function buildRelease(repo, id) {
   const staging = `${output}.tmp-${process.pid}`;
   await mkdir(staging, { recursive: true });
   try {
-    const paths = ["skills", "aliases.json", "projects", "policies"].filter(name => git(["ls-tree", "--name-only", "HEAD", name]));
+    const paths = ["skills", "packs", "aliases.json", "projects", "policies"].filter(name => git(["ls-tree", "--name-only", "HEAD", name]));
     const archive = execFileSync("git", ["archive", "--format=tar", commit, ...paths], { cwd: repo, maxBuffer: 64 * 1024 * 1024 });
     execFileSync("tar", ["-xf", "-", "-C", staging], { input: archive });
     const catalog = await validate(join(staging, "skills"));
     if (!catalog.valid.length || catalog.invalid.length) throw new Error(`Invalid release catalog: ${JSON.stringify(catalog.invalid)}`);
+    await readPacks(staging, catalog.valid);
     const aliases = JSON.parse(await readFile(join(staging, "aliases.json"), "utf8"));
     const uris = new Set(catalog.valid.map(skill => skill.uri));
     if (Object.entries(aliases).some(([from,to]) => !/^skill:\/\/gisul\//.test(from) || !uris.has(to))) throw new Error("Alias targets must be canonical release skills");

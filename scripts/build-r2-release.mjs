@@ -1,3 +1,5 @@
+import { readPacks } from "./packs.mjs";
+import { skillRegistrations } from "./skill-registration.mjs";
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile, chmod, rename, rm } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
@@ -16,6 +18,8 @@ export async function verifyR2Release(root) {
   const record = JSON.parse(await readFile(join(root, "release.json")));
   assert.equal(record.commit, manifest.commit);
   assert.equal(record.release, manifest.release);
+  const packs = await readPacks(root, manifest.skills);
+  assert.deepEqual(packs, (manifest.packs ?? []).map(({ registration, ...p }) => p), "Pack index differs from release files");
   return { commit: record.commit, release: record.release, inventory_digest: digest(bytes) };
 }
 
@@ -44,6 +48,11 @@ export async function buildR2Release(repo, id) {
     }
     skills.push({ uri: skill.uri, frontmatter: frontmatter(await readFile(join(source, "skills", skill.dir, "SKILL.md"), "utf8")), resources: skill.resources });
   }
+  const packs = await readPacks(source, skills);
+  if (packs.length) {
+    const registrations = await skillRegistrations(repo, record.commit, packs.map(p => ({ dir: p.definition.name, uri: p.uri })), undefined, "packs");
+    for (const pack of packs) pack.registration = registrations.get(pack.uri);
+  }
   const originalInventory = await readFile(join(source, "inventory.json"));
   const files = JSON.parse(originalInventory).map(file => {
     const resource = uris.get(file.path);
@@ -56,7 +65,7 @@ export async function buildR2Release(repo, id) {
   assert.equal(files.filter(file => file.uri).length, uris.size);
   files.push({ path: "build-inventory.json", digest: digest(originalInventory), size: originalInventory.length, executable: false });
   files.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-  const manifest = { schema_version: 1, commit: record.commit, release: id, skills, files, aliases: JSON.parse(await readFile(join(source, "aliases.json"))) };
+  const manifest = { schema_version: 1, commit: record.commit, release: id, skills, ...(packs.length ? { packs } : {}), files, aliases: JSON.parse(await readFile(join(source, "aliases.json"))) };
   const staging = `${output}.tmp-${process.pid}`;
   await mkdir(staging, { recursive: true });
   try {

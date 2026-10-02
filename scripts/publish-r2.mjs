@@ -56,7 +56,7 @@ try {
   const before = await api("/admin/current");
   receipt.before = before;
   const rollback = process.env.GISUL_ROLLBACK_COMMIT;
-  let identity, gate, staged;
+  let identity, gate, staged, manifest;
   const operation = rollback ? "rollback" : "promote";
   receipt.operation = operation;
   receipt.phase = "preparing";
@@ -123,6 +123,7 @@ try {
       console.log(JSON.stringify(progress)),
     );
     identity = artifact.identity;
+    manifest = artifact.manifest;
     receipt.candidate = identity;
     receipt.phase = "verifying";
     await persist();
@@ -153,7 +154,7 @@ try {
   });
   Object.assign(receipt, result, { phase: "activated" });
   await persist();
-  const live = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity);
+  const live = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, { manifest });
   Object.assign(receipt, { state: "published", phase: "complete", live });
   await persist();
   console.log(JSON.stringify(receipt, null, 2));

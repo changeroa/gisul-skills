@@ -1,3 +1,5 @@
+import { readPacks } from "./packs.mjs";
+import { dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { lstat, readdir, readFile, stat } from "node:fs/promises";
 import { basename, join, relative, resolve } from "node:path";
@@ -79,6 +81,7 @@ export async function validate(root = new URL("../skills", import.meta.url)) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const result = await validate(process.argv[2]);
-  console.log(JSON.stringify({ ...result, valid: result.valid.map(skill => skill.dir) }, null, 2));
+  const packs = await readPacks(dirname(resolve(process.argv[2] ?? fileURLToPath(new URL("../skills", import.meta.url)))), result.valid);
+  console.log(JSON.stringify({ packs: packs.map(p => p.definition.name), ...result, valid: result.valid.map(skill => skill.dir) }, null, 2));
   process.exitCode = result.invalid.length ? 1 : 0;
 }

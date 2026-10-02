@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "skill-pack",
+  "name": "frontend-pack",
+  "display_name": "프런트엔드 리뷰 팩",
+  "description": "클라이언트 실행 정합성, 상태별 사용자 흐름, 화면 사용성, 실제 브라우저 전환을 역할별로 결합해 검토한다.",
+  "scope": "Frontend source and user-visible behavior in the requested flow. Trace server contracts where needed without treating UI controls as backend guarantees.",
+  "members": [
+    {
+      "uri": "skill://gisul/gisul/review-orchestrator/SKILL.md",
+      "phase": "scope",
+      "selection": "required",
+      "when": "Pin scope, code/deployment evidence and one shared investigation plan."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-client-runtime/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "Trace client execution and client-server integration; absent source is an explicit limitation, not fabricated evidence."
+    },
+    {
+      "uri": "skill://gisul/gisul/ux-state-review/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "A concrete user-facing state transition, prerequisite/permission flow or missing next-action verification is in scope. Ordinary styling alone does not activate it."
+    },
+    {
+      "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Actual UI/screens or a visual usability review of discoverability, language, choices or task navigation is requested."
+    },
+    {
+      "uri": "skill://gisul/gisul/browser-e2e-review/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Browser E2E scenario design/execution, pending/failure/recovery behavior or visual drift verification is requested/required by the flow."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-tests/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Component/integration test oracles or regression coverage needs review."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-api-contracts/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Client payloads, errors, downloads, SDK/schema or response compatibility affects the flow."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-security-privacy/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Client trust boundaries, session exposure, shared cache or unsafe input sinks are relevant."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-performance-resources/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Polling, client resource lifetime, payload costs or blocking operations have concrete impact."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-correctness-state/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Domain calculations/time/invariants require additional tracing beyond client lifecycle mechanics."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-verifier/SKILL.md",
+      "phase": "verify",
+      "selection": "required",
+      "when": "Verify findings and coverage even if no findings were produced."
+    },
+    {
+      "uri": "skill://gisul/gisul/preserve-decisions/SKILL.md",
+      "phase": "handoff",
+      "selection": "when_applicable",
+      "when": "Findings or decisions move to another agent/session, explanation or implementation; reuse the canonical evidence record."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-explainer/SKILL.md",
+      "phase": "explain",
+      "selection": "when_requested",
+      "when": "The user asks for a visual/web explanation of the findings; a review request alone is insufficient."
+    }
+  ]
+}
