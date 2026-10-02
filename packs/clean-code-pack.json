@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "skill-pack",
+  "name": "clean-code-pack",
+  "display_name": "클린코드 팩",
+  "description": "Clean Code 2판 기반 clean code, readability, refactoring, functions, objects, tests, AI, SOLID, architecture, concurrency와 팀 실천을 필요한 전문 스킬로 조합한다.",
+  "scope": "요청한 코드 작성·리뷰·리팩터링·설명 범위의 의도 명료성, 변경 영향과 반복 가능한 동작 증거. 기존 사용자 변경과 프로젝트 관례를 존중하고 작업 모드·권한을 유지한다. 팩을 읽는 것은 변경·실행·위임·게시 권한을 부여하지 않는다. 전문 스킬을 일괄 실행하거나 현재 범위를 대규모 재설계로 확대하지 않는다.",
+  "members": [
+    {
+      "uri": "skill://gisul/gisul/review-orchestrator/SKILL.md",
+      "phase": "scope",
+      "selection": "required",
+      "when": "요청한 코드·변경 범위, revision, 목적, 동작 계약과 증거를 고정한다. 다른 리뷰 팩과 조합할 때 하나의 범위·증거 계획을 공유한다. 사용자에게 승인된 작업 모드와 권한을 유지한다."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "Clean Code 진입점에서 리뷰·리팩터링·기능 구현·설명 모드를 구별하고 실제 문제에 필요한 전문 스킬만 선택한다. 리뷰를 변경 허가로 확대하거나 모든 전문 스킬을 자동 실행하지 않는다."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-readability/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "이름, 용어, 주석, 선언 위치, 파일 배치나 형식 때문에 코드 의도와 읽기 흐름을 파악하기 어려울 때. 제품 문구와 일반 문서 편집만으로 선택하지 않는다."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-functions/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "함수 책임, 추상화 수준, 인수, 제어 흐름, 오류 처리, 부수 효과, 시간적 결합이나 같은 정책의 중복을 검토하거나 정리할 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-objects/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "객체와 데이터 구조의 선택, 클래스 응집도, 공개 표면, DTO, 객체 협력이나 책임 분배가 대상일 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-tests/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "테스트 전략·표현·오라클, 수용 기준, 느리거나 불안정한 테스트, 리팩터링의 회귀 증거가 대상일 때. 특정 테스트 방법론을 일률적으로 강제하지 않는다."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-ai/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "LLM·코딩 에이전트에 맡긴 구현·테스트·리팩터링, 생성 코드의 정확성, 재생성에 따른 동작 변화나 사람의 검증 책임을 다룰 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-design/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "YAGNI, SOLID, 실제 중복, 컴포넌트 응집도·결합도, 의존성 순환이나 과도한 추상화가 현재 변경 비용에 영향을 줄 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-concurrency/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "스레드·비동기 태스크의 공유 상태, 원자성, 잠금, 소유권, 교착, 취소·종료, 자원 한계나 동시성 테스트가 실제 범위에 있을 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-architecture/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "업무 정책과 프레임워크·DB·UI·외부 공급자 세부사항의 경계, 사용 사례 독립성, 의존성 방향, 어댑터나 교체 가능성이 대상일 때."
+    },
+    {
+      "uri": "skill://gisul/gisul/clean-code-craft/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "작은 변경 주기, 반복 가능한 검증, 긴급 수정 후 정리, CI/CD 규율, 지식 공유, 추정이나 팀의 전문적 책임을 검토·개선할 때. 일반 코드 리뷰만으로 팀 운영 범위를 추가하지 않는다."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-verifier/SKILL.md",
+      "phase": "verify",
+      "selection": "required",
+      "when": "원본 근거, 반증, 범위, 실행 주장과 검증 누락을 재확인한다. 결함·유지보수 개선·선택적 취향을 구별하고 변경한 경우 동작 보존 증거를 확인한다. 발견 사항이 없어도 검증한다."
+    }
+  ]
+}
