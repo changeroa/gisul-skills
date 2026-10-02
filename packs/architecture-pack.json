@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "skill-pack",
+  "name": "architecture-pack",
+  "display_name": "아키텍처 리뷰 팩",
+  "description": "책임·불변식 소유권·모듈 경계·의존성과 변경 영향을 검토하는 근거 기반 아키텍처 리뷰.",
+  "scope": "Architecture and maintainability of the requested system/change. No automatic redesign or whole-product audit.",
+  "members": [
+    {
+      "uri": "skill://gisul/gisul/review-orchestrator/SKILL.md",
+      "phase": "scope",
+      "selection": "required",
+      "when": "Pin scope, code/deployment evidence and one shared investigation plan."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-architecture/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "Inspect structural contracts, actual callers and concrete change/verification costs."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-correctness-state/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "A boundary or refactor affects executable state or invariant behavior."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-tests/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Characterization, test seams or regression evidence affect the architectural claim."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-api-contracts/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Public service/event/schema boundaries or compatibility are implicated."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-data-concurrency/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Invariant ownership crosses persistent or concurrent writers."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-security-privacy/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Trust, tenant, authorization or sensitive-data boundaries are implicated."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-failure-resilience/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Cross-service effects, retries or recovery boundaries affect the structure."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-performance-resources/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "A structural choice affects a concrete scale/resource requirement."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-operations-delivery/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Deployment topology or version coexistence affects the architectural claim."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-client-runtime/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "Client lifecycle/state ownership or client-server coupling is in scope."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-verifier/SKILL.md",
+      "phase": "verify",
+      "selection": "required",
+      "when": "Verify findings and coverage even if no findings were produced."
+    },
+    {
+      "uri": "skill://gisul/gisul/preserve-decisions/SKILL.md",
+      "phase": "handoff",
+      "selection": "when_applicable",
+      "when": "Findings or decisions move to another agent/session, explanation or implementation; reuse the canonical evidence record."
+    },
+    {
+      "uri": "skill://gisul/gisul/review-explainer/SKILL.md",
+      "phase": "explain",
+      "selection": "when_requested",
+      "when": "The user asks for a visual/web explanation of the findings; a review request alone is insufficient."
+    }
+  ]
+}

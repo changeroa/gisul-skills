@@ -17,7 +17,7 @@ const require = createRequire(join(worker, "package.json"));
 const { Miniflare } = require("miniflare");
 const { build } = require("esbuild");
 const { parseInventory } = await import(pathToFileURL(join(worker, "src/release-reader.ts")));
-const bundle = build({ entryPoints: [join(worker, "src/index.ts")], bundle: true, write: false, format: "esm", platform: "browser", target: "es2022" });
+const bundle = build({ entryPoints: [join(worker, "src/index.ts")], bundle: true, write: false, format: "esm", platform: "browser", target: "es2022", external: ["cloudflare:workers"] });
 
 async function fixture(t) {
   const repo = await mkdtemp(join(tmpdir(), "gisul-r2-publication-"));
@@ -86,11 +86,26 @@ test("a superseded workflow cannot publish an older main commit", async t => {
 });
 
 test("real builder bytes upload, stage-check and reconcile a lost activation response through workerd", async t => {
-  const repo = await fixture(t), output = await buildR2Release(repo, "20260917.4");
+  const repo = await fixture(t);
+  for (const name of ["scope", "verify"]) {
+    await mkdir(join(repo, "skills", name), { recursive: true });
+    await writeFile(join(repo, "skills", name, "SKILL.md"), `---\nname: ${name}\ndescription: Pack fixture\n---\nInstructions\n`);
+  }
+  await mkdir(join(repo, "packs"));
+  const definition = { schema_version: 1, kind: "skill-pack", name: "demo-pack", display_name: "Demo", description: "Fixture pack", scope: "publication", members: [["scope", "scope"], ["demo", "investigate"], ["verify", "verify"]].map(([name, phase]) => ({ uri: `skill://gisul/gisul/${name}/SKILL.md`, phase, selection: "required", when: "Fixture" })) };
+  git(repo, ["add", "skills"]); git(repo, ["commit", "-m", "Add pack members"]);
+  const beforePack = git(repo, ["rev-parse", "HEAD"]);
+  await writeFile(join(repo, "packs/demo-pack.json"), JSON.stringify(definition));
+  git(repo, ["add", "packs"]); git(repo, ["commit", "-m", "Add pack only"]);
+  const registered = git(repo, ["rev-parse", "HEAD"]);
+  assert.equal(requirePublicationGate(repo, registered, beforePack).content_changed, true);
+  await writeFile(join(repo, "registration-accounts.json"), JSON.stringify({ [registered]: "fixture" }));
+  git(repo, ["add", "registration-accounts.json"]); git(repo, ["commit", "-m", "Record fixture account"]);
+  const output = await buildR2Release(repo, "20260917.4");
   const runtime = new Miniflare({ telemetry: { enabled: false }, logRequests: false, workers: [{ config: {
     type: "worker", name: "publisher-test", compatibilityDate: "2026-09-03", exports: {},
     manifest: { mainModule: "index.js", modules: { "index.js": { type: "esm", contents: (await bundle).outputFiles[0].text } } },
-    env: { SKILLS_BUCKET: { type: "r2", name: "SKILLS_BUCKET" }, GISUL_BEARER_TOKEN: { type: "text", value: "reader" }, GISUL_PUBLISH_TOKEN: { type: "text", value: "publisher" } },
+    env: { GISUL_NATIVE_TOOLS: { type: "text", value: "true" }, SKILLS_BUCKET: { type: "r2", name: "SKILLS_BUCKET" }, GISUL_BEARER_TOKEN: { type: "text", value: "reader" }, GISUL_PUBLISH_TOKEN: { type: "text", value: "publisher" } },
   } }] });
   t.after(() => runtime.dispose());
   const base = (await runtime.ready).origin;
@@ -103,13 +118,15 @@ test("real builder bytes upload, stage-check and reconcile a lost activation res
   const artifact = await uploadArtifact(api, output);
   const input = { ...artifact.identity, expected_etag: null, sequence: 1 };
   await api("/admin/verify", { method: "POST", body: input, retry: true });
-  await smokeR2(base, "reader", artifact.identity, { pinned: true, manifest: artifact.manifest });
+  assert.equal((await smokeR2(base, "reader", artifact.identity, { pinned: true, manifest: artifact.manifest })).packs.packs, 1);
   assert.equal((await api("/admin/current")).current, null);
   const result = await activateVerified(api, "promote", input);
   assert.equal(result.reconciled, true);
   assert.equal(pointerWrites, 1, "a lost acknowledgement must not replay the pointer write");
   assert.equal(result.current.commit, artifact.identity.commit);
-  assert.equal((await smokeR2(base, "reader", artifact.identity)).reads.length, 2);
+  const live = await smokeR2(base, "reader", artifact.identity, { manifest: artifact.manifest });
+  assert.equal(live.reads.length, 2);
+  assert.equal(live.packs.verified, true);
 });
 
 test("an unconfirmed activation response does not cause a second write", async () => {

@@ -7,7 +7,7 @@ import { digest } from "./release-files.mjs";
 
 // Last accepted content includes dont-make-me-think in release 20260917.3.
 export const MIGRATION_BASELINE = "1ce932b32750d0df3ca74939189dc1d575a3a700";
-export const CONTENT_PATHS = ["skills", "aliases.json", "projects", "policies"];
+export const CONTENT_PATHS = ["skills", "packs", "aliases.json", "projects", "policies"];
 
 export function git(repo, args) {
   return execFileSync("git", args, { cwd: repo, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).trim();

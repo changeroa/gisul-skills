@@ -1,3 +1,4 @@
+import { checkPacks } from "./check-packs-live.mjs";
 import assert from "node:assert/strict";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
@@ -39,6 +40,7 @@ export async function smokeR2(base, token, expected, { pinned = false, manifest 
     const support = skill.resources.find(file => file.uri !== skill.uri && file.uri.endsWith(".md"));
     assert.ok(support, "No supporting file available for the release smoke check");
     await read(support);
-    return { endpoint: endpoint.href, commit: expected.commit, release: expected.release, pinned, skills: result.skills.length, reads };
+    const packs = manifest?.packs ? await checkPacks(client, expected.commit, manifest, { pinned }) : undefined;
+    return { packs, endpoint: endpoint.href, commit: expected.commit, release: expected.release, pinned, skills: result.skills.length, reads };
   } finally { await client.close(); }
 }
