@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clean Code · Skill Pack"
+  short_description: "동작 증거를 지키며 코드부터 아키텍처까지 필요한 원칙만 적용"
+  default_prompt: "$clean-code로 이 코드베이스의 요청 범위를 파악하고, 필요한 Clean Code 전문 스킬만 선택해 동작을 보존하며 리뷰하거나 개선해줘."
