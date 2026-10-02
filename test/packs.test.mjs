@@ -11,14 +11,25 @@ import { buildR2Release,verifyR2Release } from '../scripts/build-r2-release.mjs'
 import { checkPacks } from '../scripts/check-packs-live.mjs';
 const member=(n,phase)=>({uri:`skill://gisul/gisul/${n}/SKILL.md`,phase,selection:'required',when:n});
 const def={schema_version:1,kind:'skill-pack',name:'example-pack',display_name:'Example',description:'Example review',scope:'fixture',members:[member('scope','scope'),member('backend','investigate'),member('verify','verify')]};
-test('all three proposed packs retain roles, required members and reference closure',async()=>{
+test('published packs retain roles, required members and reference closure',async()=>{
  const catalog=await validate();const packs=await readPacks(new URL('..',import.meta.url).pathname,catalog.valid);
- assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','frontend-pack']);
- assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,13]);
+ assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','clean-code-pack','frontend-pack']);
+ assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,12,13]);
  assert.ok(packs.every(p=>p.definition.members.some(m=>m.uri.endsWith('/review-verifier/SKILL.md')&&m.selection==='required')));
- const combined=packs.filter(p=>p.definition.name!=='architecture-pack').flatMap(p=>p.definition.members);
+ const combined=packs.filter(p=>['backend-pack','frontend-pack'].includes(p.definition.name)).flatMap(p=>p.definition.members);
  assert.equal(combined.length,26);assert.equal(new Set(combined.map(m=>m.uri)).size,17);
  assert.ok(packs.find(p=>p.definition.name==='architecture-pack').definition.members.some(m=>m.uri.endsWith('/review-architecture/SKILL.md')&&m.selection==='required'));
+ const clean=packs.find(p=>p.definition.name==='clean-code-pack').definition;
+ assert.ok(clean.members.some(m=>m.uri.endsWith('/clean-code/SKILL.md')&&m.phase==='investigate'&&m.selection==='required'));
+ const specialists=catalog.valid.filter(s=>/^clean-code-/.test(s.name)).map(s=>s.uri).sort();
+ assert.deepEqual(clean.members.filter(m=>m.selection==='when_applicable').map(m=>m.uri).sort(),specialists);
+ const roles=new Map();
+ for(const {definition} of packs) for(const m of definition.members){
+  if(roles.has(m.uri))assert.equal(roles.get(m.uri),m.phase,'Shared members must retain their phase across packs');
+  roles.set(m.uri,m.phase);
+ }
+ for(const phase of ['scope','verify'])assert.equal([...roles.values()].filter(p=>p===phase).length,1);
+
 });
 test('definition checks reject missing references, duplicate and absent required roles',()=>{
  const available=new Set(def.members.map(m=>m.uri));assert.deepEqual(validatePack(def,available),def);
