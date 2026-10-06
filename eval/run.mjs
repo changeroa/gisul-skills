@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { createWriteStream } from 'node:fs';
 import { readFile, writeFile, mkdir, readdir, rm, rename } from 'node:fs/promises';
 import { resolve, join, dirname } from 'node:path';
 import { homedir } from 'node:os';
@@ -9,6 +8,8 @@ import { execFileSync } from 'node:child_process';
 import { dataset } from './dataset.mjs';
 import { prepareCase } from './prepare.mjs';
 import { scoreCase } from './score.mjs';
+import { requireCanary } from './canary-proof.mjs';
+import { eventJournal, requireDiskSpace } from './io.mjs';
 import { CodexSession, buildEnvironment, verifyBoundary, readyServers } from './runtime.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url)), REPO = resolve(HERE, '..');
@@ -45,6 +46,7 @@ async function files(root, prefix = '') {
   return found;
 }
 export function stopReason(results, maxTokens) {
+  if (results.some(x => x.failure?.type === 'storage')) return 'storage_failure';
   if (results.some(x => x.failure?.type === 'isolation')) return 'isolation_failure';
   if (results.filter(x => x.failure?.type === 'infrastructure').length >= 2) return 'two_infrastructure_failures';
   if (results.some(x => x.status === 'completed' && !x.usage)) return 'missing_usage';
@@ -52,6 +54,7 @@ export function stopReason(results, maxTokens) {
   return null;
 }
 export function classifyFailure(error, stage) {
+  if (['ENOSPC', 'EDQUOT', 'EVAL_DISK_SPACE'].includes(error.code)) return 'storage';
   // A failed startup assertion is an unproven boundary, regardless of its
   // wording. Stop immediately instead of spending a second trial to rediscover it.
   if (stage === 'preflight' || /Isolation|boundary|Frozen source|pin mismatch|content drift/i.test(String(error))) return 'isolation';
@@ -69,6 +72,7 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
   const startedAt = new Date().toISOString();
   const result = { id: slot.id, caseId: item.id, split: item.split, critical: item.critical, profile: slot.profile, synthetic: true, protocolHash: protocol.hash, model: protocol.model, effort: protocol.effort, startedAt, status: 'failed', items: [], mockEvents: [], gisulEvents: [], files: {}, finalText: '', usage: null };
   try {
+    await requireDiskSpace(root);
     await verifyFrozen(protocol);
     prepared = await prepareCase({ item, workspace: slot.workspace, privateDir });
     const servers = {
@@ -76,8 +80,14 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
       linear: { command: process.execPath, args: [join(HERE, 'mock-linear.mjs')], cwd: REPO, env: { EVAL_LINEAR_FIXTURE: prepared.linearFixture, EVAL_WRITE_LOG: join(privateDir, 'mock.jsonl'), EVAL_TIMEOUT_ONCE: prepared.timeoutOnce ? '1' : '0' }, startup_timeout_sec: 30, tool_timeout_sec: 5 },
     };
     const env = await buildEnvironment({ home, workspace: slot.workspace, agentsMarkdown: protocol.instructions[slot.profile], loaderMarkdown: protocol.loaderMarkdown, model: protocol.model, effort: protocol.effort, servers, deniedPaths: [REPO, root, resolve(REPO, '../../../../session-notes'), join(homedir(), 'dev-tools'), ...protocol.schedule.filter(x => x.id !== slot.id).map(x => x.workspace)], authSource: join(homedir(), '.codex/auth.json') });
-    log = createWriteStream(join(privateDir, 'events.jsonl'), { mode: 0o600 });
-    api = new CodexSession({ cwd: slot.workspace, config: env.config, env: env.env, record: event => log.write(JSON.stringify(event) + '\n') });
+    log = eventJournal(join(privateDir, 'events.jsonl'), error => {
+      const type = classifyFailure(error, 'evidence');
+      if (!failure || type === 'storage') failure = { type, code: error.code, message: String(error) };
+      result.evidenceComplete = false;
+      result.usageComplete = false;
+      api?.fail(error);
+    });
+    api = new CodexSession({ cwd: slot.workspace, config: env.config, env: env.env, record: event => log.write(event) });
     result.host = await api.initialize();
     const catalog = await api.rpc('skills/list', { cwds: [slot.workspace], forceReload: true });
     const enabled = catalog.data.flatMap(x => x.skills.filter(x => x.enabled));
@@ -97,10 +107,10 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
     }
     result.status = 'completed';
   } catch (error) {
-    failure = { type: classifyFailure(error, stage), message: String(error), ...(error.providerError ? { providerError: error.providerError } : {}) };
+    failure ??= { type: classifyFailure(error, stage), code: error.code, message: String(error), ...(error.providerError ? { providerError: error.providerError } : {}) };
   } finally {
     if (api) await api.close().catch(error => { failure ??= { type: 'infrastructure', message: String(error) }; });
-    if (log) await new Promise(resolve => log.end(resolve));
+    if (log) await log.close().catch(error => { failure ??= { type: classifyFailure(error, 'evidence'), code: error.code, message: String(error) }; });
     await rm(join(home, 'auth.json'), { force: true });
   }
   result.endedAt = new Date().toISOString();
@@ -131,15 +141,16 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
 
 async function main() {
   const { parseArgs } = await import('node:util');
-  const { values } = parseArgs({ options: { out: { type: 'string' }, profile: { type: 'string', default: 'baseline' }, 'reader-config': { type: 'string' }, 'baseline-agents': { type: 'string', default: join(homedir(), '.codex/AGENTS.md') }, 'candidate-agents': { type: 'string', default: join(HERE, 'candidates/bootstrap/AGENTS.md') }, cases: { type: 'string' }, preflight: { type: 'boolean', default: false } } });
+  const { values } = parseArgs({ options: { out: { type: 'string' }, profile: { type: 'string', default: 'baseline' }, 'reader-config': { type: 'string' }, canary: { type: 'string' }, 'baseline-agents': { type: 'string', default: join(homedir(), '.codex/AGENTS.md') }, 'candidate-agents': { type: 'string', default: join(HERE, 'candidates/bootstrap/AGENTS.md') }, cases: { type: 'string' }, preflight: { type: 'boolean', default: false } } });
   if (!values.out || !values['reader-config'] || !['baseline', 'candidate'].includes(values.profile)) throw new Error('Usage: node eval/run.mjs --out ABSOLUTE --reader-config JSON --profile baseline|candidate [--preflight] [--cases N-01]');
   const root = resolve(values.out);
+  const reader = JSON.parse(await readFile(resolve(values['reader-config']), 'utf8'));
+  assert.equal(hash(await readFile(reader.bundle)), reader.bundleHash, 'Reader changed');
+  const canary = values.preflight ? null : await requireCanary(values.canary && resolve(values.canary), reader);
   await mkdir(root, { recursive: false }); // Existing evidence is never overwritten.
   const source = await dataset();
   const selection = values.preflight ? source.cases.filter(x => x.id === 'N-01') : values.cases ? source.cases.filter(x => values.cases.split(',').includes(x.id)) : source.cases;
   if (!selection.length || (values.cases && selection.length !== values.cases.split(',').length)) throw new Error('Unknown or duplicate case selection');
-  const reader = JSON.parse(await readFile(resolve(values['reader-config']), 'utf8'));
-  assert.equal(hash(await readFile(reader.bundle)), reader.bundleHash, 'Reader changed');
   await saveJson(join(root, 'reader.json'), reader);
   const id = 'agent-env-v1-' + values.profile + '-' + randomUUID();
   const workspaceRoot = join(homedir(), 'tmp/gisul-formal-eval', id);
@@ -150,6 +161,7 @@ async function main() {
   const tracked = execFileSync('git', ['ls-files', 'eval', 'package-lock.json'], { cwd: REPO, encoding: 'utf8' }).trim().split('\n');
   for (const path of new Set([...tracked.map(x => join(REPO, x)), ...['run.mjs','reader.mjs','runtime.mjs','prepare.mjs','score.mjs','profiles/eval-baseline.config.toml','profiles/eval-candidate.config.toml'].map(x => join(HERE, x)), reader.bundle])) fileHashes[path] = hash(await readFile(path));
   const protocol = { schema: 1, id, createdAt: new Date().toISOString(), dataset: { name: source.name, version: source.version, totalCases: source.cases.length }, profile: values.profile, sourceCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: REPO, encoding: 'utf8' }).trim(), codexVersion: execFileSync('codex', ['--version'], { encoding: 'utf8' }).trim(), model: 'gpt-6-astra', effort: 'max', maxTokens: 1500000, concurrency: 2, timeoutMs: 240000, instructions, instructionHashes: Object.fromEntries(Object.entries(instructions).map(([key,value]) => [key,hash(value)])), loaderMarkdown: await readFile(reader.loader, 'utf8'), reader, prices: PRICES, fileHashes, commonInstructions: COMMON, schedule, preflight: values.preflight, fullDataset: !values.cases && !values.preflight, synthetic: true, humanRatings: 0, semanticJudge: null, promotion: 'not_evaluated' };
+  protocol.canary = canary;
   protocol.hash = hash(JSON.stringify(protocol));
   await saveJson(join(root, 'protocol.json'), protocol);
   await saveJson(join(root, 'cases.private.json'), selection);

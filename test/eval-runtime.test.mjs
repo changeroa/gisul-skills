@@ -50,7 +50,7 @@ readline.createInterface({input:process.stdin}).on('line', line => {
  if(m.method==='config/read') return ok({config:fixture.config});
  if(m.method==='skills/list') return ok({data:[{cwd:process.cwd(),errors:[],skills}]});
  if(m.method==='skills/config/write') {skills.find(s=>s.path===m.params.path).enabled=m.params.enabled;return ok({});}
- if(m.method==='thread/start') return ok({thread:{id:'thread-1'},model:fixture.config.model,modelProvider:'openai',
+ if(m.method==='thread/start') return ok({thread:{id:'thread-1',environments:[{environmentId:'local',cwd:process.cwd(),runtimeWorkspaceRoots:[process.cwd()]}]},model:fixture.config.model,modelProvider:'openai',
   reasoningEffort:fixture.config.model_reasoning_effort,approvalPolicy:'never',activePermissionProfile:{id:'eval',extends:':workspace'},sandbox:{networkAccess:false},received:m.params});
  if(m.method==='mcpServerStatus/list') return ok({data:[{name:'gisul',runtimeStatus:'connected',tools:fixture.tools},{name:'linear',runtimeStatus:'connected',tools:{},serverInfo:{name:'linear-evaluation-fixture'}}]});
  if(m.method==='command/exec') return ok({exitCode:m.params.command.at(-1)===fixture.loaderPath?0:1,stdout:m.params.command.at(-1)===fixture.loaderPath?'readable':'EPERM',stderr:''});
@@ -134,6 +134,7 @@ test('stdio preserves argv literals, strips ambient capabilities and disables au
   const start=await f.api.start(f.workspace,{allowProviderModelFallback:false});
   assert.equal(start.received.ephemeral,true); assert.equal(start.received.permissions,'eval');
   assert.equal(start.received.config.model_reasoning_effort,'max');
+  assert.equal(Object.hasOwn(start.received,'environments'),false,'An empty environment selection disables model file tools');
   await assert.rejects(f.api.turn('no gates'),/boundaries and MCP/);
 });
 
@@ -234,6 +235,7 @@ test('real Codex no-model preflight: isolated catalog, pinned thread, read denie
   const started=await api.start();
   assert.equal(started.model,'gpt-6-astra'); assert.equal(started.reasoningEffort,'max');
   assert.equal(started.activePermissionProfile.id,'eval'); assert.equal(started.approvalPolicy,'never');
+  assert.equal(started.thread.environments[0].environmentId,'local');
   const probes=[f.denied,join(built.env.CODEX_HOME,'config.toml'),join(process.env.HOME,'.codex')];
   const checks=await verifyBoundary(api,{workspace:f.workspace,allowedPath:built.loaderPath,deniedPaths:probes});
   assert.ok(checks.every(check=>check.passed));

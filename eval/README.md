@@ -87,7 +87,8 @@ node eval/run.mjs --out /absolute/new/preflight-directory \
 node eval/canary.mjs --out /absolute/new/write-canary \
   --reader-config /private/reader.json
 node eval/run.mjs --out /absolute/new/baseline-directory \
-  --reader-config /private/reader.json --profile baseline
+  --reader-config /private/reader.json --profile baseline \
+  --canary /absolute/new/write-canary/receipt.json
 node eval/export.mjs --run /absolute/new/baseline-directory --project PROJECT_ID
 node eval/export.mjs --run /absolute/new/baseline-directory --project PROJECT_ID --apply
 ```
@@ -116,8 +117,26 @@ and Slack operations terminate at the local mock. L-08 injects a lost response
 after a successful create. F-02 lacks a browser fixture, so it cannot prove a live
 login-to-editor flow and remains explicitly limited.
 
-The paid write canary must actually create and read back one mock issue before a
-full experiment. Shell `approval_policy=never` alone does not authorize MCP writes.
+Every model experiment requires `--canary` from the same code, CLI binaries,
+model and reader. The paid capability canary must print an unpredictable file's
+contents through a successful model command, copy it to a new file, and create
+and read back one mock issue. A successful controller `command/exec` probe does
+not prove that file tools are exposed to the model. An old write-only receipt or
+model statement that it read a file is rejected.
+
+The thread must select exactly the local execution environment. Do not pass
+`environments: []`: in Codex 0.155.1 that disables environment access and removes
+the model's shell/file tools while controller probes can still succeed.
+Standalone CLI installations under the protected `~/.codex` directory cannot
+launch native filesystem helpers under these read-deny rules. Use a verified
+copy of **both** `codex` and its sibling `codex-code-mode-host` in a private runtime
+directory outside credentials, the denied checkout and the task workspace. Set
+`PATH` only for evaluation commands; keep the real credential directory denied.
+The canary records both executable hashes and checks the model's actual file IO.
+On this Mac mini the verified runtime is
+`/Users/iyen/.local/share/gisul-eval-runtime/0.155.1`; the global CLI is unchanged.
+
+Shell `approval_policy=never` alone does not authorize MCP writes.
 Per-tool `approval_mode=approve` applies only to the exact local mock executable;
 external or replacement Linear transports are rejected. The canary has no corpus
 answers and is recorded separately from behavioral results and their cost.
@@ -126,6 +145,14 @@ Each run allows two concurrent cases, 240 seconds per turn and at most 1.5M
 observed tokens before stopping new cases. Any isolation failure or two
 infrastructure failures stop launches. Existing output directories are rejected;
 there is no automatic model retry. In-flight usage and failures stay in the ledger.
+Before a paid canary or trial starts, its output filesystem must have at least
+512 MiB available. This is a startup check, not reserved capacity. An asynchronous
+event-log write failure stops the model, marks evidence and usage incomplete,
+and still runs session/auth cleanup. ENOSPC, quota and disk-preflight failures
+stop new cases immediately. A completely full filesystem may also prevent the
+final result from being saved: retain raw logs, confirm child processes stopped,
+remove temporary auth and record any supervisor recovery explicitly. Do not
+manufacture a completed turn, complete usage or an exact end time from partial logs.
 Native provider errors, including model-capacity errors, count as infrastructure
 failures and retain their reason. They do not measure the skill's semantic quality.
 Token cost is a dated standard API price equivalent, not the account bill. Cache
@@ -148,7 +175,9 @@ for new batches. A retry only verifies already-submitted batches; it never resen
 an ambiguous upload. Retain the intent file and investigate missing records.
 It verifies every experiment item's identity and actual output by readback.
 Readback also compares input, expected output, files, tool/mock evidence, grading,
-usage and release metadata. Stopped runs can be exported as explicitly partial
+native command/file actions, usage and release metadata. Recovery provenance and
+explicit incomplete-evidence/usage flags must also survive readback when present.
+Stopped runs can be exported as explicitly partial
 experiments: unexecuted and no-model failures are recorded as missing cases and
 never fabricated as model traces.
 If execution reveals a harness defect, retain the frozen results and add a
@@ -167,7 +196,10 @@ and summary, imports and re-verifies the original frozen execution code, and
 records a separate immutable continuation protocol. Completed or failed cases
 are never retried. The final experiment records both phases and their total cost;
 the extra budget is not a relaxation of a candidate promotion gate. Other stop
-reasons and already-started continuations are rejected.
+reasons and already-started continuations are rejected. Infrastructure, isolation,
+storage and missing-usage stop conditions are checked across both phases; only
+the additional token allowance starts over. A budget stop cannot hide a later
+in-flight non-budget failure.
 
 Contracts: [Codex profile files](https://learn.chatgpt.com/docs/config-file/config-reference),
 [Langfuse experiment attributes](https://langfuse.com/integrations/native/opentelemetry/experiments),
