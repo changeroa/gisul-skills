@@ -99,9 +99,13 @@ AI한테 암묵지를 넣었다고 한다. 노하우를 이식했다고 한다.<
 git clone https://github.com/changeroa/gisul-skills.git
 cd gisul-skills
 npm ci
-npm run validate
-npm test
+npm run verify
 ```
+
+`verify`는 CI와 같은 커밋으로 고정된 gisul 서버와 Worker, Chromium을 준비한 뒤
+카탈로그 검증과 전체 테스트를 실행한다. 런타임이 필요 없는 검사만 실행하려면
+`npm run test:unit`, 준비 후 통합 검사만 실행하려면 `npm run test:integration`을 쓴다.
+`npm test`는 계속 전체 테스트를 실행하며, 준비가 빠졌으면 실행 전에 필요한 명령을 알려준다.
 
 검증기는 frontmatter, 이름과 디렉터리의 일치, 파일 수·용량 등의 발견 규칙을 검사한다. **형식 검증 통과는 스킬의 효과가 입증됐다는 뜻이 아니다.** 세부 제한과 서버 통합 테스트 설정은 [기술 레퍼런스](docs/technical-reference.md)에 있다.
 

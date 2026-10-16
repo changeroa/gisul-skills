@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "validate": "node scripts/validate.mjs",
+    "verify": "node scripts/verify.mjs",
+    "pretest": "node scripts/verify.mjs check",
+    "test:unit": "node scripts/verify.mjs unit",
+    "test:integration": "node scripts/verify.mjs integration",
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {

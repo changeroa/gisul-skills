@@ -101,9 +101,14 @@ Skip the “You are the world's greatest expert” preamble. Give us:
 git clone https://github.com/changeroa/gisul-skills.git
 cd gisul-skills
 npm ci
-npm run validate
-npm test
+npm run verify
 ```
+
+`verify` prepares the same commit-pinned gisul server and Worker used by CI,
+installs Chromium, then validates the catalog and runs the complete test suite.
+Use `npm run test:unit` for checks that do not need that runtime, or
+`npm run test:integration` after preparation. `npm test` still runs the complete
+suite and reports missing runtime prerequisites before starting it.
 
 The validator checks discovery rules such as frontmatter, matching names and directories, file counts, and size limits. **Passing format validation does not prove a skill is effective.** See the [technical reference](docs/technical-reference.md) for detailed limits and server integration test configuration.
 
