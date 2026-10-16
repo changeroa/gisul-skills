@@ -127,9 +127,17 @@ Read `references/viewer-runtime.md` only when the user explicitly asks for Share
 No install is required inside the skill package. Verify with:
 
 ```bash
+node scripts/verify.mjs
 node bin/archify.mjs doctor
 node bin/archify.mjs demo <output-directory>
 ```
+
+`scripts/verify.mjs` validates and renders all five shipped diagram types, checks
+their showcase artifacts, confirms malformed input is rejected, and removes its
+temporary output. It needs no dependency installation. The `check:viewer`,
+generation and upstream test scripts in `package.json` require the original
+source repository's parent tooling; they are preserved separately and are not
+the packaged-runtime verification command.
 
 When shell access is unavailable, hand-place architecture SVG into `assets/template.html`, use CSS semantic classes rather than inline colors, and follow the visual review contract in `references/delivery-contract.md`.
 

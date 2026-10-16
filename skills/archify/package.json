@@ -12,6 +12,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "verify": "node scripts/verify.mjs",
     "generate:viewer": "node ../scripts/generate-viewer.mjs",
     "check:viewer": "node ../scripts/generate-viewer.mjs --check",
     "generate:brand-marks": "node scripts/generate-brand-marks.mjs",

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "verify:archify": "node skills/archify/scripts/verify.mjs",
     "validate": "node scripts/validate.mjs",
     "test": "node --test test/*.test.mjs"
   },
