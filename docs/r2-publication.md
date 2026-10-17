@@ -62,6 +62,14 @@ staged/live MCP evidence as it becomes available. A failed live check may leave
 the verified candidate active: its receipt and current readback show that state.
 Release/commit also travel with bridge search/load/file events into Langfuse.
 
+Configuration failures also retain `dist/receipts/r2-publication.json` with
+`state: "failed"`, `phase: "preflight"` and an error message. Workflow identity
+fields remain null until validated. The CLI exits nonzero and reports a sanitized
+message rather than dumping the original exception. Reader, publisher and GitHub
+token values are redacted from receipt strings and failure output, including
+credentials echoed in an API error. The workflow's always-run artifact step
+retains these receipts; a preflight failure never reaches the release API.
+
 ## Credentials and target
 
 Set repository variable `GISUL_RELEASE_BASE_URL` to the Worker origin, without

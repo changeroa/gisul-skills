@@ -19,39 +19,60 @@ import {
 import { smokeR2 } from "./r2-smoke.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
-assert.equal(
-  process.env.GITHUB_ACTIONS,
-  "true",
-  "Production publication runs only in GitHub Actions",
-);
-assert.equal(process.env.GITHUB_REPOSITORY, "changeroa/gisul-skills");
-assert.equal(
-  process.env.GITHUB_REF,
-  "refs/heads/main",
-  "Only main can publish or roll back",
-);
-const commit = git(repo, ["rev-parse", "HEAD"]);
-assert.equal(commit, process.env.GITHUB_SHA);
-const sequence = Number(process.env.GITHUB_RUN_NUMBER);
-assert.ok(Number.isSafeInteger(sequence) && sequence > 0);
-assert.ok(process.env.GISUL_BEARER_TOKEN, "Missing MCP reader token");
-const base = process.env.GISUL_RELEASE_BASE_URL;
-const api = releaseApi(base, process.env.GISUL_PUBLISH_TOKEN);
 const receipt = {
   state: "running",
-  phase: "checking-main",
-  workflow_run: `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
-  sequence,
-  workflow_commit: commit,
+  phase: "preflight",
+  workflow_run: null,
+  sequence: null,
+  workflow_commit: null,
 };
+const secrets = [
+  process.env.GISUL_BEARER_TOKEN,
+  process.env.GISUL_PUBLISH_TOKEN,
+  process.env.GITHUB_TOKEN,
+].filter(Boolean).sort((a, b) => b.length - a.length);
+function redact(_key, value) {
+  if (typeof value !== "string") return value;
+  for (const secret of secrets) value = value.replaceAll(secret, "[REDACTED]");
+  return value;
+}
+let api;
 async function persist() {
   await mkdir(join(repo, "dist/receipts"), { recursive: true });
   await writeFile(
     join(repo, "dist/receipts/r2-publication.json"),
-    JSON.stringify(receipt, null, 2) + "\n",
+    JSON.stringify(receipt, redact, 2) + "\n",
   );
 }
 try {
+  assert.ok(
+    process.env.GITHUB_ACTIONS === "true",
+    "Production publication runs only in GitHub Actions",
+  );
+  assert.ok(
+    process.env.GITHUB_REPOSITORY === "changeroa/gisul-skills",
+    "Only changeroa/gisul-skills can publish",
+  );
+  assert.ok(
+    process.env.GITHUB_REF === "refs/heads/main",
+    "Only main can publish or roll back",
+  );
+  const commit = git(repo, ["rev-parse", "HEAD"]);
+  assert.ok(commit === process.env.GITHUB_SHA, "Workflow commit differs from checkout");
+  const sequence = Number(process.env.GITHUB_RUN_NUMBER);
+  assert.ok(Number.isSafeInteger(sequence) && sequence > 0, "Expected a positive workflow run number");
+  Object.assign(receipt, {
+    workflow_run: /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "")
+      ? `https://github.com/changeroa/gisul-skills/actions/runs/${process.env.GITHUB_RUN_ID}`
+      : null,
+    sequence,
+    workflow_commit: commit,
+  });
+  assert.ok(process.env.GISUL_BEARER_TOKEN, "Missing MCP reader token");
+  const base = process.env.GISUL_RELEASE_BASE_URL;
+  api = releaseApi(base, process.env.GISUL_PUBLISH_TOKEN);
+  receipt.phase = "checking-main";
+  await persist();
   requireLatestMain(repo, commit);
   const before = await api("/admin/current");
   receipt.before = before;
@@ -97,7 +118,7 @@ try {
         current: before.current,
       });
       await persist();
-      console.log(JSON.stringify(receipt));
+      console.log(JSON.stringify(receipt, redact));
       process.exit(0);
     }
     gate = requirePublicationGate(
@@ -157,7 +178,7 @@ try {
   const live = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, { manifest });
   Object.assign(receipt, { state: "published", phase: "complete", live });
   await persist();
-  console.log(JSON.stringify(receipt, null, 2));
+  console.log(JSON.stringify(receipt, redact, 2));
 } catch (error) {
   if (receipt.phase === "activating" || receipt.phase === "activated") {
     try {
@@ -171,5 +192,6 @@ try {
     error: { message: error.message, status: error.status ?? null },
   });
   await persist();
-  throw error;
+  console.error(`Publication failed (${receipt.phase}): ${redact("", error.message)}`);
+  process.exitCode = 1;
 }
