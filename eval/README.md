@@ -26,8 +26,9 @@ Keep baseline/candidate model, tools, fixtures and evaluator fixed. Change one
 variable per comparison. Do not claim behavioral improvement based on static Markdown validation or
 mock unit tests: require no new critical failures, no holdout regression, no missing
 ratings, at least baseline total passes and mean cost at most 130% of baseline.
-Record judge version and agreement with ten genuine human ratings. Global startup
-token comparison requires five identical fresh runs per condition.
+Freeze the same evidence-backed frontier judge and configuration for both
+conditions; human ratings are not required. Global startup token comparison
+requires five identical fresh runs per condition.
 
 Never provide expected outputs or rubric labels to the evaluated agent. Mock tools
 may change fixture state but cannot contact Linear or Slack. A lost create response
@@ -132,13 +133,112 @@ Token cost is a dated standard API price equivalent, not the account bill. Cache
 effects are reported separately. A candidate cost ratio needs a matched completed
 comparison; a baseline alone cannot meet the 130% gate.
 
-`score.mjs` records observable checks. Semantic rubrics remain `unverified` and
-human ratings remain zero until real review occurs. Missing usage or action
-evidence does not count as a pass. Scoring runs automatically after each case;
-inspect `runs/*/result.json` for checks and `summary.json` for totals. A semantic
-judge, human-rating import and automated promotion comparison are not implemented
-here; those are the remaining E23 work. Do not manually relabel these results as
-passing or set human ratings to substitute for that work.
+`score.mjs` records observable checks. Its raw semantic rubrics remain
+`unverified`; model review is separate evidence, not a rewrite of those results.
+Missing usage or action evidence does not count as a pass. Scoring runs
+automatically after each case; inspect `runs/*/result.json` for checks and
+`summary.json` for totals. Human ratings remain zero and are not a review gate.
+
+## Frontier semantic review and matched comparison
+
+`frontier-judge.mjs` selects the unique highest score in an explicit capability
+policy. Use a refreshed local JSON file or a trusted HTTPS JSON feed before each
+new comparison. The policy declares its metric, candidate scope, source version
+and UTC `checkedAt`; it is an evidence snapshot, not a universal ranking or a
+permanent default model. Names, release dates and provider defaults do not choose
+the winner. Scores must compare the exact model and effort configurations under
+the same capability metric, rather than cost. A later, higher-scoring verified
+configuration wins without editing the resolver.
+
+Policy structure, with illustrative values to replace from the selected source:
+
+```json
+{
+  "schema": 1,
+  "version": "SOURCE_SNAPSHOT_VERSION",
+  "metric": "NAMED_CAPABILITY_METRIC",
+  "scope": "VERIFIED_CALLABLE_EXACT_CONFIGURATIONS",
+  "checkedAt": "2026-10-17T00:00:00.000Z",
+  "source": {
+    "url": "https://rankings.example/capability",
+    "version": "SOURCE_METRIC_VERSION"
+  },
+  "candidates": [
+    {
+      "id": "SOURCE_ROW_ID",
+      "provider": "openai",
+      "transport": "codex-cli",
+      "model": "EXACT_PROVIDER_MODEL_ID",
+      "effort": "EXACT_SOURCE_EFFORT",
+      "score": 0,
+      "fallback": false,
+      "evidenceUrl": "https://rankings.example/capability/model"
+    }
+  ]
+}
+```
+
+Supported routes are `openai`/`codex-cli` and `anthropic`/`claude-cli`, using the
+installed, authenticated subscription CLI. Add every configuration covered by
+the declared comparison scope. A tied top score, malformed policy, unavailable
+winner, unsupported effort or visibly rerouted response fails; the adapter never
+silently chooses a weaker model. Evidence URLs are public HTTPS URLs without
+credentials or query parameters. The selected policy, exact profile and hashes
+are frozen together; do not refresh a selection halfway through a pair.
+
+```sh
+node eval/frontier-judge.mjs --policy /private/frontier-policy.json \
+  --out /private/frozen-frontier-selection.json
+node eval/semantic-assessment.mjs --run /absolute/new/baseline-directory \
+  --selection /private/frozen-frontier-selection.json
+node eval/semantic-assessment.mjs --run /absolute/new/baseline-directory \
+  --selection /private/frozen-frontier-selection.json --apply
+node eval/semantic-assessment.mjs --run /absolute/new/candidate-directory \
+  --selection /private/frozen-frontier-selection.json --apply
+node eval/semantic-assessment.mjs --compare \
+  --baseline /absolute/new/baseline-directory \
+  --candidate /absolute/new/candidate-directory
+```
+
+Without `--apply`, assessment validates and previews without calling a model.
+Importing these modules, exporting a run, comparing results and ordinary tests
+never start a judge. Selection and review files are exclusive writes.
+
+Live judgments use only the supplied task, rubric and frozen response as data.
+Codex uses a private auth copy/workspace and a named permission profile denying
+all tool filesystem and network access. Claude uses restricted safe mode with
+empty tools, MCP servers and inherited settings. Session persistence, hooks,
+apps, delegation and search are disabled where supplied by the transport.
+Interrupting the CLI stops its owned model process and removes its auth copy.
+
+`semantic-assessment.json` binds every verdict and exact cited response quote to
+the protocol, casebook, expected contract, result bytes and actual prompt hash.
+It records the selection, requested model/effort, CLI version and adapter/source
+hashes. Provider-reported model identity is retained when available and must
+match the request. Codex also verifies the requested profile against its live
+catalog; Claude requires a matching `modelUsage` report. An independently
+attested provider weight revision is not available from these CLI contracts.
+`fail`, `abstain` and missing evidence remain distinct from passing review.
+
+Private `judge-attempts/SELECTION_HASH/PROMPT_HASH/receipt.json` records a started
+request before inference, then its completed response hash or failure. A matching
+completed response can be reused; failed, incomplete or ambiguous attempts never
+trigger an implicit paid retry. Original receipts remain available for inspection.
+A new explicit experiment/review directory is needed after changing inputs or
+the evaluator; existing evidence is not overwritten.
+
+Comparison is read-only and requires both full settled casebooks, all 13 frozen
+controls above, the same price basis and the same selection/model/effort/CLI/
+adapter/assessment implementation. Diagnostic fixture judges, harness defects,
+missing usage/cost or unverified judgments cannot qualify. It checks new critical
+failures, holdout and total passes, and mean recorded execution cost against 130%
+of baseline. Costs include every actual ledger result, including continuation
+results, not just the last phase summary. A zero baseline cost produces a null
+ratio; the known means still determine the cost bound.
+
+The comparison exits 0 when eligible, 2 when evidence does not qualify, and 1 for
+invalid CLI usage. `eligible` describes the matched evidence, not permission to
+promote or publish; `promotion` stays `not_evaluated`.
 
 `export.mjs` validates the hosted dataset and
 project before using the supported OpenTelemetry experiment attributes. Stable
@@ -151,6 +251,11 @@ Readback also compares input, expected output, files, tool/mock evidence, gradin
 usage and release metadata. Stopped runs can be exported as explicitly partial
 experiments: unexecuted and no-model failures are recorded as missing cases and
 never fabricated as model traces.
+Optional semantic review is projected alongside the unchanged raw grading.
+Create it before `langfuse-upload-intent.json`: review writers share the export
+lock and refuse changes after upload intent freezes the payload. Readback checks
+the exact review digest and per-case result bindings; legacy exports without
+review remain supported.
 If execution reveals a harness defect, retain the frozen results and add a
 separate `assessment.json` with `status: "diagnostic_invalid_for_behavior"` and
 the reason before export. The experiment records this assessment and its hash;

@@ -4,12 +4,14 @@ import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { langfuseApi } from '../scripts/langfuse-api.mjs';
+import { readReviewArtifact, readRunSnapshot, reviewCheck, validateSemanticAssessment } from './semantic-assessment.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const nano = value => (BigInt(Date.parse(value)) * 1000000n).toString();
 const attr = (key, value) => ({ key, value: Array.isArray(value) ? { arrayValue: { values: value.map(x => ({ stringValue: String(x) })) } } : typeof value === 'boolean' ? { boolValue: value } : typeof value === 'number' ? { doubleValue: value } : { stringValue: typeof value === 'string' ? value : JSON.stringify(value) } });
 export function experimentSpan(protocol, item, result, datasetId, cohort = null) {
   const traceId = digest(protocol.id + ':' + item.id).slice(0, 32), spanId = digest(traceId + ':root').slice(0, 16);
+  const { review, ...execution } = cohort ?? {};
   const run = { source: 'codex', session_id: result.threadId, turn_id: result.turnId ?? null, synthetic: true, experiment: protocol.id, case_id: item.id, protocol_hash: protocol.hash };
   const gisul = { release: protocol.reader.release, commit: protocol.reader.commit, reader_sha256: protocol.reader.bundleHash, observations: result.gisulEvents.filter(x => x.commit).map(({ event, uri, commit, release, manifest_digest }) => ({ event, uri, commit, release, manifest_digest })) };
   const attributes = {
@@ -20,7 +22,7 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
     'langfuse.observation.type': 'chain',
     'langfuse.observation.input': item.input,
     'langfuse.observation.output': { status: result.status, finalText: result.finalText, files: result.files, grading: result.grading, failure: result.failure, toolCalls: (result.items ?? []).filter(x => ['mcpToolCall', 'dynamicToolCall'].includes(x.type)), mockEvents: result.mockEvents ?? [] },
-    'langfuse.observation.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, usage: result.usage, estimated_cost: result.estimatedCost, cost_kind: protocol.prices.kind, limitations: result.limitations },
+    'langfuse.observation.metadata': { synthetic: true, quality: { synthetic: true }, run, gisul, usage: result.usage, estimated_cost: result.estimatedCost, cost_kind: protocol.prices.kind, limitations: result.limitations, ...(review ? { reviews: review } : {}) },
     'langfuse.experiment.id': protocol.id, 'langfuse.experiment.name': protocol.id,
     'langfuse.experiment.dataset.id': datasetId,
     'langfuse.experiment.metadata.protocol_hash': protocol.hash,
@@ -31,16 +33,16 @@ export function experimentSpan(protocol, item, result, datasetId, cohort = null)
     'langfuse.experiment.metadata.synthetic': true,
     'langfuse.experiment.metadata.content_commit': protocol.reader.commit,
     'langfuse.experiment.metadata.release': protocol.reader.release,
-    'langfuse.experiment.metadata.human_ratings': 0,
+    'langfuse.experiment.metadata.human_ratings': execution.reviews?.humanRatings ?? 0,
     'langfuse.experiment.metadata.promotion': 'not_evaluated',
     'langfuse.experiment.metadata.source_commit': protocol.sourceCommit,
-    ...(cohort ? { 'langfuse.experiment.metadata.execution': cohort } : {}),
+    ...(cohort ? { 'langfuse.experiment.metadata.execution': execution } : {}),
     'langfuse.experiment.item.id': 'agent-env-v1:' + item.id,
     'langfuse.experiment.item.root_observation_id': spanId,
     'langfuse.experiment.item.expected_output': item.expected,
     'langfuse.experiment.item.metadata.split': item.split,
     'langfuse.experiment.item.metadata.critical': item.critical,
-    'langfuse.experiment.description': (cohort?.assessment?.status === 'diagnostic_invalid_for_behavior' ? 'DIAGNOSTIC: harness defect; do not use for behavioral comparison. ' : '') + 'Frozen formal evaluation; observable checks only. Semantic review and genuine human ratings pending. No production promotion.',
+    'langfuse.experiment.description': (cohort?.assessment?.status === 'diagnostic_invalid_for_behavior' ? 'DIAGNOSTIC: harness defect; do not use for behavioral comparison. ' : '') + (execution.reviews ? 'Frozen formal evaluation with separately bound review evidence. Human attestations reported separately. No production promotion.' : 'Frozen formal evaluation; observable checks only. Semantic review and genuine human ratings pending. No production promotion.'),
   };
   return { traceId, spanId, name: 'formal-evaluation-item', kind: 1, startTimeUnixNano: nano(result.startedAt), endTimeUnixNano: nano(result.endedAt), attributes: Object.entries(attributes).filter(([,value]) => value !== undefined).map(([key,value]) => attr(key,value)), status: { code: result.status === 'completed' ? 1 : 2, ...(result.failure ? { message: result.failure.message } : {}) } };
 }
@@ -111,6 +113,19 @@ async function exportUnlocked(root, projectId, { api, apply = false, readbackAtt
   const assessmentBytes = await readFile(join(root, 'assessment.json')).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
   const assessment = assessmentBytes ? JSON.parse(assessmentBytes) : { status: 'not_reviewed' };
   const cohort = { scheduled: cases.length, executed: results.length, completed: results.filter(x => x.status === 'completed').length, failed: results.filter(x => x.status === 'failed').length, notRun, stopReason: phase.stopped ?? null, fullDatasetExecuted: protocol.fullDataset && results.length === protocol.dataset.totalCases, continuation: phase.continuation ?? null, assessment, assessmentHash: assessmentBytes ? digest(assessmentBytes) : null };
+  const semanticFile = await readReviewArtifact(root, 'semantic-assessment.json', { optional: true });
+  let semantic = null;
+  if (semanticFile) {
+    semantic = validateSemanticAssessment(await readRunSnapshot(root), semanticFile.value);
+    cohort.reviews = { semanticHash: semanticFile.hash, humanHash: null, humanRatings: 0, judge: semantic.judge, processorHash: semantic.processorHash };
+  }
+  const reviewHashes = semanticFile ? { semanticHash: semanticFile.hash, humanHash: null } : null;
+  const previousIntent = (await readReviewArtifact(root, 'langfuse-upload-intent.json', { optional: true }))?.value;
+  if (previousIntent) {
+    const frozen = previousIntent.reviewHashes ?? null;
+    reviewCheck(frozen === null ? reviewHashes === null : reviewHashes !== null
+      && frozen.semanticHash === reviewHashes.semanticHash && frozen.humanHash === reviewHashes.humanHash, 'REVIEW_EXPORT_FROZEN');
+  }
   if (!apply) return { dryRun: true, experimentId: protocol.id, cases: results.length, projectId, execution: cohort };
   api ??= await langfuseApi();
   const projects = await api.request('/api/public/projects');
@@ -124,7 +139,9 @@ async function exportUnlocked(root, projectId, { api, apply = false, readbackAtt
     assert.equal(actual.metadata.version, protocol.dataset.version, 'Dataset version mismatch');
     assert.deepEqual(actual.input, item.input); assert.deepEqual(actual.expectedOutput, item.expected);
   }
-  const spans = results.map(result => experimentSpan(protocol, cases.find(x => x.id === result.caseId), result, dataset.id, cohort));
+  const spans = results.map(result => experimentSpan(protocol, cases.find(x => x.id === result.caseId), result, dataset.id, semantic ? {
+    ...cohort, review: { semantic: { assessmentHash: semanticFile.hash, judge: semantic.judge, entry: semantic.entries.find(entry => entry.caseId === result.caseId) } },
+  } : cohort));
   const from = new Date(Math.min(...results.map(x => Date.parse(x.startedAt))) - 60000).toISOString();
   const to = new Date(Math.max(...results.map(x => Date.parse(x.endedAt))) + 60000).toISOString();
   const itemPath = '/api/public/experiment-items?' + new URLSearchParams({ experimentId: protocol.id, fromStartTime: from, toStartTime: to, fields: 'io,dataset,metadata,experimentMetadata', limit: '100' });
@@ -141,7 +158,7 @@ async function exportUnlocked(root, projectId, { api, apply = false, readbackAtt
   // Reconcile before writing; persist intent BEFORE a request whose outcome may
   // be ambiguous. A later invocation reads back that batch, never resends it.
   const intentPath = join(root, 'langfuse-upload-intent.json');
-  const intent = await readFile(intentPath, 'utf8').then(JSON.parse).catch(error => { if (error.code === 'ENOENT') return { protocolHash: protocol.hash, spans: {} }; throw error; });
+  const intent = await readFile(intentPath, 'utf8').then(JSON.parse).catch(error => { if (error.code === 'ENOENT') return { protocolHash: protocol.hash, spans: {}, ...(reviewHashes ? { reviewHashes } : {}) }; throw error; });
   assert.equal(intent.protocolHash, protocol.hash);
   for (const span of spans) if (intent.spans[span.spanId]) assert.equal(intent.spans[span.spanId], digest(JSON.stringify(span)), 'Submitted payload changed; reconciliation required');
   const unsent = spans.filter(span => !present.has(span.spanId) && !intent.spans[span.spanId]);
@@ -176,7 +193,7 @@ async function exportUnlocked(root, projectId, { api, apply = false, readbackAtt
     } catch (error) { lastError = error; if (error.status && error.status !== 429) break; }
   }
   if (lastError) throw new Error('Upload sent, readback pending; reconcile the same IDs before retrying: ' + String(lastError));
-  const receipt = { checkedAt: new Date().toISOString(), projectId, datasetId: dataset.id, experimentId: protocol.id, protocolHash: protocol.hash, verifiedItems: observed.length, verification: 'identity_io_tool_evidence_grading_usage_provenance', exporterHash: digest(await readFile(fileURLToPath(import.meta.url))), execution: cohort, url: `${api.origin}/project/${projectId}/datasets/${dataset.id}`, items: observed.map(x => ({ itemId: x.experimentItemId, traceId: x.traceId, observationId: x.id })), synthetic: true, humanRatings: 0, promotion: 'not_evaluated' };
+  const receipt = { checkedAt: new Date().toISOString(), projectId, datasetId: dataset.id, experimentId: protocol.id, protocolHash: protocol.hash, verifiedItems: observed.length, verification: 'identity_io_tool_evidence_grading_usage_provenance', exporterHash: digest(await readFile(fileURLToPath(import.meta.url))), execution: cohort, url: `${api.origin}/project/${projectId}/datasets/${dataset.id}`, items: observed.map(x => ({ itemId: x.experimentItemId, traceId: x.traceId, observationId: x.id })), synthetic: true, humanRatings: cohort.reviews?.humanRatings ?? 0, promotion: 'not_evaluated' };
   await writeFile(join(root, 'langfuse-receipt.json'), JSON.stringify(receipt,null,2) + '\n', { mode: 0o600 });
   return receipt;
 }
