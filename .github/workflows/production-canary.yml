@@ -1,0 +1,35 @@
+name: Read-only production MCP canary
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gisul-production-canary
+  cancel-in-progress: false
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Check runtime, content identity and exact resource digests
+        run: npm run canary:production
+        env:
+          GISUL_RELEASE_BASE_URL: ${{ vars.GISUL_RELEASE_BASE_URL }}
+          GISUL_BEARER_TOKEN: ${{ secrets.GISUL_BEARER_TOKEN }}
+          GISUL_CANARY_EXPECTED: ${{ vars.GISUL_CANARY_EXPECTED }}
+      - name: Retain redacted canary evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: production-canary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/receipts/production-canary.json
+          if-no-files-found: error
+          retention-days: 90

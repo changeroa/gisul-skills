@@ -6,7 +6,7 @@ import { z } from "zod";
 import { digest } from "./release-files.mjs";
 import { frontmatter } from "./validate.mjs";
 
-export async function smokeR2(base, token, expected, { pinned = false, manifest } = {}) {
+export async function smokeR2(base, token, expected, { pinned = false, manifest, runtimeVersion } = {}) {
   assert.ok(token, "Missing MCP reader token");
   const client = new Client({ name: "gisul-r2-publication-check", version: "1" });
   const meta = pinned ? { _meta: { "io.gisul/commit": expected.commit } } : {};
@@ -14,6 +14,10 @@ export async function smokeR2(base, token, expected, { pinned = false, manifest 
   const transport = new StreamableHTTPClientTransport(endpoint, { requestInit: { headers: { authorization: `Bearer ${token}` }, redirect: "error" } });
   try {
     await client.connect(transport);
+    const server = client.getServerVersion();
+    if (runtimeVersion !== undefined && server?.version !== runtimeVersion) {
+      throw Object.assign(new Error("MCP_RUNTIME_MISMATCH"), { code: "MCP_RUNTIME_MISMATCH" });
+    }
     const result = await client.request({ method: "skills/list", params: meta }, z.object({ skills: z.array(z.any()), _meta: z.object({ release: z.string(), commit: z.string() }) }));
     assert.equal(result._meta.commit, expected.commit);
     assert.equal(result._meta.release, expected.release);
@@ -41,6 +45,6 @@ export async function smokeR2(base, token, expected, { pinned = false, manifest 
     assert.ok(support, "No supporting file available for the release smoke check");
     await read(support);
     const packs = manifest?.packs ? await checkPacks(client, expected.commit, manifest, { pinned }) : undefined;
-    return { packs, endpoint: endpoint.href, commit: expected.commit, release: expected.release, pinned, skills: result.skills.length, reads };
+    return { packs, server, endpoint: endpoint.href, commit: expected.commit, release: expected.release, pinned, skills: result.skills.length, reads };
   } finally { await client.close(); }
 }
