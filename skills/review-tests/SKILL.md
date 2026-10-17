@@ -1,5 +1,6 @@
 ---
 name: review-tests
+keywords: [test review, 테스트 검토, 회귀 탐지, 테스트 대역, 결정성]
 description: "Review test oracles, regression-detection ability, test doubles, integration and E2E boundaries, determinism, and execution evidence. Use for behavior changes, added or modified tests, and test-configuration changes to determine whether tests catch real risks."
 metadata:
   version: "1.2.0"

@@ -1,5 +1,6 @@
 ---
 name: review-verifier
+keywords: [review verification, 리뷰 검증, 발견 사항 검증, 반증, 심각도, 근거 감사]
 description: "Assess other reviewers' findings by checking original sources, actively seeking counterevidence, evaluating change relevance and severity, and auditing evidence. Use after specialist review and before the final report; audit scope and execution claims even when there are zero candidates."
 metadata:
   version: "1.2.0"

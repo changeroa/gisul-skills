@@ -1,5 +1,6 @@
 ---
 name: review-api-contracts
+keywords: [API review, API 검토, 인터페이스 계약, 직렬화, 하위 호환성]
 description: "Review HTTP/API contracts, events, SDKs, serialization, errors, pagination, and version or consumer compatibility. Use when public functions, endpoints, payloads, schemas, event contracts, or old/new version coexistence change."
 metadata:
   version: "1.2.0"

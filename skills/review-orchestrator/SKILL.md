@@ -1,5 +1,6 @@
 ---
 name: review-orchestrator
+keywords: [code review orchestration, 코드 리뷰, PR 검토, 위험 분류, 전문 리뷰 조율]
 description: "Orchestrate evidence-first code reviews. Use for PRs, diffs, code changes, or repository review requests to classify risk, select only relevant specialist skills, investigate and challenge findings, and produce a final report. Do not modify code or automatically publish reviews."
 metadata:
   version: "1.2.0"

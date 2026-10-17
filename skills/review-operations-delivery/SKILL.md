@@ -1,5 +1,6 @@
 ---
 name: review-operations-delivery
+keywords: [operations review, 운영 검토, 배포, 롤백, 공급망, 관측성]
 description: "Review deployment, rollback, migration coexistence, CI permissions, dependency supply chains, configuration, logs, metrics, traces, and operational recovery. Use for runtime code, infrastructure-as-code, workflows, Dockerfiles, lockfiles, or observability changes."
 metadata:
   version: "1.2.0"

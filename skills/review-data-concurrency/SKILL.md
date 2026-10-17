@@ -1,5 +1,6 @@
 ---
 name: review-data-concurrency
+keywords: [data concurrency review, 데이터 무결성, 동시성 검토, 트랜잭션, 마이그레이션]
 description: "Review integrity in data models, database constraints, transactions, isolation, read-modify-write operations, locks, compare-and-swap, and migrations. Use for changes to SQL, ORMs, persistent or shared state, and concurrent workers."
 metadata:
   version: "1.2.0"

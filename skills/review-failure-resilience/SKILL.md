@@ -1,5 +1,6 @@
 ---
 name: review-failure-resilience
+keywords: [resilience review, 장애 복구, 재시도, 멱등성, 부분 실패]
 description: "Review timeouts, retries, idempotency, external side effects, queue acknowledgments, outboxes, partial failure, and recovery. Use for changes to workers, schedulers, network calls, payments, publishing, notifications, or distributed jobs."
 metadata:
   version: "1.2.0"

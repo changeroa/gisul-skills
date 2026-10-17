@@ -1,5 +1,6 @@
 ---
 name: review-performance-resources
+keywords: [performance review, 성능 검토, 자원 수명, 지연 시간, 캐시, 메모리]
 description: "Review latency, throughput, complexity, database queries, caches, memory, connections, streams, and concurrency limits. Use for hot request paths, large datasets, parallelization, resource lifetimes, and performance-related changes."
 metadata:
   version: "1.2.0"

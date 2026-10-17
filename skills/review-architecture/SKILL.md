@@ -1,5 +1,6 @@
 ---
 name: review-architecture
+keywords: [architecture review, 아키텍처 리뷰, 모듈 경계, 의존성, 리팩터링]
 description: "Review responsibilities, ownership, module boundaries, coupling, information hiding, dependencies, over-abstraction, and refactoring safety. Use for structural changes, shared abstractions, new dependencies, or domain-boundary changes."
 metadata:
   version: "1.2.0"

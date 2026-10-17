@@ -1,5 +1,6 @@
 ---
 name: review-correctness-state
+keywords: [correctness review, 정확성 검토, 상태 전이, 불변식, 타입 검사]
 description: "Review defects in requirements, execution flow, state transitions, invariants, types, null handling, calculations, and time handling. Use when a code review changes business logic, state, asynchronous control flow, or runtime conversions."
 metadata:
   version: "1.2.0"

@@ -1,5 +1,6 @@
 ---
 name: review-client-runtime
+keywords: [client runtime review, 클라이언트 런타임, 프론트엔드 검토, 비동기 경합, 컴포넌트 수명]
 description: "Review client code execution defects: asynchronous races, component lifetimes, form events, browser storage, SSR/navigation, value conversion and API integration. Use for frontend source correctness and client-server boundary failures. User-facing state design, visual usability and browser E2E observation belong to their existing dedicated skills."
 metadata:
   version: "1.2.0"

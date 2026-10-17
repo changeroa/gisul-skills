@@ -1,5 +1,6 @@
 ---
 name: review-security-privacy
+keywords: [security privacy review, 보안 검토, 개인정보 보호, 인증, 인가, 신뢰 경계]
 description: "Review authentication and authorization, tenant isolation, trust boundaries, injection, SSRF, browser security, and secret or personal-data exposure. Use for changes to APIs, uploads, permissions, external inputs, serialization, security configuration, or agent tools."
 metadata:
   version: "1.2.0"
