@@ -36,6 +36,7 @@ This is not expertise in a bottle. It's a set of procedures an agent can try to 
 
 ### 01 / The screen loaded. Now what?
 
+- [**product-ux**](skills/product-ux/SKILL.md) · [**Product UX pack**](packs/product-ux-pack.json) · [Specialist guide](docs/product-ux.md) | [한국어](docs/product-ux.ko.md) : Select task-centered design, interaction feedback, experience mapping, content, pattern systems, and user research procedures.
 - [**ux-state-review**](skills/ux-state-review/SKILL.md) — Distinguish loading, unmet prerequisites, empty results, and failures. Check what the user sees and can do next.
 - [**exploratory-ux-qa**](skills/exploratory-ux-qa/SKILL.md) — Explore user journeys in a real browser and retain screen and network evidence.
 - [**browser-e2e-review**](skills/browser-e2e-review/SKILL.md) — Include processing, failure, recovery, and visual changes in E2E review.

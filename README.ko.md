@@ -35,6 +35,7 @@ AI한테 암묵지를 넣었다고 한다. 노하우를 이식했다고 한다.<
 
 ### 01 / 화면은 떴다. 그런데 뭘 해야 하지?
 
+- [**product-ux**](skills/product-ux/SKILL.md) · [**프로덕트 UX 팩**](packs/product-ux-pack.json) · [전문 스킬 안내](docs/product-ux.ko.md) | [English](docs/product-ux.md) : 과업 중심 설계, 상태 피드백, 경험 매핑, 콘텐츠, 패턴 시스템과 실제 사용자 연구 절차를 선택한다.
 - [**ux-state-review**](skills/ux-state-review/SKILL.md) — 로딩·선행조건 미충족·빈 결과·실패를 구분하고, 각 상태의 화면과 다음 행동을 확인한다.
 - [**exploratory-ux-qa**](skills/exploratory-ux-qa/SKILL.md) — 실제 브라우저에서 사용자 여정을 탐색하고 화면·네트워크 근거를 남긴다.
 - [**browser-e2e-review**](skills/browser-e2e-review/SKILL.md) — 처리 중·실패·복구와 시각적 변화를 E2E 검토에 포함한다.

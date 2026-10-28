@@ -13,8 +13,8 @@ const member=(n,phase)=>({uri:`skill://gisul/gisul/${n}/SKILL.md`,phase,selectio
 const def={schema_version:1,kind:'skill-pack',name:'example-pack',display_name:'Example',description:'Example review',scope:'fixture',members:[member('scope','scope'),member('backend','investigate'),member('verify','verify')]};
 test('published packs retain roles, required members and reference closure',async()=>{
  const catalog=await validate();const packs=await readPacks(new URL('..',import.meta.url).pathname,catalog.valid);
- assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','clean-code-pack','frontend-pack','testing-pack']);
- assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,12,13,9]);
+ assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','clean-code-pack','frontend-pack','product-ux-pack','testing-pack']);
+ assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,12,13,17,9]);
  assert.ok(packs.every(p=>p.definition.members.some(m=>m.uri.endsWith('/review-verifier/SKILL.md')&&m.selection==='required')));
  const combined=packs.filter(p=>['backend-pack','frontend-pack'].includes(p.definition.name)).flatMap(p=>p.definition.members);
  assert.equal(combined.length,26);assert.equal(new Set(combined.map(m=>m.uri)).size,17);
