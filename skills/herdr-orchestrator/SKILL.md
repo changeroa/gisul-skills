@@ -104,7 +104,7 @@ Use each relevant event to update the task ledger and decide whether action is n
 - Working: continue independent work and inspect meaningful progress.
 - Blocked: first verify that the event belongs to an assigned worker still in the goal tab, then read the actual question or approval request. Resolve it within existing user authorization and applicable tool policies; request user input only when necessary.
 - Idle or done: collect the task-specific result and verify it.
-- Unknown, exit, timeout, or monitoring loss: inspect current output, artifacts, and runtime state before retrying or replacing anything.
+- Unknown, exit, timeout, or monitoring loss: re-establish identity, assignment, and goal-tab membership before reading live output. If the original session is gone, inspect its recorded artifacts and runtime state without adopting a replacement occupant. Verify the evidence before retrying or replacing anything.
 
 Never send approval keys blindly or bypass a required human approval. Before retrying a prompt after a timeout, check whether it was already received to avoid duplicate work.
 
