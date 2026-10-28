@@ -14,12 +14,23 @@ When the user asks to use this skill for a task, treat that request as authoriza
 
 If another orchestrator assigned you a bounded task, act as its worker: stay within your assignment, report back, and do not create additional agents unless explicitly delegated that responsibility.
 
+## Task topology and ownership
+
+Use a workspace for a project, a tab for one independently completable goal, and panes for that goal's agents and processes. Record the tab's exact `goal_tab_id`; an OS window, UI focus, tab title, or shared cwd is not a task identity.
+
+- Keep follow-up requests for the same goal in its existing tab. Start an independent goal in a new tab, preserving user focus. Do not treat every new message as a new goal or repurpose a completed goal's tab for unrelated work.
+- For a new goal, establish its project workspace, create a tab with `--no-focus`, and record the returned tab/root-pane IDs before starting participants. If the current coordinator belongs to another active goal, hand off the new goal to a coordinator in the new tab; do not move the existing coordinator or silently assign it both goals.
+- Resolve the goal tab before creating or reusing a worker. Match the caller's exact Codex session to its live pane/tab, or use an explicitly established goal-tab mapping when coordinating from outside Herdr. If that mapping is unresolved, continue useful local work without guessing a target for pane mutations or messages.
+- Create and reuse workers only inside the goal tab. A ready agent in another tab remains outside this task even when its cwd or project matches. Different worktrees are allowed inside the same goal tab.
+- Tab membership defines the observation boundary; assignment defines who may receive work. Record the parent session/pane and each assigned worker's session/pane. An unassigned agent in the same tab is not automatically available for reuse.
+- Keep active participants in the goal tab. On a move outside it or replacement of a pane's session, suspend the old assignment and stop dispatching to it. The parent may bind a verified successor inside the goal tab after releasing the old assignment. Transfer to another goal requires an explicit handoff to its coordinator; never silently adopt the new occupant or continue cross-tab coordination.
+
 ## 1. Discover the environment
 
 Before coordinating work:
 
-- Identify your current session, workspace, tab, pane, and repository. Verify that Herdr is available and connected before attempting orchestration.
-- Inspect existing agents and their assignments before creating helpers.
+- Identify your current session, workspace, goal tab, pane, and repository. Verify that Herdr is available and connected before attempting orchestration.
+- Inspect agents and assignments in the resolved goal tab before creating helpers. A global snapshot's session, pane, tab, and workspace metadata may establish identity and topology; it does not expand task ownership or justify reading unrelated agents' output.
 - Distinguish agents participating in this task from unrelated sessions. Visibility alone does not authorize taking over another agent.
 - Consult the installed Herdr instructions with `herdr --skill` if they are not already available. Use CLI help and `herdr api schema --json` to verify commands, capabilities, and event names.
 - Use IDs returned by Herdr. Never infer IDs from position or numbering.
@@ -30,7 +41,9 @@ Use Herdr's agent controls for recognized agents and pane controls for ordinary 
 
 MUST enable the available monitoring tool before creating agents, dispatching parallel work, or modifying tabs and panes.
 
-Monitor agent discovery, status changes, exits, and relevant workspace, tab, pane, and layout lifecycle changes. Include newly created resources and every workspace participating in this task.
+Monitor agent discovery, status changes, exits, and relevant tab, pane, and layout lifecycle changes within `goal_tab_id`. Include newly created panes in that tab. General subscriptions may support identity recovery, but only goal-tab events are task notifications. Resolve events without tab information through verified topology, including the last verified mapping for a close event.
+
+Ignore notifications from other tabs for task coordination. A `Herdr changes` notification is an observation, not an assignment or permission to prompt, answer, or take over another agent. When identity or tab membership is uncertain, refresh the mapping before acting.
 
 Verify that monitoring is active; intending to enable it is insufficient. If no dedicated monitor tool exists, use supported Herdr event subscriptions. Discover actual event names instead of inventing them.
 
@@ -44,7 +57,7 @@ If streaming is unavailable, use bounded polling and state that monitoring is de
 
 Actively look for parallel work at the start and at each meaningful phase transition. When a bounded subtask can progress independently while you do useful work, delegate it rather than completing everything serially. Suitable examples include investigating a separate component, implementing independently owned files, or reviewing a prepared change while you work on integration.
 
-After establishing monitoring and inspecting current assignments, reuse an available shell pane or ready agent belonging to this task when suitable. If none is suitable, create a sibling pane in the current task's tab and start a helper there. The absence of an existing idle pane is a reason to create one, not a reason to skip delegation. Preserve the task's working directory and the user's focus, using explicit session/pane IDs discovered from Herdr. When operating from outside Herdr, establish the intended task session and target pane explicitly; do not assume the UI-focused pane belongs to this task.
+After establishing monitoring and inspecting current assignments, reuse an available shell pane or a ready worker assigned to this task inside `goal_tab_id`. If none is suitable, create a sibling pane in that goal tab and start a helper there. The absence of an existing idle pane is a reason to create one, not a reason to reuse another tab's agent or skip useful delegation. Preserve the assigned working directory and the user's focus, using explicit verified session/pane IDs. When operating from outside Herdr, establish the intended goal tab and target pane explicitly; do not assume the UI-focused pane belongs to this task.
 
 Start with one useful helper and add more when each has independent work and a clear owner. Do not require the user to request a pane count. Keep short tasks and work with inseparable shared edits local; do not split work merely to increase the number of panes.
 
@@ -53,6 +66,7 @@ Once a worker finishes, verify its result and reuse that pane for the next indep
 For each assignment, provide:
 
 - A unique task ID and the responsible orchestrator.
+- The exact goal tab and parent session/pane to report to.
 - The objective, relevant context, and dependencies.
 - The repository/worktree and files or resources the worker may modify.
 - Constraints, expected deliverables, and acceptance criteria.
@@ -61,7 +75,7 @@ For each assignment, provide:
 
 Confirm that the worker accepted the assignment. A successful prompt submission alone is not acceptance.
 
-Maintain a compact task ledger mapping task IDs to agents, current pane IDs, working directories, ownership, dependencies, and progress. Keep task progress separate from Herdr's observed agent status.
+Maintain a compact task ledger containing `goal_tab_id`, the parent session/pane, and each assigned worker's session, pane, working directory, ownership, dependencies, and progress. Keep task progress separate from Herdr's observed agent status. Membership tracking does not itself enable automatic continuation prompts.
 
 Persist enough coordination state to recover assignments and pending decisions after context loss. Resume existing work before creating replacement agents.
 
@@ -78,17 +92,17 @@ Before editing, check whether another participant owns the affected area. If wor
 
 Do not revert another participant's changes merely because they were unexpected. Account for shared ports, databases, generated files, and other resources that worktrees do not isolate.
 
-Send targeted messages containing the task ID, relevant evidence, the requested action, and any ownership change. Share interface decisions with affected workers promptly. Avoid repetitive status prompts.
+Before sending a message, verify the recipient's current session, membership in `goal_tab_id`, and assignment relationship. Send targeted messages containing the task ID, relevant evidence, the requested action, and any ownership change. Do not broadcast to visible, same-cwd, or idle agents. Share interface decisions with affected assigned workers promptly. Avoid repetitive status prompts.
 
-Workers may coordinate within their assignments, but changes to scope, ownership, or shared interfaces must reach the orchestrator.
+Workers report to their assigned parent. Coordinate with another worker only when that relationship is part of the assignment and both remain in the same goal tab. Changes to scope, ownership, or shared interfaces must reach the orchestrator.
 
 ## 5. React to events
 
 Use each relevant event to update the task ledger and decide whether action is needed:
 
-- New or moved resources: refresh identity and ownership mappings.
+- New or moved resources: refresh identity and ownership mappings against the goal tab. A resource outside it requires an explicit handoff before further coordination.
 - Working: continue independent work and inspect meaningful progress.
-- Blocked: read the actual question or approval request. Resolve it within existing user authorization and applicable tool policies; request user input only when necessary.
+- Blocked: first verify that the event belongs to an assigned worker still in the goal tab, then read the actual question or approval request. Resolve it within existing user authorization and applicable tool policies; request user input only when necessary.
 - Idle or done: collect the task-specific result and verify it.
 - Unknown, exit, timeout, or monitoring loss: inspect current output, artifacts, and runtime state before retrying or replacing anything.
 
@@ -117,7 +131,7 @@ Finish when the user's acceptance criteria are met and all required assignments 
 
 Register this task's intended workflow with gisool before opening panes, then attach each pane to its step. Tracing is best-effort observation: if gisool is unavailable, continue orchestration and note the tracing gap. Intended skills are guidance for the agents, not restrictions; differences between the plan and actual skill use are feedback data.
 
-Use the workspace and tab IDs verified during discovery as `HERDR_WORKSPACE_ID` and `HERDR_TAB_ID`. Read the local port from `~/.gisool/config.json` (`port`, default `8799`) and authenticate with `~/.gisool/token`. Keep the flow ID in the task ledger for recovery.
+Use the workspace containing the verified goal tab as `HERDR_WORKSPACE_ID` and `goal_tab_id` as `HERDR_TAB_ID`; never substitute the UI-focused tab. Read the local port from `~/.gisool/config.json` (`port`, default `8799`) and authenticate with `~/.gisool/token`. Keep the flow ID in the task ledger for recovery.
 
 Before opening panes, adapt this example's spec name, step IDs, and intended skills to the task. Spec and step IDs are slugs of at most 64 characters; a spec has 1-50 unique steps, each with up to 10 intended skills. `together: true` means all listed skills are expected in that step; `false` means any one satisfies the intention. `expectTools` and `doneWhen` describe expected activity and completion without enforcing either.
 
