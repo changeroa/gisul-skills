@@ -1,7 +1,7 @@
 ---
 name: "dont-make-me-think"
 description: "Steve Krug의 Don't Make Me Think 원칙으로 실제 UI, URL, 스크린샷, 디자인 시안의 visual QA와 사용성 리뷰를 수행한다. 화면 이해, 탐색, 선택, 과업 완료를 방해하는 문제를 시각적 근거와 함께 우선순위화할 때 사용한다. 책 요약만 요청하거나 픽셀 차이 비교, 기능 테스트, 접근성 인증만 요청한 경우에는 적용하지 않는다."
-keywords: ["시안 비교", "디자인 인계", "사용성", "탐색 혼란", "화면 이해", "길 찾기", "홈페이지 QA", "첫 선택", "사용자 테스트", "usability review", "navigation clarity", "trunk test", "visual QA", "Steve Krug"]
+keywords: ["시안 비교","디자인 인계","사용성","탐색 혼란","화면 이해","길 찾기","홈페이지 QA","첫 선택","사용자 테스트","usability review","navigation clarity","trunk test","visual QA","Steve Krug","usability","UX","UI review","interface clarity","button labels","navigation","버튼 문구","화면 검토","탐색"]
 ---
 
 # Don't Make Me Think · UI QA

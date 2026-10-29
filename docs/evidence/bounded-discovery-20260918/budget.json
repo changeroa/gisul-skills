@@ -1,0 +1,43 @@
+{
+  "actualAccountBill": false,
+  "cohorts": [
+    {
+      "cohort": "remote-v1",
+      "tasks": {
+        "attempts": 36,
+        "selected": 36,
+        "tokensLowerBound": 1940773,
+        "standardPriceEquivalentLowerBound": 9.226242,
+        "hasPartialUsage": false,
+        "scheduledSlots": 36,
+        "notRunSlots": 0,
+        "missingResultSlots": []
+      },
+      "judges": {
+        "runs": 18,
+        "tokens": 196448,
+        "standardPriceEquivalent": 2.11444,
+        "missingUsage": false
+      }
+    },
+    {
+      "cohort": "native-v2",
+      "tasks": {
+        "attempts": 12,
+        "selected": 12,
+        "tokensLowerBound": 416233,
+        "standardPriceEquivalentLowerBound": 2.660426,
+        "hasPartialUsage": false,
+        "scheduledSlots": 12,
+        "notRunSlots": 0,
+        "missingResultSlots": []
+      },
+      "judges": {
+        "runs": 4,
+        "tokens": 44143,
+        "standardPriceEquivalent": 0.460926,
+        "missingUsage": false
+      }
+    }
+  ]
+}

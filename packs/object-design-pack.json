@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "skill-pack",
+  "name": "object-design-pack",
+  "display_name": "UML·객체 설계 팩",
+  "description": "사용자 목표와 요구사항에서 도메인·계약, 객체 책임·협력, UML 모델, 패턴 선택과 아키텍처 뷰로 이어지는 설계 절차를 필요한 만큼 선택한다.",
+  "scope": "다른 스킬팩을 요구하지 않는 독립 UML·객체 분석·설계 팩이다. 모델을 특정 질문을 해결하는 최소 표현으로 사용하며 현재 구현·개념 모델·제안·검증 결과를 구별한다. 팩은 코드 수정·실행·외부 전송·commit·push·배포 권한을 주지 않으며 표기 검사나 렌더링 성공을 설계 정확성·요구 완전성의 증명으로 확대하지 않는다.",
+  "members": [
+    {
+      "uri": "skill://skillar/iyen/object-design/SKILL.md",
+      "phase": "scope",
+      "selection": "required",
+      "when": "독립 UML·객체 설계 팩의 진입점으로 요청 모드·범위·모델 목적·권한을 고정한다."
+    },
+    {
+      "uri": "skill://skillar/iyen/uml-modeling/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "UML 다이어그램 선택, 추상화·관점·버전·표기 의미, 여러 모델의 일관성을 설계하거나 검토할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/use-case-modeling/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "사용자 목표와 시스템 경계를 바탕으로 주 시나리오·확장·보장과 보조 요구사항을 작성할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/domain-contract-modeling/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "개념 모델, 시스템 이벤트, SSD와 연산 전후조건을 도출하거나 연결할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/responsibility-design/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "객체의 knowing/doing 책임과 협력을 실제 시나리오에서 배정하고 tradeoff를 검토할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/pattern-application/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "실제 변화 축·생성·호환·알림·복구 문제에 패턴 후보와 단순 대안을 비교해 적용할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/architecture-modeling/SKILL.md",
+      "phase": "investigate",
+      "selection": "when_applicable",
+      "when": "품질 속성과 중요한 시나리오를 논리·런타임·배포·패키지 뷰 및 결정·검증으로 연결할 때."
+    },
+    {
+      "uri": "skill://skillar/iyen/object-design-workflow/SKILL.md",
+      "phase": "investigate",
+      "selection": "required",
+      "when": "현재 설계 질문과 위험에 맞춰 분석·설계·구현·피드백의 작은 반복을 조율한다."
+    },
+    {
+      "uri": "skill://skillar/iyen/object-design-verification/SKILL.md",
+      "phase": "verify",
+      "selection": "required",
+      "when": "요구·계약·모델·코드의 추적성과 반례를 독립적으로 대조하고 실행한 검증과 미검증을 구별한다."
+    }
+  ]
+}

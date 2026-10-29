@@ -269,7 +269,9 @@ export class CodexSession extends EventEmitter {
       if (resolve(cwd) !== this.cwd) throw new Error('Thread workspace cannot change');
       const pins = { cwd: this.cwd, ephemeral: true, approvalPolicy: 'never', permissions: 'eval', model: this.config.model,
         modelProvider: 'openai', allowProviderModelFallback: false, config: { model_reasoning_effort: this.config.model_reasoning_effort },
-        runtimeWorkspaceRoots: [this.cwd], environments: [], selectedCapabilityRoots: [] };
+        // An empty environments array disables the model's shell/file tools.
+        // The isolated app-server's default is the local execution environment.
+        runtimeWorkspaceRoots: [this.cwd], selectedCapabilityRoots: [] };
       const optional = new Set(['baseInstructions', 'developerInstructions', 'personality', 'serviceTier', 'threadSource']);
       for (const [key, value] of Object.entries(extras)) {
         if (!optional.has(key) && JSON.stringify(value) !== JSON.stringify(pins[key])) throw new Error('Cannot override isolated thread setting: ' + key);
@@ -280,6 +282,12 @@ export class CodexSession extends EventEmitter {
           result.modelProvider !== 'openai' || result.approvalPolicy !== 'never' || result.activePermissionProfile?.id !== 'eval' ||
           result.activePermissionProfile.extends !== ':workspace' || result.sandbox?.networkAccess !== false) {
         throw new Error('Thread startup did not preserve the pinned model, effort or permissions');
+      }
+      const environments = result.thread.environments;
+      if (!Array.isArray(environments) || environments.length !== 1 || environments[0].environmentId !== 'local' ||
+          await canonical(environments[0].cwd) !== await canonical(this.cwd) ||
+          !isDeepStrictEqual(environments[0].runtimeWorkspaceRoots, [this.cwd])) {
+        throw new Error('Thread must expose exactly the isolated local execution environment');
       }
       this.threadId = result.thread.id;
       return result;

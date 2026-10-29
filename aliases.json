@@ -102,5 +102,14 @@
   "skill://gisul/gisul/testing-test-doubles/SKILL.md": "skill://skillar/iyen/testing-test-doubles/SKILL.md",
   "skill://gisul/gisul/re0-memo/SKILL.md": "skill://skillar/iyen/re0-memo/SKILL.md",
   "skill://gisul/gisul/aim/SKILL.md": "skill://skillar/iyen/aim/SKILL.md",
-  "skill://gisul/gisul/ux-state-review/SKILL.md": "skill://skillar/iyen/ux-state-review/SKILL.md"
+  "skill://gisul/gisul/ux-state-review/SKILL.md": "skill://skillar/iyen/ux-state-review/SKILL.md",
+  "skill://gisul/gisul/object-design/SKILL.md": "skill://skillar/iyen/object-design/SKILL.md",
+  "skill://gisul/gisul/object-design-workflow/SKILL.md": "skill://skillar/iyen/object-design-workflow/SKILL.md",
+  "skill://gisul/gisul/object-design-verification/SKILL.md": "skill://skillar/iyen/object-design-verification/SKILL.md",
+  "skill://gisul/gisul/uml-modeling/SKILL.md": "skill://skillar/iyen/uml-modeling/SKILL.md",
+  "skill://gisul/gisul/use-case-modeling/SKILL.md": "skill://skillar/iyen/use-case-modeling/SKILL.md",
+  "skill://gisul/gisul/domain-contract-modeling/SKILL.md": "skill://skillar/iyen/domain-contract-modeling/SKILL.md",
+  "skill://gisul/gisul/responsibility-design/SKILL.md": "skill://skillar/iyen/responsibility-design/SKILL.md",
+  "skill://gisul/gisul/pattern-application/SKILL.md": "skill://skillar/iyen/pattern-application/SKILL.md",
+  "skill://gisul/gisul/architecture-modeling/SKILL.md": "skill://skillar/iyen/architecture-modeling/SKILL.md"
 }

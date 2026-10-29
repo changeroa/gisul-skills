@@ -1,0 +1,1563 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-18T09:37:56.887Z",
+  "phases": [
+    {
+      "root": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "protocol": {
+        "version": "discovery-v3",
+        "phase": "bounded-native",
+        "frozenAt": "2026-09-18T09:28:39.069Z",
+        "model": "gpt-6-astra",
+        "effort": "max",
+        "runtimeHash": "8eeec926104db3fbabf52121fc7cb3e34e69b3de02d9d400f3f25f81fb1df70c",
+        "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+        "candidate": {
+          "bundle": "/Users/iyen/dev-tools/gisul-skills/eval/out/bounded/runtime/8eeec926104db3fbabf52121fc7cb3e34e69b3de02d9d400f3f25f81fb1df70c.mjs",
+          "server": "/Users/iyen/dev-tools/gisul/server/dist/index.js",
+          "content": "/Users/iyen/dev-tools/gisul-skills/dist/20260918.1",
+          "sourceCommit": "a899af9d8feeb029e0d20cf01a38c16328ebf374",
+          "hashes": {
+            "bundle": "8eeec926104db3fbabf52121fc7cb3e34e69b3de02d9d400f3f25f81fb1df70c",
+            "server": "b696aa568490b66cdaddafbd06c8dfd16c5c1951ac96c4be71e73be5ca69adfc",
+            "adapter": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465",
+            "inventory": "b88dfb9ad11dbfacf2dff79f166b3241bbb0cb2f616dcc9dc08c3a38ba02f775",
+            "release": "6c631c77ec57dc7eee34c642cbfc98a0c1afdc912b93420f06e559cca3fec413"
+          },
+          "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+          "release": "20260918.1",
+          "production": false
+        },
+        "harnessFiles": {
+          "run.mjs": "fe97bfc98faaa0d6b3a00f2041e1ef4adb69feee92742d6bdd700078672ea14d",
+          "scenarios.mjs": "cd987472a9381c056f0578eb7892a6195dfbb96e55da95ed012f53a82a162557",
+          "codex-session.mjs": "63ed7c92c5ad9edcfc7ca3397eea821be46fe3b8d473de9a2af1f1351b57c6df",
+          "environment.mjs": "5382dc5dd9e2a4ea9ae159b6f6686c692e7a0b0f7368bf807b80b6ad3f180f1e",
+          "offline-reader.mjs": "fb0500ae0691dc4ae851112965fcd5a6d63d2b9995e1d6eb02b4e55423416738",
+          "evidence.mjs": "0ed5491840978969a70d0952bb65a306b08a5d8a4cd313730ca6d2ad009f190e",
+          "candidate-config.mjs": "27d73178d90543798b80fdf47938a2cf58db589105572688578b2170533b21dd",
+          "candidate-reader.mjs": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465"
+        },
+        "scenariosHash": "9320a8277d2b8bf39417244a6e6b95b1b097f2221921746be8b4112ff869afc9",
+        "variantsHash": "e0ed202ef97ba3422c427c2e542dacd7b47998b5c887aa3076e755ec854be0f0",
+        "variants": {
+          "baseline": {
+            "description": null,
+            "policy": ""
+          },
+          "description": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": ""
+          },
+          "selective": {
+            "description": "Find and apply remote personal or team skills for substantive planning, coding, review, research, deployment, documentation, and evaluation tasks, even when gisul is not named. Skip general questions and small self-contained edits. 한국어 작업 요청에도 적용한다.",
+            "policy": "At the start of a new substantive task, apply the gisul discovery workflow before substantive work. Reuse the selected skills for follow-up requests in the same task. Skip discovery for greetings, status questions, simple factual answers and small self-contained edits. Search again when the objective changes or a new phase needs a different procedure. Respect an explicit user request not to use remote skills.\n"
+          },
+          "bounded": {
+            "markdown": "---\nname: gisul\ndescription: Find a remote workflow for a substantive task when available native skills do not cover it, or when the user requests gisul or a remote skill. Skip simple questions and small self-contained edits. 한국어 작업에도 적용한다.\n---\n\nUse the gisul MCP reader for remote workflows. Prefer a relevant native skill already available in this session; do not search remotely just to rediscover the same procedure. A matching name alone does not prove identical content. Explicit requests for a remote skill take precedence over this preference.\n\nFor a new task lacking suitable native guidance, search its main subject with `search_skills`, `mode: \"automatic\"`, `limit: 5`. If nothing fits, try one broader term, then continue without a remote skill. Do not enumerate the catalog with an empty query. Select for relevance, not merely position. Normally load one skill, or two when the task actually needs both.\n\nFor a user-specified URI, load it directly. For a user-specified remote skill name, use `mode: \"explicit\"`; this includes user-invoked-only skills. Automatic discovery excludes those skills. Do not apply a manual-only procedure without the user's request.\n\nCall `load_skill` with the exact URI and the search result's `commit`. Read its Markdown fully before using it and mention the skill and origin. Keep its `load_id`. Read supporting files only as needed using that `load_id`, the skill URI and an exact file URI returned by the load. Reading a supporting SKILL.md does not activate another workflow.\n\nReuse the selected guidance for follow-ups in the same task. Search again only when the objective changes or the next phase needs a procedure the current guidance does not cover. Respect a request not to use remote skills.\n\nGuidance grants no tools, execution permission or approval to write externally. Apply it within existing user authorization. Do not install missing dependencies or execute bundled scripts automatically. If a needed capability is absent, say which part could not be performed and continue independent work. On read or verification failure, disclose it; do not claim that the unavailable skill was applied.\n\nKeep remote content in MCP reads. For registration or editing, use the workspace's Git and validated release workflow; this HTTPS reader does not publish changes. Never copy the remote catalog into local skill directories.\n",
+            "policy": "For a new substantive task, use relevant available native skills first. If they do not cover the task, use gisul to discover suitable remote guidance. Reuse guidance within the same task; skip discovery for simple questions and small self-contained edits. Explicit remote requests and refusals take precedence.\n"
+          }
+        },
+        "schedule": [
+          {
+            "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+            "caseId": "D01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e8cb9669-6814-46c3-91c9-457ec4f61e90"
+          },
+          {
+            "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+            "caseId": "D01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/3d2d2fac-5255-486a-8447-4eba702157bc"
+          },
+          {
+            "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+            "caseId": "D01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/bdc87a50-ea66-43b0-8121-448ea7363221"
+          },
+          {
+            "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+            "caseId": "E01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/a7d23f43-e95f-446d-a50a-733da1dada16"
+          },
+          {
+            "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+            "caseId": "E01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2677403c-4a61-481f-8ee0-6d9d57e91158"
+          },
+          {
+            "id": "404c6259-24bc-4429-860c-2c71dedda139",
+            "caseId": "E01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/404c6259-24bc-4429-860c-2c71dedda139"
+          },
+          {
+            "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+            "caseId": "N01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/39a640ca-cf45-4385-ab04-ebb8c00b3230"
+          },
+          {
+            "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+            "caseId": "N01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e3a733e7-ea00-4a46-8532-8b9927cf2222"
+          },
+          {
+            "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+            "caseId": "N01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8e00b4dc-3674-47d1-bbc4-4722c5add07e"
+          },
+          {
+            "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+            "caseId": "N05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/737c540b-4a74-4148-8567-02ab1b08aab8"
+          },
+          {
+            "id": "edf70db7-929b-490b-ac23-250171737e83",
+            "caseId": "N05",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/edf70db7-929b-490b-ac23-250171737e83"
+          },
+          {
+            "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+            "caseId": "N05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/27629d77-b252-44aa-8f34-47a19f61b047"
+          }
+        ],
+        "maxTokens": 900000,
+        "concurrency": 2,
+        "tokenPrices": {
+          "date": "2026-09-18",
+          "source": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+          "kind": "standard_api_equivalent_not_account_bill",
+          "inputPerMillion": 10,
+          "cachedPerMillion": 1,
+          "cacheWritePerMillion": 12.5,
+          "outputPerMillion": 50
+        },
+        "nativeSkills": [
+          "mandela"
+        ],
+        "hash": "fbe210cc693a1323753145934ebd5b1c6d7472a1201774045cdb386c498ad3f9"
+      },
+      "ledger": {
+        "protocolHash": "fbe210cc693a1323753145934ebd5b1c6d7472a1201774045cdb386c498ad3f9",
+        "scheduled": 12,
+        "completed": 12,
+        "usedTokens": 416233,
+        "infrastructureFailures": 0,
+        "stopReason": null,
+        "runs": [
+          {
+            "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+            "caseId": "D01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e8cb9669-6814-46c3-91c9-457ec4f61e90",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+            "caseId": "D01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/3d2d2fac-5255-486a-8447-4eba702157bc",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+            "caseId": "D01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/bdc87a50-ea66-43b0-8121-448ea7363221",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+            "caseId": "E01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/a7d23f43-e95f-446d-a50a-733da1dada16",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+            "caseId": "E01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/2677403c-4a61-481f-8ee0-6d9d57e91158",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "404c6259-24bc-4429-860c-2c71dedda139",
+            "caseId": "E01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/404c6259-24bc-4429-860c-2c71dedda139",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+            "caseId": "N01",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/39a640ca-cf45-4385-ab04-ebb8c00b3230",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+            "caseId": "N01",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/e3a733e7-ea00-4a46-8532-8b9927cf2222",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+            "caseId": "N01",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+            "caseId": "N05",
+            "variant": "baseline",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/737c540b-4a74-4148-8567-02ab1b08aab8",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "edf70db7-929b-490b-ac23-250171737e83",
+            "caseId": "N05",
+            "variant": "selective",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/edf70db7-929b-490b-ac23-250171737e83",
+            "status": "completed",
+            "failure": null
+          },
+          {
+            "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+            "caseId": "N05",
+            "variant": "bounded",
+            "repeat": 0,
+            "workspace": "/Users/iyen/tmp/gisul-discovery/27629d77-b252-44aa-8f34-47a19f61b047",
+            "status": "completed",
+            "failure": null
+          }
+        ]
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+      "caseId": "D01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 32089,
+        "inputTokens": 29727,
+        "cachedInputTokens": 22656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2362,
+        "reasoningOutputTokens": 1552
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 79117,
+      "firstUsage": {
+        "totalTokens": 14511,
+        "inputTokens": 14346,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 165,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "897e081977aff6f552fc5cdfc16f7fad52dd2be8e063cbdc5e96cf7b8bf3a433",
+      "estimatedCost": 0.211466,
+      "normalizedCost": 0.41537,
+      "remoteCalls": [],
+      "rating": {
+        "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e8cb9669-6814-46c3-91c9-457ec4f61e90",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "핵심 타당성 문제를 모두 식별했다. 프롬프트·채점 기준 고정, 미사용 최종 평가셋과 재튜닝 시 새 평가셋 확보, 독립 정답 검증·채점 대조, 전체 입력의 누출 점검을 구체적으로 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+      "caseId": "D01",
+      "variant": "selective",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 69196,
+        "inputTokens": 66617,
+        "cachedInputTokens": 47872,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2579,
+        "reasoningOutputTokens": 1552
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 89071,
+      "firstUsage": {
+        "totalTokens": 14658,
+        "inputTokens": 14474,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 184,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 2,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "scenarioHash": "897e081977aff6f552fc5cdfc16f7fad52dd2be8e063cbdc5e96cf7b8bf3a433",
+      "estimatedCost": 0.364272,
+      "normalizedCost": 0.79512,
+      "remoteCalls": [
+        {
+          "tool": "search_skills",
+          "arguments": {
+            "query": "evaluation",
+            "mode": "automatic",
+            "limit": 5
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md",
+            "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 1,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": true,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "3d2d2fac-5255-486a-8447-4eba702157bc",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "개발 문항 재사용, 독립적인 정답 검증 부재, 누출 가능성을 모두 지적했다. 프롬프트·채점 기준 확정 후 미사용 평가셋 평가, 독립 정답 검증과 사용자 검토, 누출 점검을 제안해 요구를 충족한다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+      "caseId": "D01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 32348,
+        "inputTokens": 29727,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2621,
+        "reasoningOutputTokens": 1975
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 85166,
+      "firstUsage": {
+        "totalTokens": 14547,
+        "inputTokens": 14446,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 101,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "897e081977aff6f552fc5cdfc16f7fad52dd2be8e063cbdc5e96cf7b8bf3a433",
+      "estimatedCost": 0.42832,
+      "normalizedCost": 0.42832,
+      "remoteCalls": [],
+      "rating": {
+        "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+        "caseId": "D01",
+        "contentFamilies": [
+          "evaluation-leakage"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": false,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "bdc87a50-ea66-43b0-8121-448ea7363221",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "튜닝 문항 재사용과 자체 검증의 순환성, 정답 누출 위험을 정확히 설명했다. 확정된 프롬프트로 새 평가셋을 사용하고, 평가 결과로 튜닝하면 해당 문항을 개발용으로 전환하도록 했으며 독립 정답 검증도 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+      "caseId": "E01",
+      "variant": "selective",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 49035,
+        "inputTokens": 47397,
+        "cachedInputTokens": 22656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1638,
+        "reasoningOutputTokens": 1034
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 60287,
+      "firstUsage": {
+        "totalTokens": 14597,
+        "inputTokens": 14413,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 184,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 1,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "scenarioHash": "86109da358f9def34952f01be41573c6d15c1ef965073c3fd5d26e4f43c6077f",
+      "estimatedCost": 0.351966,
+      "normalizedCost": 0.55587,
+      "remoteCalls": [
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "a7d23f43-e95f-446d-a50a-733da1dada16",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "연습 문제 재사용과 자기검증 위험을 설명하고 미노출 평가셋과 독립 검증을 제안했다. 다만 정답·채점 기준의 확정만 언급하고 평가 문제 집합 자체의 사전 동결은 제안하지 않았다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+      "caseId": "E01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 49683,
+        "inputTokens": 47554,
+        "cachedInputTokens": 29952,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2129,
+        "reasoningOutputTokens": 1383
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 73122,
+      "firstUsage": {
+        "totalTokens": 14668,
+        "inputTokens": 14399,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 269,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 1,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "86109da358f9def34952f01be41573c6d15c1ef965073c3fd5d26e4f43c6077f",
+      "estimatedCost": 0.312422,
+      "normalizedCost": 0.58199,
+      "remoteCalls": [
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "2677403c-4a61-481f-8ee0-6d9d57e91158",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "연습 문제 재사용과 독립 정답 검증 부재를 정확히 짚고, 미노출 평가셋의 사전 고정과 외부 근거·독립 전문가를 통한 정답 검증을 모두 제안했다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "404c6259-24bc-4429-860c-2c71dedda139",
+      "caseId": "E01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 48881,
+        "inputTokens": 47191,
+        "cachedInputTokens": 29824,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1690,
+        "reasoningOutputTokens": 1076
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 59409,
+      "firstUsage": {
+        "totalTokens": 14489,
+        "inputTokens": 14276,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 213,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 1,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "86109da358f9def34952f01be41573c6d15c1ef965073c3fd5d26e4f43c6077f",
+      "estimatedCost": 0.287994,
+      "normalizedCost": 0.55641,
+      "remoteCalls": [
+        {
+          "tool": "load_skill",
+          "arguments": {
+            "uri": "skill://gisul/gisul/mandela/SKILL.md"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "rating": {
+        "id": "404c6259-24bc-4429-860c-2c71dedda139",
+        "caseId": "E01",
+        "contentFamilies": [
+          "explicit"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "explicit_load_mandela",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 1,
+        "loaded": [
+          "skill://gisul/gisul/mandela/SKILL.md"
+        ],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "404c6259-24bc-4429-860c-2c71dedda139",
+          "score": 2,
+          "pass": false,
+          "critical": false,
+          "reason": "두 독립성 문제와 미노출 평가셋·독립 정답 검증은 다뤘다. 그러나 고정 대상으로 정답과 채점 기준만 명시하여, 필수 요건인 평가 문제 집합 자체의 사전 동결을 빠뜨렸다."
+        },
+        "pass": false,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+      "caseId": "N01",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14644,
+        "inputTokens": 14353,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 291,
+        "reasoningOutputTokens": 218
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 13294,
+      "firstUsage": {
+        "totalTokens": 14644,
+        "inputTokens": 14353,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 291,
+        "reasoningOutputTokens": 218
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "e38bf5c3f9647a0b11b26ab2319ff643ab7bd1a03c14c2fd0a3dccaaf80ec5aa",
+      "estimatedCost": 0.082048,
+      "normalizedCost": 0.15808,
+      "remoteCalls": [],
+      "rating": {
+        "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "39a640ca-cf45-4385-ab04-ebb8c00b3230",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null의 명시적 값 없음과 길이 0인 문자열을 정확히 구분하고, 예시를 포함해 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+      "caseId": "N01",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14775,
+        "inputTokens": 14253,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 522,
+        "reasoningOutputTokens": 449
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 20291,
+      "firstUsage": {
+        "totalTokens": 14775,
+        "inputTokens": 14253,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 522,
+        "reasoningOutputTokens": 449
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "e38bf5c3f9647a0b11b26ab2319ff643ab7bd1a03c14c2fd0a3dccaaf80ec5aa",
+      "estimatedCost": 0.092598,
+      "normalizedCost": 0.16863,
+      "remoteCalls": [],
+      "rating": {
+        "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "e3a733e7-ea00-4a46-8532-8b9927cf2222",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "값이 없음을 나타내는 null과 내용이 비어 있는 문자열의 차이를 정확히 두 문장으로 설명했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+      "caseId": "N01",
+      "variant": "selective",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 14598,
+        "inputTokens": 14391,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 207,
+        "reasoningOutputTokens": 140
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 11012,
+      "firstUsage": {
+        "totalTokens": 14598,
+        "inputTokens": 14391,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 207,
+        "reasoningOutputTokens": 140
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "scenarioHash": "e38bf5c3f9647a0b11b26ab2319ff643ab7bd1a03c14c2fd0a3dccaaf80ec5aa",
+      "estimatedCost": 0.15426,
+      "normalizedCost": 0.15426,
+      "remoteCalls": [],
+      "rating": {
+        "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+        "caseId": "N01",
+        "contentFamilies": [
+          "general-question"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": true
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "8e00b4dc-3674-47d1-bbc4-4722c5add07e",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "null과 빈 문자열의 의미를 정확히 구분하며 간결한 두 문장이라는 요구를 충족했습니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+      "caseId": "N05",
+      "variant": "baseline",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 29791,
+        "inputTokens": 29374,
+        "cachedInputTokens": 22528,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 417,
+        "reasoningOutputTokens": 252
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 19863,
+      "firstUsage": {
+        "totalTokens": 14357,
+        "inputTokens": 14283,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 74,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+      "scenarioHash": "7ceb20f5146875bcce7dcc90e3379ab889f083b86a7fe1b2dcc89f54ac59602b",
+      "estimatedCost": 0.111838,
+      "normalizedCost": 0.31459,
+      "remoteCalls": [],
+      "rating": {
+        "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "baseline",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "737c540b-4a74-4148-8567-02ab1b08aab8",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "문제 재사용이 실제 능력을 과대평가함을 설명하고, 미공개 새 문제를 연습 과정과 분리하는 수정안을 두 문장으로 제시했다. 원격 검색·로드 기록은 없다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "edf70db7-929b-490b-ac23-250171737e83",
+      "caseId": "N05",
+      "variant": "selective",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 31284,
+        "inputTokens": 30123,
+        "cachedInputTokens": 22656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1161,
+        "reasoningOutputTokens": 995
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 46663,
+      "firstUsage": {
+        "totalTokens": 14990,
+        "inputTokens": 14399,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 591,
+        "reasoningOutputTokens": 516
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "0c9a8b05d2a3ebb199944497c49c837da81a210d77a64f0ec06ba37ba13ac094",
+      "scenarioHash": "7ceb20f5146875bcce7dcc90e3379ab889f083b86a7fe1b2dcc89f54ac59602b",
+      "estimatedCost": 0.155376,
+      "normalizedCost": 0.35928,
+      "remoteCalls": [],
+      "rating": {
+        "id": "edf70db7-929b-490b-ac23-250171737e83",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "selective",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "edf70db7-929b-490b-ac23-250171737e83",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "문제 재사용에 따른 능력 과대평가를 지적하고, 미공개 새 문항을 사용하며 중복·표면적 변형 문항도 제외하도록 두 문장으로 제안했다. 로컬 파일 읽기는 원격 사용 금지 위반이 아니다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    },
+    {
+      "phase": "/Users/iyen/dev-tools/gisul-skills/eval/out/discovery/bounded-native-20260918",
+      "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+      "caseId": "N05",
+      "variant": "bounded",
+      "repeat": 0,
+      "status": "completed",
+      "failure": null,
+      "usage": {
+        "totalTokens": 29909,
+        "inputTokens": 29592,
+        "cachedInputTokens": 22656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 317,
+        "reasoningOutputTokens": 148
+      },
+      "usagePartial": false,
+      "missingUsage": false,
+      "elapsedMs": 15963,
+      "firstUsage": {
+        "totalTokens": 14471,
+        "inputTokens": 14387,
+        "cachedInputTokens": 8448,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 84,
+        "reasoningOutputTokens": 0
+      },
+      "provenance": {
+        "verifiedCalls": 0,
+        "commit": "9959d747bddcf87e3368d45bed3193b45172caa0"
+      },
+      "boundaryPassed": true,
+      "expectedCommit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "loaderHash": "095069edc30ee7ef70f4e21902e0ac85367eaf1d256d522091a587aebdf7c9b3",
+      "scenarioHash": "7ceb20f5146875bcce7dcc90e3379ab889f083b86a7fe1b2dcc89f54ac59602b",
+      "estimatedCost": 0.107866,
+      "normalizedCost": 0.31177,
+      "remoteCalls": [],
+      "rating": {
+        "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+        "caseId": "N05",
+        "contentFamilies": [
+          "explicit-no-remote"
+        ],
+        "variant": "bounded",
+        "repeat": 0,
+        "checks": [
+          {
+            "name": "completed",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "usage_present",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "final_each_turn",
+            "pass": true,
+            "detail": "",
+            "mechanism": false
+          },
+          {
+            "name": "search_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          },
+          {
+            "name": "load_limit",
+            "pass": true,
+            "detail": "0",
+            "mechanism": false
+          }
+        ],
+        "objectivePass": true,
+        "mechanismPass": true,
+        "searches": 0,
+        "loads": 0,
+        "loaded": [],
+        "relevantSkillFound": null,
+        "runStatus": "completed",
+        "gradingStatus": "graded",
+        "semantic": {
+          "id": "27629d77-b252-44aa-8f34-47a19f61b047",
+          "score": 4,
+          "pass": true,
+          "critical": false,
+          "reason": "연습·시험 중복으로 인한 평가 오염을 지적하고, 연습과 피드백에 노출되지 않은 새 문제로 분리하도록 두 문장으로 제안했다. 기록된 스킬 접근은 로컬 파일 읽기뿐이다."
+        },
+        "pass": true,
+        "critical": false,
+        "humanRating": null
+      },
+      "selectedForComparison": true
+    }
+  ],
+  "ratings": [],
+  "summaries": [
+    {
+      "variant": "baseline",
+      "runs": 4,
+      "graded": 4,
+      "passes": 3,
+      "critical": 0,
+      "mechanismPasses": 4,
+      "searches": 0,
+      "loads": 1,
+      "meanCost": 0.175974,
+      "normalizedMeanCost": 0.36374999999999996,
+      "meanSeconds": 44.67,
+      "medianSeconds": 39.85,
+      "tokens": 125536,
+      "humanRatings": 0,
+      "costRatio": 1,
+      "normalizedCostRatio": 1
+    },
+    {
+      "variant": "bounded",
+      "runs": 4,
+      "graded": 4,
+      "passes": 4,
+      "critical": 0,
+      "mechanismPasses": 4,
+      "searches": 0,
+      "loads": 1,
+      "meanCost": 0.232664,
+      "normalizedMeanCost": 0.37004000000000004,
+      "meanSeconds": 46.886250000000004,
+      "medianSeconds": 44.5425,
+      "tokens": 126584,
+      "humanRatings": 0,
+      "costRatio": 1.3221498630479505,
+      "normalizedCostRatio": 1.0172920962199314
+    },
+    {
+      "variant": "selective",
+      "runs": 4,
+      "graded": 4,
+      "passes": 3,
+      "critical": 0,
+      "mechanismPasses": 4,
+      "searches": 1,
+      "loads": 2,
+      "meanCost": 0.2564685,
+      "normalizedMeanCost": 0.4661325,
+      "meanSeconds": 51.758250000000004,
+      "medianSeconds": 53.474999999999994,
+      "tokens": 164113,
+      "humanRatings": 0,
+      "costRatio": 1.4574226874424632,
+      "normalizedCostRatio": 1.2814639175257734
+    }
+  ],
+  "budget": {
+    "attempts": 12,
+    "selected": 12,
+    "tokensLowerBound": 416233,
+    "standardPriceEquivalentLowerBound": 2.660426,
+    "hasPartialUsage": false,
+    "scheduledSlots": 12,
+    "notRunSlots": 0,
+    "missingResultSlots": []
+  },
+  "promotion": {
+    "approved": false,
+    "reason": "This is development direction-finding. Holdout gate and ten genuine human ratings are not satisfied; incomplete or critical runs and cost regressions also block promotion."
+  }
+}

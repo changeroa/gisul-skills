@@ -1,0 +1,20 @@
+{
+  "synthetic": true,
+  "readerRuntimeHash": "58026a6751e5bf38e2de97124430a1497715b0445145df3aae39172bd881da30",
+  "loaderBytes": 3020,
+  "matchedNative": {
+    "name": "mandela",
+    "localPath": "/Users/iyen/.codex/skills/mandela/SKILL.md",
+    "localHash": "5efc42ffa98a67ea98c901f8106d346f36c397cd9b11dc0774ba4fa32fbdef40",
+    "remoteHash": "5efc42ffa98a67ea98c901f8106d346f36c397cd9b11dc0774ba4fa32fbdef40",
+    "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172"
+  },
+  "supportingFile": {
+    "uri": "skill://gisul/gisul/dont-make-me-think/references/sources-and-testing.md",
+    "commit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+    "release": "20260917.10",
+    "manifestDigest": "sha256:7f89d8d826ec66bf4d9f3fb364e76abd4ea47e4c982ec7981268e7545fff8be6",
+    "bytes": 3763,
+    "sha256": "5f897c607ba3eb676cd441d5c4177771d1c75f38ef409e75aa240020d34c30ba"
+  }
+}
