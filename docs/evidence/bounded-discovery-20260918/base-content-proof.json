@@ -1,0 +1,184 @@
+{
+  "oldCommit": "a53d1a92eb771ea6789752eee769d8ddc65e831a",
+  "liveCommit": "e6c7245951993a45cb22e523b5aa49ad450ce172",
+  "oldContent": "sha256:b71521eb0914a60f27625ba85a5531ea57da33e90e6da292cdd385222ee09026",
+  "liveContent": "sha256:b71521eb0914a60f27625ba85a5531ea57da33e90e6da292cdd385222ee09026",
+  "verification": {
+    "release": "20260917.5",
+    "commit": "a53d1a92eb771ea6789752eee769d8ddc65e831a",
+    "created_at": "2026-09-17T16:50:44+09:00",
+    "skills": [
+      {
+        "name": "aim",
+        "uri": "skill://gisul/gisul/aim/SKILL.md",
+        "manifest_digest": "sha256:d42d761f406baac62da14ad1f48b42e2b78a0bed26169a587f447180e8348d26"
+      },
+      {
+        "name": "archify",
+        "uri": "skill://gisul/gisul/archify/SKILL.md",
+        "manifest_digest": "sha256:f276154e3504c40dde4eab14ed44f75a5d0c3cd37dac38db6e84d777570c48e7"
+      },
+      {
+        "name": "aside-browser",
+        "uri": "skill://gisul/gisul/aside-browser/SKILL.md",
+        "manifest_digest": "sha256:e290316a15ee092d8cdb7b53836bc364bab347ad271be5a63ecbf35de4c54210"
+      },
+      {
+        "name": "autobahn",
+        "uri": "skill://gisul/gisul/autobahn/SKILL.md",
+        "manifest_digest": "sha256:17b3bb5c291662675a8fb92a26b3d2ea879419a5ae3025d82b645e4a608e7197"
+      },
+      {
+        "name": "catchup",
+        "uri": "skill://gisul/gisul/catchup/SKILL.md",
+        "manifest_digest": "sha256:dec5a1ab1ac2b4ba9c28c9e4f3e9835600a69f1cd0280e0d96ef892244ad1301"
+      },
+      {
+        "name": "debloat",
+        "uri": "skill://gisul/gisul/debloat/SKILL.md",
+        "manifest_digest": "sha256:88159c08bae8909e83f5935070712bd11065e17820183dcc998656bc2fee5906"
+      },
+      {
+        "name": "dedash",
+        "uri": "skill://gisul/gisul/dedash/SKILL.md",
+        "manifest_digest": "sha256:475c425ebded0c3684cc8dc8a6198a734414eb8255fd19460ab4b52ba6da6824"
+      },
+      {
+        "name": "detool",
+        "uri": "skill://gisul/gisul/detool/SKILL.md",
+        "manifest_digest": "sha256:2327113022707a4134ec0abf4f4a7c406b7206824b634666f2b9e90b1068851b"
+      },
+      {
+        "name": "dont-make-me-think",
+        "uri": "skill://gisul/gisul/dont-make-me-think/SKILL.md",
+        "manifest_digest": "sha256:7f89d8d826ec66bf4d9f3fb364e76abd4ea47e4c982ec7981268e7545fff8be6"
+      },
+      {
+        "name": "factchk",
+        "uri": "skill://gisul/gisul/factchk/SKILL.md",
+        "manifest_digest": "sha256:e6434d5b92b7b40921d12ef725c686e34988ca6488570ad15357367138c862bc"
+      },
+      {
+        "name": "feynman",
+        "uri": "skill://gisul/gisul/feynman/SKILL.md",
+        "manifest_digest": "sha256:a9354dcacc7ff753becd25233b99aa345870aaa6d0a0f9fc8f7744fa4f13cd84"
+      },
+      {
+        "name": "hate",
+        "uri": "skill://gisul/gisul/hate/SKILL.md",
+        "manifest_digest": "sha256:7839ef9d0d90f477f02bc83441d8bf4efceb65c0b21af6372a29255d58e25d7f"
+      },
+      {
+        "name": "herdr-orchestrator",
+        "uri": "skill://gisul/gisul/herdr-orchestrator/SKILL.md",
+        "manifest_digest": "sha256:d3a4a3a15e9dd3c158ab44dc76bf0980f0e00f6c6594276b7e3f5875f72db23d"
+      },
+      {
+        "name": "macrothink",
+        "uri": "skill://gisul/gisul/macrothink/SKILL.md",
+        "manifest_digest": "sha256:bf3bb8055fda134b31784ab55a3c1eb429f30384fd75d71c4716d3b45881f8db"
+      },
+      {
+        "name": "mandela",
+        "uri": "skill://gisul/gisul/mandela/SKILL.md",
+        "manifest_digest": "sha256:09cf282c5b7cf318b7dc4e725f943e7d0ff7a4f50c317d9eaa9f8cad7c1c5f2c"
+      },
+      {
+        "name": "modelchk",
+        "uri": "skill://gisul/gisul/modelchk/SKILL.md",
+        "manifest_digest": "sha256:5a95a899be9703701a31585fddf926de2a53163c105cab9f79565037769c5850"
+      },
+      {
+        "name": "nba",
+        "uri": "skill://gisul/gisul/nba/SKILL.md",
+        "manifest_digest": "sha256:eb8d75667d9c56bb4129b09c3c76d63a476565e762374d6947635c3fee4ab102"
+      },
+      {
+        "name": "prism",
+        "uri": "skill://gisul/gisul/prism/SKILL.md",
+        "manifest_digest": "sha256:9e1fa55c22b22f0de9a684aa82875511d3e4a7c0ceb9e80190e3d872fe5bf1c8"
+      },
+      {
+        "name": "re0",
+        "uri": "skill://gisul/gisul/re0/SKILL.md",
+        "manifest_digest": "sha256:c28c5fa74137217f494f50735e201b336e08cdfe291c90d564a42aaeac5755fa"
+      },
+      {
+        "name": "re0-git",
+        "uri": "skill://gisul/gisul/re0-git/SKILL.md",
+        "manifest_digest": "sha256:81c30673168c564253d75113e3c22bf69b78fa64b2a1361ae55717eaf5c62558"
+      },
+      {
+        "name": "re0-loop",
+        "uri": "skill://gisul/gisul/re0-loop/SKILL.md",
+        "manifest_digest": "sha256:82f76e2252f8ac8340b29e3a49d6f25f70a3f557dac81b26d360909e01f4c109"
+      },
+      {
+        "name": "re0-memo",
+        "uri": "skill://gisul/gisul/re0-memo/SKILL.md",
+        "manifest_digest": "sha256:6745d7b21a6934c62b2034d3ca8cb2c15998da1288562d7849397ca05c35fa31"
+      },
+      {
+        "name": "re0-merge",
+        "uri": "skill://gisul/gisul/re0-merge/SKILL.md",
+        "manifest_digest": "sha256:fd0ca6ac4833021bc300836bf00fa68c81562b6a0f9e730768b421524674ed98"
+      },
+      {
+        "name": "re0-plan",
+        "uri": "skill://gisul/gisul/re0-plan/SKILL.md",
+        "manifest_digest": "sha256:6776dcd0667fdfc09741453484244338977c668b5f95b4d00eb1290004185f5d"
+      },
+      {
+        "name": "re0-release",
+        "uri": "skill://gisul/gisul/re0-release/SKILL.md",
+        "manifest_digest": "sha256:e2c7b5f0d717721b5fe59de620b361dea43f8a263dd2e8b6c41b4e64c2c878ce"
+      },
+      {
+        "name": "re0-upgrade",
+        "uri": "skill://gisul/gisul/re0-upgrade/SKILL.md",
+        "manifest_digest": "sha256:1a23ded3c5c52f55051e31159359a51d3b4d8b3809a2864f57c6dccf66abb310"
+      },
+      {
+        "name": "re0-work",
+        "uri": "skill://gisul/gisul/re0-work/SKILL.md",
+        "manifest_digest": "sha256:aeb148de3e7578128dac487b8a5e0b8b06b0460c700231fde253d78a46f97922"
+      },
+      {
+        "name": "readchk",
+        "uri": "skill://gisul/gisul/readchk/SKILL.md",
+        "manifest_digest": "sha256:e8980b7068243d741811964dbe4c52a299bb468ddb15882d0413372dd093de48"
+      },
+      {
+        "name": "reorder",
+        "uri": "skill://gisul/gisul/reorder/SKILL.md",
+        "manifest_digest": "sha256:60d760ab34143de71898a7aa604df711a76e933df4fe9fdd27407edf17525e0f"
+      },
+      {
+        "name": "shower",
+        "uri": "skill://gisul/gisul/shower/SKILL.md",
+        "manifest_digest": "sha256:70f6c7738cb59133484e69b8a48250c78b105e064c78dd6b5528e2f3ed43ee08"
+      },
+      {
+        "name": "sip",
+        "uri": "skill://gisul/gisul/sip/SKILL.md",
+        "manifest_digest": "sha256:6e7fe1dad157cbb759453e7f57a49db1ad5b83a35ce83f766deca047ce8acc7f"
+      },
+      {
+        "name": "ssotize",
+        "uri": "skill://gisul/gisul/ssotize/SKILL.md",
+        "manifest_digest": "sha256:fbdb46f70a7c43a04ffe0044cd5dbd77c964608a32130a6925940201c9dd98f2"
+      },
+      {
+        "name": "test-behavior-flows",
+        "uri": "skill://gisul/gisul/test-behavior-flows/SKILL.md",
+        "manifest_digest": "sha256:01f642af2506486b6106c72319d7c70bf905949b9542625e41c611c6d9c66761"
+      }
+    ],
+    "inventory_digest": "sha256:82a33e5ca64f98a72f7ff0f3fa592289724f712dbb972354b563ce5bc07ab4fb"
+  },
+  "gitParity": {
+    "files": 252,
+    "exact_git_bytes": true,
+    "method": "byte comparison against git show for every content path"
+  }
+}

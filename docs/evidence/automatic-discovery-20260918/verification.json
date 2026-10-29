@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-09-18T08:58:53.763983+00:00",
+  "tests": {
+    "command": "npm test",
+    "passed": 32,
+    "failed": 0
+  },
+  "skillValidation": {
+    "command": "npm run validate",
+    "valid": 33,
+    "invalid": 0,
+    "existingBilingualWarnings": 32
+  },
+  "syntax": {
+    "command": "node --check eval/discovery/<module>.mjs",
+    "modules": 19,
+    "failed": 0
+  },
+  "cleanup": {
+    "external_fixtures": 80,
+    "pilot_fixtures": 23,
+    "preflight_fixture": 1,
+    "empty_judge_workspaces": 39
+  },
+  "rawReceiptsRetained": "eval/out/discovery/",
+  "herdrMonitorRetained": true,
+  "productionChanged": false,
+  "humanRatings": 0,
+  "canonicalHoldoutRun": false
+}

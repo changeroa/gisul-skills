@@ -1,0 +1,519 @@
+{
+  "synthetic": true,
+  "diagnosticOnly": true,
+  "mode": "automatic",
+  "candidate": {
+    "bundle": "/Users/iyen/dev-tools/gisul/clients/codex/plugin/gisul/runtime/codex.mjs",
+    "server": "/Users/iyen/dev-tools/gisul/server/dist/index.js",
+    "content": "/Users/iyen/dev-tools/gisul-skills/dist/20260918.1",
+    "hashes": {
+      "bundle": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+      "server": "b696aa568490b66cdaddafbd06c8dfd16c5c1951ac96c4be71e73be5ca69adfc",
+      "adapter": "a2ff32329046710f83ad3f129f16c01cab20a59abbe323942e8c131fb058b465",
+      "inventory": "b88dfb9ad11dbfacf2dff79f166b3241bbb0cb2f616dcc9dc08c3a38ba02f775",
+      "release": "6c631c77ec57dc7eee34c642cbfc98a0c1afdc912b93420f06e559cca3fec413"
+    },
+    "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+    "release": "20260918.1",
+    "production": false
+  },
+  "queryHash": "1f838c40e730c44f0788db98106095c5cba94ea920ff2b3a321fab1039c8f816",
+  "runtimeHash": "ed10cd8407b0930a591a12aeef145d2e051de70bda07742047ab614fe28b1f55",
+  "results": [
+    {
+      "intent": "evaluation-validity",
+      "query": "mandela",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 75
+    },
+    {
+      "intent": "evaluation-validity",
+      "query": "eval",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 48
+    },
+    {
+      "intent": "evaluation-validity",
+      "query": "evaluation",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 43
+    },
+    {
+      "intent": "evaluation-validity",
+      "query": "평가",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 35
+    },
+    {
+      "intent": "evaluation-validity",
+      "query": "평가 설계",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 25
+    },
+    {
+      "intent": "evaluation-validity",
+      "query": "answer leakage",
+      "relevant": "mandela",
+      "names": [
+        "mandela"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "mandela",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 25
+    },
+    {
+      "intent": "usability-review",
+      "query": "dont-make-me-think",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 25
+    },
+    {
+      "intent": "usability-review",
+      "query": "usability",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 26
+    },
+    {
+      "intent": "usability-review",
+      "query": "UI",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think",
+        "archify",
+        "catchup",
+        "factchk",
+        "nba",
+        "re0-loop",
+        "re0-memo",
+        "readchk"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        },
+        {
+          "name": "archify",
+          "invocation": "automatic"
+        },
+        {
+          "name": "catchup",
+          "invocation": "automatic"
+        },
+        {
+          "name": "factchk",
+          "invocation": "automatic"
+        },
+        {
+          "name": "nba",
+          "invocation": "automatic"
+        },
+        {
+          "name": "re0-loop",
+          "invocation": "automatic"
+        },
+        {
+          "name": "re0-memo",
+          "invocation": "automatic"
+        },
+        {
+          "name": "readchk",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "usability-review",
+      "query": "UX",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 25
+    },
+    {
+      "intent": "usability-review",
+      "query": "사용성",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "usability-review",
+      "query": "버튼 문구",
+      "relevant": "dont-make-me-think",
+      "names": [
+        "dont-make-me-think"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "dont-make-me-think",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 23
+    },
+    {
+      "intent": "documentation-cleanup",
+      "query": "detool",
+      "relevant": "detool",
+      "names": [
+        "detool"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "detool",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 25
+    },
+    {
+      "intent": "documentation-cleanup",
+      "query": "documentation",
+      "relevant": "detool",
+      "names": [
+        "detool"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "detool",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "documentation-cleanup",
+      "query": "user documentation",
+      "relevant": "detool",
+      "names": [
+        "detool"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "detool",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 23
+    },
+    {
+      "intent": "documentation-cleanup",
+      "query": "문서",
+      "relevant": "detool",
+      "names": [
+        "detool"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "detool",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "documentation-cleanup",
+      "query": "내부 용어",
+      "relevant": "detool",
+      "names": [
+        "detool"
+      ],
+      "found": true,
+      "rank": 1,
+      "invocation": [
+        {
+          "name": "detool",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "explicit-adversarial-review",
+      "query": "hate",
+      "relevant": "hate",
+      "names": [
+        "modelchk",
+        "nba",
+        "readchk"
+      ],
+      "found": false,
+      "rank": null,
+      "invocation": [
+        {
+          "name": "modelchk",
+          "invocation": "automatic"
+        },
+        {
+          "name": "nba",
+          "invocation": "automatic"
+        },
+        {
+          "name": "readchk",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "explicit-adversarial-review",
+      "query": "plan",
+      "relevant": "hate",
+      "names": [
+        "factchk",
+        "ssotize"
+      ],
+      "found": false,
+      "rank": null,
+      "invocation": [
+        {
+          "name": "factchk",
+          "invocation": "automatic"
+        },
+        {
+          "name": "ssotize",
+          "invocation": "automatic"
+        }
+      ],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "explicit-adversarial-review",
+      "query": "critical review",
+      "relevant": "hate",
+      "names": [],
+      "found": false,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "explicit-adversarial-review",
+      "query": "계획 검토",
+      "relevant": "hate",
+      "names": [],
+      "found": false,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 23
+    },
+    {
+      "intent": "unrelated-negative",
+      "query": "391",
+      "relevant": null,
+      "names": [],
+      "found": null,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 21
+    },
+    {
+      "intent": "unrelated-negative",
+      "query": "null empty string",
+      "relevant": null,
+      "names": [],
+      "found": null,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    },
+    {
+      "intent": "unrelated-negative",
+      "query": "helo typo",
+      "relevant": null,
+      "names": [],
+      "found": null,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 23
+    },
+    {
+      "intent": "unrelated-negative",
+      "query": "기술 뜻",
+      "relevant": null,
+      "names": [],
+      "found": null,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 23
+    },
+    {
+      "intent": "unrelated-negative",
+      "query": "nonexistent-skill-7c9e",
+      "relevant": null,
+      "names": [],
+      "found": null,
+      "rank": null,
+      "invocation": [],
+      "commit": "9959d747bddcf87e3368d45bed3193b45172caa0",
+      "release": "20260918.1",
+      "elapsedMs": 24
+    }
+  ]
+}

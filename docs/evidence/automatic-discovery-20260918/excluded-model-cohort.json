@@ -1,0 +1,289 @@
+{
+  "exclusion": {
+    "reason": "The global Codex model changed between phases. This cohort is exploratory only and is excluded from the gpt-6-astra/max comparison.",
+    "expectedModel": "gpt-6-astra",
+    "expectedEffort": "max",
+    "observedModel": "gpt-5.6-sol",
+    "observedEffort": "medium",
+    "action": "Stopped scheduling with SIGTERM; completed observations retained. Original-model continuation uses explicit model and effort overrides.",
+    "tokenCostInterpretation": "Stored dollar values used Astra standard-token-equivalent prices and must not be interpreted as Sol prices or actual account charges."
+  },
+  "ledger": {
+    "protocolHash": "e442a068feed2ec258832dccb0f119cd3f4f4740b8314f3fcb732b320e6223a8",
+    "scheduled": 33,
+    "completed": 4,
+    "usedTokens": 600788,
+    "infrastructureFailures": 0,
+    "stopReason": "interrupted_SIGTERM",
+    "runs": [
+      {
+        "id": "aa038e65-7828-4e2a-906f-ec0b76945c5e",
+        "caseId": "D08",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/aa038e65-7828-4e2a-906f-ec0b76945c5e",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "1908ad09-f9f9-4a84-9140-6b75d83bca59",
+        "caseId": "D08",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/1908ad09-f9f9-4a84-9140-6b75d83bca59",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "6ddaf7ee-4aea-4ca2-9226-7384e6d8f4fd",
+        "caseId": "D08",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/6ddaf7ee-4aea-4ca2-9226-7384e6d8f4fd",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "3c1ef46e-4d4d-4e4a-a3b2-c7845fc31344",
+        "caseId": "E01",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/3c1ef46e-4d4d-4e4a-a3b2-c7845fc31344",
+        "status": "completed",
+        "failure": null
+      },
+      {
+        "id": "994e689e-d3c1-4259-910b-81c419314b40",
+        "caseId": "E01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/994e689e-d3c1-4259-910b-81c419314b40",
+        "status": "not_run"
+      },
+      {
+        "id": "2439ae6f-80b7-42c5-8911-e7aea9c52a24",
+        "caseId": "E01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/2439ae6f-80b7-42c5-8911-e7aea9c52a24",
+        "status": "not_run"
+      },
+      {
+        "id": "99ff78f8-662e-4cd5-af2d-24a4998c45bf",
+        "caseId": "E02",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/99ff78f8-662e-4cd5-af2d-24a4998c45bf",
+        "status": "not_run"
+      },
+      {
+        "id": "aec979bd-7c44-46ba-9c68-1ad0d94a91ff",
+        "caseId": "E02",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/aec979bd-7c44-46ba-9c68-1ad0d94a91ff",
+        "status": "not_run"
+      },
+      {
+        "id": "cae56a01-965a-43a0-8021-f3d9c0377858",
+        "caseId": "E02",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cae56a01-965a-43a0-8021-f3d9c0377858",
+        "status": "not_run"
+      },
+      {
+        "id": "6757d0c5-6e9d-4d42-9d96-3985db17539a",
+        "caseId": "N01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/6757d0c5-6e9d-4d42-9d96-3985db17539a",
+        "status": "not_run"
+      },
+      {
+        "id": "9691fcc1-e4bb-491e-a2c7-8a59743177fc",
+        "caseId": "N01",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/9691fcc1-e4bb-491e-a2c7-8a59743177fc",
+        "status": "not_run"
+      },
+      {
+        "id": "5886e326-cece-4a05-8247-c0bf1cd3dc49",
+        "caseId": "N01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/5886e326-cece-4a05-8247-c0bf1cd3dc49",
+        "status": "not_run"
+      },
+      {
+        "id": "a1152f95-264b-45ce-8de2-b32f845a4bcd",
+        "caseId": "N02",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/a1152f95-264b-45ce-8de2-b32f845a4bcd",
+        "status": "not_run"
+      },
+      {
+        "id": "6362e04a-4cb7-469a-90c8-96a106be5926",
+        "caseId": "N02",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/6362e04a-4cb7-469a-90c8-96a106be5926",
+        "status": "not_run"
+      },
+      {
+        "id": "b18c83ff-a32d-4efb-ad0e-c3dac756da8f",
+        "caseId": "N02",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/b18c83ff-a32d-4efb-ad0e-c3dac756da8f",
+        "status": "not_run"
+      },
+      {
+        "id": "09715103-4f5d-4b22-994f-845fcc08ed87",
+        "caseId": "N03",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/09715103-4f5d-4b22-994f-845fcc08ed87",
+        "status": "not_run"
+      },
+      {
+        "id": "bb7489f7-4d8e-4035-84f8-03e6bcf9a604",
+        "caseId": "N03",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/bb7489f7-4d8e-4035-84f8-03e6bcf9a604",
+        "status": "not_run"
+      },
+      {
+        "id": "a1a50743-464e-4fc9-856d-67c355b33da3",
+        "caseId": "N03",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/a1a50743-464e-4fc9-856d-67c355b33da3",
+        "status": "not_run"
+      },
+      {
+        "id": "cfb48c7f-7f99-4c8b-8d88-b17837ef66f3",
+        "caseId": "N04",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cfb48c7f-7f99-4c8b-8d88-b17837ef66f3",
+        "status": "not_run"
+      },
+      {
+        "id": "8af32d37-7d97-48ba-95cf-caae29cdd759",
+        "caseId": "N04",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/8af32d37-7d97-48ba-95cf-caae29cdd759",
+        "status": "not_run"
+      },
+      {
+        "id": "cf2d23cf-6525-4db5-bd2b-116ea9f887f0",
+        "caseId": "N04",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cf2d23cf-6525-4db5-bd2b-116ea9f887f0",
+        "status": "not_run"
+      },
+      {
+        "id": "e2b79860-3657-44c3-a56e-0acefe3be38b",
+        "caseId": "N05",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/e2b79860-3657-44c3-a56e-0acefe3be38b",
+        "status": "not_run"
+      },
+      {
+        "id": "01379957-2f75-47f8-9d0b-47cb12226c34",
+        "caseId": "N05",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/01379957-2f75-47f8-9d0b-47cb12226c34",
+        "status": "not_run"
+      },
+      {
+        "id": "68f7aef8-159b-4bdd-bee5-5f97a1b1ed3f",
+        "caseId": "N05",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/68f7aef8-159b-4bdd-bee5-5f97a1b1ed3f",
+        "status": "not_run"
+      },
+      {
+        "id": "bc439d82-713b-4de9-b9d8-c1a1a39021fd",
+        "caseId": "N06",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/bc439d82-713b-4de9-b9d8-c1a1a39021fd",
+        "status": "not_run"
+      },
+      {
+        "id": "dfc6d879-9307-4641-afd7-c77c99da007f",
+        "caseId": "N06",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/dfc6d879-9307-4641-afd7-c77c99da007f",
+        "status": "not_run"
+      },
+      {
+        "id": "b62e97d6-5f59-4327-8562-24dc27cbfae9",
+        "caseId": "N06",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/b62e97d6-5f59-4327-8562-24dc27cbfae9",
+        "status": "not_run"
+      },
+      {
+        "id": "6a1d0c16-965b-4732-a7da-e030a3cc3a01",
+        "caseId": "F01",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/6a1d0c16-965b-4732-a7da-e030a3cc3a01",
+        "status": "not_run"
+      },
+      {
+        "id": "dcecd26e-c3cb-4ac8-99cd-97d5310ad513",
+        "caseId": "F01",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/dcecd26e-c3cb-4ac8-99cd-97d5310ad513",
+        "status": "not_run"
+      },
+      {
+        "id": "3bec6770-89a7-45de-b04b-0373b974751e",
+        "caseId": "F01",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/3bec6770-89a7-45de-b04b-0373b974751e",
+        "status": "not_run"
+      },
+      {
+        "id": "74ceb5e4-4385-4ae0-b8a7-94fcaf337893",
+        "caseId": "F02",
+        "variant": "description",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/74ceb5e4-4385-4ae0-b8a7-94fcaf337893",
+        "status": "not_run"
+      },
+      {
+        "id": "143e7949-06f8-41dc-884f-2a3891d6d201",
+        "caseId": "F02",
+        "variant": "selective",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/143e7949-06f8-41dc-884f-2a3891d6d201",
+        "status": "not_run"
+      },
+      {
+        "id": "cf4e188a-f3c6-4044-8afe-40624883f3d3",
+        "caseId": "F02",
+        "variant": "baseline",
+        "repeat": 0,
+        "workspace": "/Users/iyen/tmp/gisul-discovery/cf4e188a-f3c6-4044-8afe-40624883f3d3",
+        "status": "not_run"
+      }
+    ]
+  }
+}

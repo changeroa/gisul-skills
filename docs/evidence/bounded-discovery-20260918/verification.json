@@ -1,0 +1,116 @@
+{
+  "verifiedAt": "2026-09-18T09:46:46.120Z",
+  "publicSource": "a899af9d8feeb029e0d20cf01a38c16328ebf374",
+  "publicCI": {
+    "url": "https://github.com/changeroa/gisul/actions/runs/35329539415",
+    "conclusion": "success",
+    "serverTests": 41,
+    "workerTests": 35,
+    "typecheck": true,
+    "readerBuild": true,
+    "wranglerDryRun": true
+  },
+  "privateTests": {
+    "command": "npm test",
+    "passed": 32,
+    "failed": 0
+  },
+  "syntax": {
+    "modules": 21,
+    "failed": 0
+  },
+  "skillValidation": {
+    "valid": 33,
+    "invalid": 0,
+    "bilingualWarnings": 29
+  },
+  "phases": [
+    {
+      "phase": "bounded-pilot-20260918",
+      "scheduled": 16,
+      "completed": 16,
+      "tokens": 1107343,
+      "infrastructureFailures": 0,
+      "stopReason": null
+    },
+    {
+      "phase": "bounded-expanded-20260918",
+      "scheduled": 20,
+      "completed": 20,
+      "tokens": 833430,
+      "infrastructureFailures": 0,
+      "stopReason": null
+    },
+    {
+      "phase": "bounded-native-20260918",
+      "scheduled": 12,
+      "completed": 12,
+      "tokens": 416233,
+      "infrastructureFailures": 0,
+      "stopReason": null
+    }
+  ],
+  "publicationGateBlocked": true,
+  "installedRuntimeHash": "58026a6751e5bf38e2de97124430a1497715b0445145df3aae39172bd881da30",
+  "graderSha256": "634b3b0854d06044bce145bb3f73ffe34f7899564c835be6e94f3fefe2694f63",
+  "humanRatings": 0,
+  "canonicalRegressionAndHoldoutRun": false,
+  "globalStartupComparisonRun": false,
+  "productionChanged": false,
+  "langfuseSyntheticTracesPublished": false,
+  "herdrMonitorRetained": true,
+  "audits": {
+    "mandela": {
+      "patterns": [
+        "shared hallucination",
+        "verifier = designer",
+        "shared-pool bias"
+      ],
+      "response": "Blinded same-model judgments remain provisional. Reused development cases and known retrieval failures are not holdouts. Deterministic file checks and version receipts supply independently checkable evidence, but do not replace human calibration."
+    },
+    "ssotize": {
+      "mode": "read-only",
+      "sources": [
+        "eval/README.md",
+        "scripts/publication-gate.mjs",
+        "docs/bounded-discovery-work-20260918.md",
+        "docs/bounded-discovery-evaluation-20260918.md",
+        "eval/discovery/README.md"
+      ],
+      "result": "No conflicting promotion threshold or production status found. Prior experiment is historical; follow-up links distinguish candidate runtimes. No consolidation mutation."
+    },
+    "factchk": {
+      "result": "No unsupported external-world or novelty claim. Numerical claims are compared with raw run ledgers, current CI and authenticated reader receipts."
+    },
+    "detool": {
+      "skipped": "Operational experiment provenance requires concrete runtime and tool identities; no portability claim."
+    },
+    "re0": {
+      "result": "Keep one follow-up result report, preserve preregistration separately, and link the previous historical report and authoritative gate."
+    },
+    "shower": {
+      "freshContext": true,
+      "reviewer": "bounded_discovery_cold_read",
+      "scope": "Full follow-up report text; no neighboring files or tool calls",
+      "verdict": "Understandable; minor gaps",
+      "findings": [
+        "Make the v1 versus final v2 model coverage prominent near CI status",
+        "State whether the candidate is discarded or retained for revision",
+        "Show the existing promotion criteria and link actual evidence"
+      ],
+      "applied": [
+        "Added explicit v2 coverage limitation beside CI",
+        "Recorded retain-and-revise disposition",
+        "Linked evidence and summarized the unchanged authoritative gate"
+      ]
+    }
+  },
+  "installedLoaderHash": "4b44388db590e26e4d556796b0af1aa7f6416b47e650bb65a546e9148b274563",
+  "cleanup": {
+    "ownedTrialFixturesRemoved": 48,
+    "temporaryWorktreesCreated": 0,
+    "rawReceiptsRetained": "eval/out/discovery/",
+    "immutableCandidateArtifactsRetained": "eval/out/bounded/",
+    "untrackedJudgeDirectoryOwnershipNotAssumed": true
+  }
+}
