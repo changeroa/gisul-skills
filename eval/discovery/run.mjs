@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import YAML from 'yaml';
 import { createWriteStream } from 'node:fs';
 import { mkdir, readFile, writeFile, readdir, lstat, rename } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -88,7 +89,8 @@ export async function runTrial({ phaseRoot, installed, scenario, variant, repeat
     await api.initialize();
     const skills = await api.rpc('skills/list', { cwds: [workspace], forceReload: true });
     const enabled = skills.data.flatMap(entry => entry.skills.filter(skill => skill.enabled));
-    assert.deepEqual(enabled.map(skill => skill.name).sort(), ['gisul', ...nativeSkills].sort(), 'Unexpected native skill in trial');
+    const loaderName = YAML.parse(loader.split('---')[1]).name;
+    assert.deepEqual(enabled.map(skill => skill.name).sort(), [loaderName, ...nativeSkills].sort(), 'Unexpected native skill in trial');
     assert.ok(skills.data.every(entry => entry.errors.length === 0), 'Skill discovery errors');
     runtime = await api.start(workspace, { developerInstructions: COMMON, allowProviderModelFallback: false });
     assert.equal(runtime.model, installed.model);

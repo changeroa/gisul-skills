@@ -1,4 +1,4 @@
-export const remoteCalls = turns => turns.flatMap(turn => turn.items ?? []).filter(item => item.type === 'mcpToolCall' && item.server === 'gisul');
+export const remoteCalls = turns => turns.flatMap(turn => turn.items ?? []).filter(item => item.type === 'mcpToolCall' && ['skillar', 'gisul'].includes(item.server));
 export function responseBody(call) {
   const text = call.result?.content?.find(item => item.type === 'text')?.text;
   try { return JSON.parse(text); } catch { return null; }

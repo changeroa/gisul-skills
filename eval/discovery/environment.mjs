@@ -5,6 +5,17 @@ import { CodexSession } from './codex-session.mjs';
 
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 
+// The frozen discovery scenarios address the legacy MCP alias `gisul`.
+// Select the installed runtime independently of that experimental alias.
+export function selectInstalledLoader(skills) {
+  for (const name of ['skillar:skillar', 'gisul:gisul']) {
+    const matches = skills.filter(skill => skill.name === name && skill.enabled !== false);
+    if (matches.length > 1) throw new Error('Ambiguous installed reader loader: ' + name);
+    if (matches.length) return matches[0];
+  }
+  throw new Error('Installed Skillar or legacy gisul plugin loader not found');
+}
+
 export async function inspectInstalled(cwd) {
   const api = new CodexSession({ cwd });
   try {
@@ -12,11 +23,11 @@ export async function inspectInstalled(cwd) {
     const { config } = await api.rpc('config/read', { cwd, includeLayers: false });
     const listed = await api.rpc('skills/list', { cwds: [cwd], forceReload: true });
     const skills = listed.data.flatMap(entry => entry.skills);
-    const loader = skills.find(skill => skill.name === 'gisul:gisul');
-    if (!loader) throw new Error('Installed gisul plugin loader not found');
+    const loader = selectInstalledLoader(skills);
     const pluginRoot = resolve(dirname(loader.path), '../..');
     const manifest = JSON.parse(await readFile(join(pluginRoot, '.mcp.json'), 'utf8'));
-    const source = manifest.mcpServers.gisul;
+    const source = manifest.mcpServers?.skillar ?? manifest.mcpServers?.gisul;
+    if (!source || source.enabled === false || !source.command || !source.args?.length) throw new Error('Installed reader stdio configuration missing');
     const loaderMarkdown = await readFile(loader.path, 'utf8');
     const runtime = resolve(pluginRoot, source.args[0]);
     return {
@@ -51,7 +62,7 @@ export function isolatedConfig(installed, eventDir, { nativeSkills = [], mcp = i
     if (!/^[A-Za-z0-9_-]+$/.test(name)) throw new Error('Unsupported MCP config key');
     config['mcp_servers.' + name + '.enabled'] = false;
   }
-  config['mcp_servers.gisul'] = { ...mcp, enabled: true, startup_timeout_sec: 30, tool_timeout_sec: 30, env: { GISUL_EVENT_LOG_DIR: eventDir } };
+  config['mcp_servers.gisul'] = { ...mcp, enabled: true, startup_timeout_sec: 30, tool_timeout_sec: 30, env: { ...mcp.env, SKILLAR_EVENT_LOG_DIR: eventDir, GISUL_EVENT_LOG_DIR: eventDir } };
   if (deniedPaths.length) config['permissions.discovery'] = {
     extends: ':workspace',
     filesystem: Object.fromEntries(deniedPaths.map(path => [path, 'deny'])),

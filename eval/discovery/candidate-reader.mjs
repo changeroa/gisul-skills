@@ -11,13 +11,17 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   return [key, rest.join('=')];
 }));
 const content = resolve(options.content);
-const { createCodexBridge, createGisulEventLog } = await import(pathToFileURL(resolve(options.bundle)).href);
-const events = createGisulEventLog('candidate-release');
+const { createCodexBridge, createSkillarEventLog, createGisulEventLog } = await import(pathToFileURL(resolve(options.bundle)).href);
+const eventDir = process.env.SKILLAR_EVENT_LOG_DIR ?? process.env.GISUL_EVENT_LOG_DIR;
+if (!eventDir) throw new Error('Synthetic event log directory is required');
+const events = (createSkillarEventLog ?? createGisulEventLog)('candidate-release', eventDir);
 const upstream = new Client({ name: 'gisul-candidate', version: '1' });
 const transport = new StdioClientTransport({ command: process.execPath, args: [resolve(options.server)],
-  env: { ...process.env, GISUL_ROOT: content, GISUL_SKILL_ROOTS: 'gisul=' + join(content, 'skills'),
+  env: { ...process.env, SKILLAR_ROOT: content, SKILLAR_SKILL_ROOTS: 'iyen=' + join(content, 'skills'), SKILLAR_URI_AUTHORITY: 'skillar',
+    SKILLAR_RELEASE_FILE: join(content, 'release.json'), SKILLAR_ALIASES_FILE: join(content, 'aliases.json'),
+    SKILLAR_STATE_DIR: join(eventDir, 'unused-state'), GISUL_ROOT: content, GISUL_SKILL_ROOTS: 'gisul=' + join(content, 'skills'),
     GISUL_RELEASE_FILE: join(content, 'release.json'), GISUL_ALIASES_FILE: join(content, 'aliases.json'),
-    GISUL_STATE_DIR: join(process.env.GISUL_EVENT_LOG_DIR, 'unused-state') }, stderr: 'pipe' });
+    GISUL_STATE_DIR: join(eventDir, 'unused-state') }, stderr: 'pipe' });
 transport.stderr.on('data', bytes => process.stderr.write(bytes));
 await upstream.connect(transport);
 const bridge = createCodexBridge(upstream, 'candidate-release', events, true);

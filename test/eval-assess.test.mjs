@@ -724,3 +724,35 @@ test('matched comparison never treats a diagnostic fixture judge as a frontier m
   assert.equal(result.status, 2);
   assert.ok(JSON.parse(result.stdout).reasons.some(reason => reason.code === 'JUDGE_NOT_FRONTIER'));
 });
+
+// Transport fixtures below prove the harness contract, not live model quality.
+test('semantic requests preserve current reader events and legacy frozen prompt bytes', async t => {
+  const { judgmentRequest } = await import('../eval/semantic-assessment.mjs');
+  const fixture = await runFixture(t);
+  const source = fixture.entries[0];
+  const oldEvents = [{ event: 'load_skill', uri: 'skill://gisul/gisul/mandela/SKILL.md' }];
+  source.result.gisulEvents = oldEvents;
+  const historical = judgmentRequest(source);
+  assert.deepEqual(historical.response.gisulEvents, oldEvents);
+  const currentEvents = [{ event: 'load_skill', uri: 'skill://skillar/iyen/mandela/SKILL.md' }];
+  source.result.skillarEvents = currentEvents;
+  assert.deepEqual(judgmentRequest(source).response.gisulEvents, currentEvents);
+  delete source.result.skillarEvents;
+  assert.equal(judgmentRequest(source).prompt, historical.prompt);
+});
+
+test('explicitly incomplete evidence or usage cannot become semantic success', async t => {
+  const { assessRun } = await import('../eval/semantic-assessment.mjs');
+  for (const field of ['evidenceComplete', 'usageComplete']) await t.test(field, async t => {
+    const fixture = await runFixture(t);
+    for (const entry of fixture.entries) {
+      entry.result[field] = false;
+      const bytes = json(entry.result);
+      await writeFile(join(fixture.root, 'runs', entry.slot.id, 'result.json'), bytes);
+      entry.resultHash = sha(bytes);
+    }
+    await writeFile(join(fixture.root, 'phase.json'), json({ protocolHash: fixture.protocol.hash, runs: fixture.entries.map(({ slot, resultHash }) => ({ ...slot, status: 'completed', resultHash })) }));
+    const artifact = await assessRun(fixture.root, { judgeInfo, judge: () => assert.fail('Incomplete evidence must stop before inference') });
+    assert.ok(artifact.entries.every(entry => entry.status === 'unverified' && entry.judgment === null));
+  });
+});

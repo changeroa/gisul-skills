@@ -117,7 +117,7 @@ export async function createJudge(selection, { root, env: sourceEnv = process.en
     sourceKind: 'model', id: selected.transport, version: selection.hash, model: selected.model, effort: selected.effort,
     selection: structuredClone(selection), adapterHash: sha(JSON.stringify(inputs)), reportedModel: null, cliVersion: null,
   };
-  const temporary = await mkdtemp(join(tmpdir(), 'gisul-frontier-judge-'));
+  const temporary = await mkdtemp(join(tmpdir(), 'skillar-frontier-judge-'));
   const resources = { temporary, processes: [] };
   const track = { resources, active: new Set(), closed: false };
   const workspace = join(temporary, 'workspace'), home = join(temporary, 'home');
@@ -180,8 +180,8 @@ export async function createJudge(selection, { root, env: sourceEnv = process.en
       track.active.add(active);
       if (api.child.pid) resources.processes.push({ pid: api.child.pid, group: false });
       try {
-        // Catalog RPCs do not start a model turn or require the runner's gisul skill.
-        await api.rpc('initialize', { clientInfo: { name: 'gisul-frontier-judge', version: '1' }, capabilities: { experimentalApi: true } });
+        // Catalog RPCs do not start a model turn or require the runner's skillar skill.
+        await api.rpc('initialize', { clientInfo: { name: 'skillar-frontier-judge', version: '1' }, capabilities: { experimentalApi: true } });
         api.child.stdin.write(JSON.stringify({ method: 'initialized', params: {} }) + '\n');
         const effective = (await api.rpc('config/read', { cwd: workspace, includeLayers: false })).config;
         check(effective?.default_permissions === 'judge' && effective.model === selected.model

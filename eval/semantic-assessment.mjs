@@ -95,7 +95,7 @@ export function observableGate(grading) {
 }
 
 function stateFor({ result }) {
-  if (!result || result.status !== 'completed' || !result.threadId || !(result.items?.length || result.usage)) {
+  if (!result || result.status !== 'completed' || result.evidenceComplete === false || result.usageComplete === false || !result.threadId || !(result.items?.length || result.usage)) {
     return { observableStatus: 'unverified', required: [] };
   }
   return { observableStatus: observableGate(result.grading), required: result.grading?.checks?.filter(check => SEMANTIC.has(check.name)).map(check => check.name) ?? [] };
@@ -107,7 +107,7 @@ export function judgmentRequest({ item, result }) {
     requiredChecks: result.grading.checks.filter(check => SEMANTIC.has(check.name)).map(check => check.name),
     response: {
       finalText: result.finalText, files: result.files, items: result.items ?? [],
-      mockEvents: result.mockEvents ?? [], gisulEvents: result.gisulEvents ?? [],
+      mockEvents: result.mockEvents ?? [], gisulEvents: result.skillarEvents ?? result.gisulEvents ?? [],
     },
   };
   const prompt = 'Assess only the supplied frozen synthetic response against the task and required checks. '

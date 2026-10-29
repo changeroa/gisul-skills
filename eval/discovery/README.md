@@ -16,6 +16,18 @@ candidate reader. Its [48-run result](../../docs/bounded-discovery-evaluation-20
 has separate budgets and runtime identities; do not pool its results with the
 initial installed-reader experiment.
 
+## Historical protocol compatibility
+
+The original scenarios and candidate policies retain their exact inputs, including
+legacy `gisul` names. The runner deliberately binds that MCP alias while selecting
+the enabled installed Skillar loader first and falling back to the legacy plugin.
+Both event-log variable names point to the same synthetic directory. The local
+candidate adapter supplies current `skillar`/`iyen` configuration alongside legacy
+configuration for frozen older bundles. These adapters do not rewrite archived
+protocols, rubrics, releases or hash-addressed harness copies. New formal
+evaluations use the current runner in `eval/`; changing this historical harness
+requires a new protocol and capability proof, never relabeling an old result.
+
 ## Candidate reader
 
 Pass `--candidate=path/to/descriptor.json` to `run.mjs`, `start.mjs` or
