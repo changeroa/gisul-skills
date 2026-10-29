@@ -27,3 +27,14 @@ test('matching release labels cannot hide different content, instructions or mis
     assert.equal(compareDevices(items, { now }).passed, false);
   }
 });
+
+test('device comparison accepts historical snapshot names without hiding content drift', () => {
+  const mixed = snapshots();
+  mixed[0].gisul = mixed[0].skillar;
+  delete mixed[0].skillar;
+  mixed[0].plugins.gisul = mixed[0].plugins.skillar;
+  delete mixed[0].plugins.skillar;
+  assert.equal(compareDevices(mixed, { now }).passed, true);
+  mixed[0].gisul.commit = 'f'.repeat(40);
+  assert.equal(compareDevices(mixed, { now }).passed, false);
+});

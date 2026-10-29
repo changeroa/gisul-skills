@@ -15,9 +15,9 @@ export function pinClient(client, commit) {
   return new Proxy(client, { get(target, key) {
     if (key === 'request') return async (request, ...rest) => {
       if (!['skills/list', 'skills/get', 'resources/read'].includes(request.method)) throw new Error('Evaluation upstream is read-only');
-      const requested = request.params?._meta?.['io.skillar/commit'];
+      const requested = request.params?._meta?.['app.skillar/commit'];
       if (requested && requested !== commit) throw new Error('Content pin mismatch');
-      const response = await target.request({ ...request, params: { ...request.params, _meta: { ...request.params?._meta, 'io.skillar/commit': commit } } }, ...rest);
+      const response = await target.request({ ...request, params: { ...request.params, _meta: { ...request.params?._meta, 'app.skillar/commit': commit } } }, ...rest);
       if (response._meta?.commit !== commit) throw new Error('Pinned release unavailable');
       return response;
     };

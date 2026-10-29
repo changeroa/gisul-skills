@@ -4,15 +4,15 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { selectInstalledPlugin, selectSkillarServer } from './runtime-compat.mjs';
 
 const args = process.argv.slice(2);
 assert.ok(args.length === 1 && ['--check', '--install'].includes(args[0]), 'Usage: configure-openclaw-skillar.mjs --check|--install');
 const command = (program, argv) => execFileSync(program, argv, { encoding: 'utf8', timeout: 90000, stdio: ['ignore', 'pipe', 'pipe'] });
 const codexRoot = process.env.CODEX_HOME ?? join(homedir(), '.codex');
-const installed = JSON.parse(command('codex', ['plugin', 'list', '--marketplace', 'personal', '--json'])).installed.filter(p => p.pluginId === 'skillar@personal' && p.enabled);
-assert.equal(installed.length, 1, 'Expected one enabled skillar plugin');
-const cache = join(codexRoot, 'plugins/cache/personal/skillar', installed[0].version);
-const source = JSON.parse(await readFile(join(cache, '.mcp.json'), 'utf8')).mcpServers.skillar;
+const installed = selectInstalledPlugin(JSON.parse(command('codex', ['plugin', 'list', '--marketplace', 'personal', '--json'])).installed, codexRoot);
+const cache = installed.cache;
+const { config: source } = selectSkillarServer(JSON.parse(await readFile(join(cache, '.mcp.json'), 'utf8')).mcpServers);
 const endpoint = source.args[source.args.indexOf('--http-url') + 1];
 const tokenPath = source.args[source.args.indexOf('--bearer-token-file') + 1];
 assert.ok(source.args.includes('--http-url') && source.args.includes('--bearer-token-file'));
@@ -27,15 +27,22 @@ const runtime = join(directory, 'codex.mjs');
 const eventLog = join(homedir(), '.local/state/skillar-openclaw/events');
 const desired = {
   command: process.execPath, args: [runtime, ...source.args.slice(1)], cwd: directory,
-  env: { ...source.env, SKILLAR_EVENT_LOG_DIR: eventLog },
+  env: { ...source.env, SKILLAR_EVENT_LOG_DIR: eventLog, GISUL_EVENT_LOG_DIR: eventLog },
   connectionTimeoutMs: 30000, requestTimeoutMs: 60000,
   toolFilter: { include: ['search_skills', 'load_skill', 'read_skill_file'] },
 };
-const current = JSON.parse(command('openclaw', ['mcp', 'list', '--json'])).skillar;
+const registrations = JSON.parse(command('openclaw', ['mcp', 'list', '--json']));
+if (!registrations.skillar && registrations.gisul) {
+  const action = 'Retain the existing gisul registration; migrate it explicitly before installing skillar';
+  if (args[0] === '--install') throw new Error(action);
+  console.log(JSON.stringify({ installed: registrations.gisul.enabled !== false, legacy_registration: true, plugin_version: installed.version, action }, null, 2));
+  process.exit(0);
+}
+const current = registrations.skillar;
 const same = value => value && value.enabled !== false && value.command === desired.command && JSON.stringify(value.args) === JSON.stringify(desired.args) && value.cwd === desired.cwd && value.env?.SKILLAR_EVENT_LOG_DIR === eventLog && JSON.stringify(value.toolFilter?.include) === JSON.stringify(desired.toolFilter.include);
 if (current && !same(current)) throw new Error('An existing skillar registration differs; inspect it before replacing it');
 if (args[0] === '--check') {
-  console.log(JSON.stringify({ installed: same(current) ?? false, plugin_version: installed[0].version, endpoint, runtime_digest: digest, transport: 'local stdio bridge to Worker HTTPS', action: current ? 'Verify existing registration' : 'Run with --install' }, null, 2));
+  console.log(JSON.stringify({ installed: same(current) ?? false, plugin_version: installed.version, endpoint, runtime_digest: digest, transport: 'local stdio bridge to Worker HTTPS', action: current ? 'Verify existing registration' : 'Run with --install' }, null, 2));
 } else {
   await mkdir(directory, { recursive: true, mode: 0o700 });
   try { await writeFile(runtime, bundle, { flag: 'wx', mode: 0o600 }); }

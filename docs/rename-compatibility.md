@@ -15,6 +15,39 @@ Herdr tracing uses `SKILLAR_HOME`, defaulting to `~/.skillar`. When that default
 directory does not exist, the instructions use the existing `~/.gisool`
 configuration and token. An explicit `SKILLAR_HOME` takes precedence.
 
+The legacy SSH release command selects the existing
+`~/Library/LaunchAgents/com.iyendev.skillar-mcp.plist`, falling back to
+`com.iyendev.gisul-mcp.plist` only when the new file is absent. Its launchd label
+follows that selection. The bearer file similarly prefers
+`~/.config/secrets/skillar-mcp-bearer-token` and otherwise retains the existing
+`gisul-mcp-bearer-token`. No credentials or immutable release files are moved.
+Override these choices with `SKILLAR_LAUNCHD_LABEL` (bare label),
+`SKILLAR_LAUNCHD_PLIST` and `SKILLAR_BEARER_TOKEN_FILE`. Custom plist filenames
+require an explicit label. Missing or invalid explicit files fail instead of
+silently selecting another installation. `release-skills.mjs` forwards these
+three overrides to its target host; their paths refer to that host. Its remote
+runtime root prefers an existing `~/.skillar`, then an existing `~/gisul`;
+`SKILLAR_REMOTE_ROOT` overrides that choice.
+
+Device checks, installed-plugin smoke checks and the OpenClaw configurator prefer
+the enabled `skillar@personal` plugin and otherwise use the enabled
+`gisul@personal` plugin's actual cache, loader and MCP configuration. Device
+comparison accepts historical `gisul` snapshot fields without relabeling stored
+evidence. MCP smoke checks use the selected server's actual name. New and legacy
+event-log environment variables point to the same synthetic log directory so
+existing bridges/exporters can read it.
+
+An existing OpenClaw `gisul` registration remains usable by the smoke command.
+The configurator's `--check` reports it; `--install` requires explicit migration
+instead of silently adding a second registration. To migrate, retain its current
+configuration for rollback, retire that registration using the installed
+OpenClaw version's supported commands, install/probe `skillar`, and use the
+supported reload lifecycle for active agents. Changing the filesystem name alone
+does not migrate a plugin registration or the external collector's tool-name
+support.
+
+New pinned MCP reads use the runtime's `app.skillar/commit` metadata key.
+
 The following old names are intentional:
 
 - `migration/`, release changelogs, dated deployment/evaluation records and the

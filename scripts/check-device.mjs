@@ -6,13 +6,15 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { selectInstalledPlugin, selectSkillarServer } from './runtime-compat.mjs';
 
 export const devices = ['macbook-pro', 'macmini', 'macbook-air'];
 const pluginNames = ['skillar', 'langfuse-masked'];
 
 export function compareDevices(snapshots, { now = Date.now(), maxAgeMs = 86400000 } = {}) {
   const failures = [], byName = new Map();
-  for (const snapshot of snapshots) {
+  for (const original of snapshots) {
+    const snapshot = original && { ...original, skillar: original.skillar ?? original.gisul, plugins: { ...original.plugins, skillar: original.plugins?.skillar ?? original.plugins?.gisul } };
     const name = snapshot?.device;
     if (!devices.includes(name) || byName.has(name)) {
       failures.push(`Unknown or duplicate device: ${name}`); continue;
@@ -51,21 +53,21 @@ export async function snapshotDevice(device, codexRoot = process.env.CODEX_HOME 
     const agents = await readFile(join(codexRoot, 'AGENTS.md'));
     result.agents = { bytes: agents.length, digest: `sha256:${createHash('sha256').update(agents).digest('hex')}` };
   } catch { result.errors.push('Cannot read global AGENTS.md'); }
-  let installed;
+  let installed, bridge;
   try {
     result.codex_version = execFileSync('codex', ['--version'], { encoding: 'utf8', timeout: 15000 }).trim();
     installed = JSON.parse(execFileSync('codex', ['plugin', 'list', '--json'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, CODEX_HOME: codexRoot } })).installed;
     for (const name of pluginNames) {
-      const matches = installed.filter(p => p.pluginId === `${name}@personal` && p.enabled);
-      if (matches.length !== 1) throw new Error('Missing or ambiguous plugin');
-      result.plugins[name] = { version: matches[0].version, enabled: true };
+      const selected = selectInstalledPlugin(installed, codexRoot, name);
+      if (name === 'skillar') bridge = selected;
+      result.plugins[name] = { version: selected.version, enabled: true, installed_name: selected.name };
     }
   } catch { result.errors.push('Cannot verify one enabled skillar and langfuse-masked plugin'); }
   if (result.plugins.skillar) {
     const client = new Client({ name: 'skillar-device-check', version: '1' });
     try {
-      const cache = join(codexRoot, 'plugins/cache/personal/skillar', result.plugins.skillar.version);
-      const config = JSON.parse(await readFile(join(cache, '.mcp.json'), 'utf8')).mcpServers.skillar;
+      const cache = bridge.cache;
+      const { config } = selectSkillarServer(JSON.parse(await readFile(join(cache, '.mcp.json'), 'utf8')).mcpServers);
       const httpIndex = config.args.indexOf('--http-url');
       if (httpIndex < 0) throw new Error('Expected the current Worker HTTPS path');
       const endpoint = new URL(config.args[httpIndex + 1]);

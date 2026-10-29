@@ -8,6 +8,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { langfuseApi } from "./langfuse-api.mjs";
+import { selectInstalledPlugin, selectSkillarServer } from "./runtime-compat.mjs";
 
 // Real installed-plugin calls; only their metadata enters an explicitly synthetic
 // exporter fixture. This is not a model-selection eval or a production user turn.
@@ -17,18 +18,13 @@ assert.match(expectedServer ?? "", /^[a-f0-9]{40}$/);
 assert.ok(project, "Select the expected Langfuse project explicitly");
 const installed = JSON.parse(execFileSync("codex", ["plugin", "list", "--marketplace", "personal", "--json"], { encoding: "utf8" })).installed;
 const codexRoot = process.env.CODEX_HOME ?? join(homedir(), ".codex");
-function plugin(name) {
-  const entries = installed.filter(item => item.pluginId === `${name}@personal` && item.enabled);
-  assert.equal(entries.length, 1, `Expected one enabled ${name} plugin`);
-  const item = entries[0];
-  assert.equal(item.source.source, "local");
-  return { ...item, cache: join(codexRoot, "plugins/cache/personal", name, item.version) };
-}
-const bridge = plugin("skillar"), exporter = plugin("langfuse-masked");
-for (const file of [".codex-plugin/plugin.json", ".mcp.json", "runtime/codex.mjs", "skills/skillar/SKILL.md"]) {
+const bridge = selectInstalledPlugin(installed, codexRoot), exporter = selectInstalledPlugin(installed, codexRoot, "langfuse-masked");
+assert.equal(bridge.source.source, "local");
+assert.equal(exporter.source.source, "local");
+for (const file of [".codex-plugin/plugin.json", ".mcp.json", "runtime/codex.mjs", `skills/${bridge.name}/SKILL.md`]) {
   assert.deepEqual(await readFile(join(bridge.cache, file)), await readFile(join(bridge.source.path, file)), `Installed ${file} differs from source`);
 }
-const config = JSON.parse(await readFile(join(bridge.cache, ".mcp.json"))).mcpServers.skillar;
+const { name: serverName, config } = selectSkillarServer(JSON.parse(await readFile(join(bridge.cache, ".mcp.json"))).mcpServers);
 const endpoint = config.args[config.args.indexOf("--http-url") + 1];
 assert.ok(config.args.includes("--http-url") && endpoint.startsWith("https://"), "Expected the installed HTTPS plugin");
 const api = await langfuseApi();
@@ -57,11 +53,11 @@ async function call(tool, args) {
   const summary = Object.fromEntries(["origin", "release", "commit", "server_version", "uri", "manifest_digest", "connection_id", "totalMatches"].filter(key => data[key] !== undefined).map(key => [key, data[key]]));
   calls.push({ tool, arguments: args, ...summary });
   const duration = Date.now() - started;
-  record("event_msg", { type: "item_completed", item: { type: "McpToolCall", id: `call-${calls.length}`, server: "skillar", tool, arguments: args, result: { content: [{ type: "text", text: JSON.stringify({ ...summary, body_omitted: true }) }] }, status: "completed", duration: { secs: Math.floor(duration / 1000), nanos: (duration % 1000) * 1e6 } } });
+  record("event_msg", { type: "item_completed", item: { type: "McpToolCall", id: `call-${calls.length}`, server: serverName, tool, arguments: args, result: { content: [{ type: "text", text: JSON.stringify({ ...summary, body_omitted: true }) }] }, status: "completed", duration: { secs: Math.floor(duration / 1000), nanos: (duration % 1000) * 1e6 } } });
   return data;
 }
 try {
-  await client.connect(new StdioClientTransport({ ...config, cwd: bridge.cache, env: { ...config.env, SKILLAR_EVENT_LOG_DIR: events }, stderr: "pipe" }));
+  await client.connect(new StdioClientTransport({ ...config, cwd: bridge.cache, env: { ...config.env, SKILLAR_EVENT_LOG_DIR: events, GISUL_EVENT_LOG_DIR: events }, stderr: "pipe" }));
   assert.deepEqual((await client.listTools()).tools.map(tool => tool.name).sort(), ["load_skill", "read_skill_file", "search_skills"]);
   const found = await call("search_skills", { query: "dont-make-me-think", limit: 1 });
   assert.equal(found.skills.length, 1);
@@ -89,7 +85,7 @@ const receipt = { synthetic: true, model_run: false, session, trace_id: trace, t
 await writeFile(join(out, "receipt.json"), JSON.stringify(receipt, null, 2) + "\n", { mode: 0o600 });
 const hook = join(exporter.cache, "plugins/tracing/dist/index.mjs");
 assert.deepEqual(await readFile(hook), await readFile(join(exporter.source.path, "plugins/tracing/dist/index.mjs")));
-const env = { ...process.env, TRACE_TO_LANGFUSE: "true", LANGFUSE_CODEX_SYNTHETIC: "true", LANGFUSE_CODEX_AGENT_KIND: "codex", LANGFUSE_CODEX_TRACE_SEED: session, LANGFUSE_CODEX_TAGS: '["synthetic","worker-r2-canary"]', LANGFUSE_CODEX_FAIL_ON_ERROR: "true", LANGFUSE_CODEX_STATE_FILE: join(out, "state.json"), LANGFUSE_CODEX_EXPORT_JOURNAL: join(out, "exports"), SKILLAR_EVENT_LOG_DIR: events };
+const env = { ...process.env, TRACE_TO_LANGFUSE: "true", LANGFUSE_CODEX_SYNTHETIC: "true", LANGFUSE_CODEX_AGENT_KIND: "codex", LANGFUSE_CODEX_TRACE_SEED: session, LANGFUSE_CODEX_TAGS: '["synthetic","worker-r2-canary"]', LANGFUSE_CODEX_FAIL_ON_ERROR: "true", LANGFUSE_CODEX_STATE_FILE: join(out, "state.json"), LANGFUSE_CODEX_EXPORT_JOURNAL: join(out, "exports"), SKILLAR_EVENT_LOG_DIR: events, GISUL_EVENT_LOG_DIR: events };
 function exportFixture() {
   const result = spawnSync(process.execPath, [hook], { cwd: process.cwd(), env, input: JSON.stringify({ session_id: session, turn_id: "canary", transcript_path: rollout }), encoding: "utf8", timeout: 60000 });
   assert.equal(result.status, 0, `Installed exporter failed: ${result.stderr}`);
@@ -108,7 +104,7 @@ function validateRemote(remote) {
   assert.equal(observations.length, calls.length + 2, "Expected one root, one step and each actual tool call");
   assert.equal(new Set(observations.map(item => item.id)).size, observations.length, "Repeated observation IDs");
   const tools = observations.filter(item => item.type === "TOOL");
-  assert.deepEqual(tools.map(item => item.name).sort(), calls.map(call => `skillar.${call.tool}`).sort());
+  assert.deepEqual(tools.map(item => item.name).sort(), calls.map(call => `${serverName}.${call.tool}`).sort());
   assert.deepEqual(tools.map(item => object(item.metadata)["codex.call_id"]).sort(), calls.map((_, i) => `call-${i + 1}`).sort());
   return observations.map(item => item.id).sort();
 }
