@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: changeroa/skillar
-          ref: 02d782d61d062d503a2992214f254f7f20b0a3ad
+          ref: 1605f627616bb2ee14b418e0b679cf5d72f4ef60
           path: .ci/skillar
       - run: npm ci
       - name: Install the runtime example browser
