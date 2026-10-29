@@ -7,7 +7,7 @@ by time, preserving both ordinary and failed outcomes. Sampling and truncation
 limits accompany every candidate. The source is the project's already-masked
 Langfuse data; raw local conversation stores are not read.
 
-The operator JSON must set `projectId`, `githubRepo` (`changeroa/gisul-skills`),
+The operator JSON must set `projectId`, `githubRepo` (`changeroa/iyen-skills`),
 `model`, `reasoning`, `maxRunSeconds` (30–1800), `maxTraces` (1–20),
 `maxInputBytes` (1000–100000), and `scheduleHost`. Select the model and duration
 budget explicitly. These are input/time bounds, not a dollar-cost guarantee.
@@ -23,7 +23,7 @@ do not establish the observation period. Start from a disabled operator config:
 ```json
 {
   "projectId": "cmu275pqc00i8ad0d79dddjgk",
-  "githubRepo": "changeroa/gisul-skills",
+  "githubRepo": "changeroa/iyen-skills",
   "model": "CHOOSE_MODEL",
   "reasoning": "medium",
   "maxRunSeconds": 300,
@@ -32,7 +32,7 @@ do not establish the observation period. Start from a disabled operator config:
   "scheduleHost": "EXACT_OUTPUT_OF_HOSTNAME",
   "enableModelAnalysis": false,
   "publishDraftPR": false,
-  "ghConfigDir": "/Users/iyen/.config/gh-gisul-dev-tools"
+  "ghConfigDir": "/Users/iyen/.config/gh-skillar-dev-tools"
 }
 ```
 

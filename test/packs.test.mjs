@@ -9,7 +9,7 @@ import { readPacks,validatePack } from '../scripts/packs.mjs';
 import { validate } from '../scripts/validate.mjs';
 import { buildR2Release,verifyR2Release } from '../scripts/build-r2-release.mjs';
 import { checkPacks } from '../scripts/check-packs-live.mjs';
-const member=(n,phase)=>({uri:`skill://gisul/gisul/${n}/SKILL.md`,phase,selection:'required',when:n});
+const member=(n,phase)=>({uri:`skill://skillar/iyen/${n}/SKILL.md`,phase,selection:'required',when:n});
 const def={schema_version:1,kind:'skill-pack',name:'example-pack',display_name:'Example',description:'Example review',scope:'fixture',members:[member('scope','scope'),member('backend','investigate'),member('verify','verify')]};
 test('published packs retain roles, required members and reference closure',async()=>{
  const catalog=await validate();const packs=await readPacks(new URL('..',import.meta.url).pathname,catalog.valid);
@@ -27,8 +27,8 @@ test('published packs retain roles, required members and reference closure',asyn
  assert.ok(testing.members.some(m=>m.uri.endsWith('/testing/SKILL.md')&&m.phase==='investigate'&&m.selection==='required'));
  const testingEntry=catalog.valid.find(s=>s.name==='testing');
  assert.deepEqual(testingEntry.resources.map(r=>r.uri).filter(uri=>uri.includes('/references/')).sort(),[
-  'skill://gisul/gisul/testing/references/core-principles.md',
-  'skill://gisul/gisul/testing/references/operating-guardrails.md'
+  'skill://skillar/iyen/testing/references/core-principles.md',
+  'skill://skillar/iyen/testing/references/operating-guardrails.md'
  ]);
  const testingSpecialists=catalog.valid.filter(s=>/^testing-/.test(s.name)).map(s=>s.uri).sort();
  assert.deepEqual(testing.members.filter(m=>m.selection==='when_applicable').map(m=>m.uri).sort(),testingSpecialists);
@@ -42,12 +42,12 @@ test('published packs retain roles, required members and reference closure',asyn
 });
 test('definition checks reject missing references, duplicate and absent required roles',()=>{
  const available=new Set(def.members.map(m=>m.uri));assert.deepEqual(validatePack(def,available),def);
- for(const edit of [d=>d.members.pop(),d=>d.members.push(d.members[0]),d=>d.members[1].uri='skill://gisul/gisul/missing/SKILL.md',d=>d.members[0].selection='when_applicable',d=>d.kind='skill',d=>d.script='execute']){
+ for(const edit of [d=>d.members.pop(),d=>d.members.push(d.members[0]),d=>d.members[1].uri='skill://skillar/iyen/missing/SKILL.md',d=>d.members[0].selection='when_applicable',d=>d.kind='skill',d=>d.script='execute']){
   const d=structuredClone(def);edit(d);assert.throws(()=>validatePack(d,available));
  }
 });
 test('real release builder preserves pack bytes, derives attribution and rejects later broken closure',async t=>{
- const root=await mkdtemp(join(tmpdir(),'gisul-pack-builder-'));t.after(()=>rm(root,{recursive:true,force:true}));
+ const root=await mkdtemp(join(tmpdir(),'skillar-pack-builder-'));t.after(()=>rm(root,{recursive:true,force:true}));
  const git=args=>execFileSync('git',args,{cwd:root,encoding:'utf8',stdio:['pipe','pipe','pipe']}).trim();
  const write=async(path,text)=>{await mkdir(join(root,path,'..'),{recursive:true});await writeFile(join(root,path),text);};
  git(['init','-b','main']);git(['config','user.name','Fixture']);git(['config','user.email','fixture@example.test']);
@@ -57,7 +57,7 @@ test('real release builder preserves pack bytes, derives attribution and rejects
  await write('registration-accounts.json',JSON.stringify({[original]:'alice'}));git(['add','registration-accounts.json']);git(['commit','-m','mapping']);
  const out=await buildR2Release(root,'20261001.1');const manifest=JSON.parse(await readFile(join(out,'inventory.json')));
  assert.deepEqual(manifest.packs[0].definition,def);assert.equal(manifest.packs[0].registration.created_by,'alice');assert.equal(await readFile(join(out,'packs/example-pack.json'),'utf8'),body);await verifyR2Release(out);
- const broken=structuredClone(def);broken.members[1].uri='skill://gisul/gisul/missing/SKILL.md';await write('packs/example-pack.json',JSON.stringify(broken));git(['add','packs']);git(['commit','-m','invalid']);
+ const broken=structuredClone(def);broken.members[1].uri='skill://skillar/iyen/missing/SKILL.md';await write('packs/example-pack.json',JSON.stringify(broken));git(['add','packs']);git(['commit','-m','invalid']);
  assert.equal(requirePublicationGate(root,git(['rev-parse','HEAD']),original).content_changed,true);
  await assert.rejects(buildR2Release(root,'20261001.2'),/Unavailable/);await verifyR2Release(out);
 });
@@ -66,8 +66,24 @@ test('publication smoke rejects missing pack surface before promotion',async()=>
 });
 
 test('staged reads may be verified snapshots while live publication requires active status',async()=>{
- const commit='a'.repeat(40),p={uri:'pack://gisul/gisul/example-pack',definition:def,digest:'test-digest',registration:{created_by:'alice'}};
+ const commit='a'.repeat(40),p={uri:'pack://skillar/iyen/example-pack',definition:def,digest:'test-digest',registration:{created_by:'alice'}};
  const skills=def.members.map(m=>({uri:m.uri,resources:[{uri:m.uri,digest:'unused'}],frontmatter:{}}));
  const client={callTool:async({name})=>({content:[{text:JSON.stringify({commit,packs:[{...p,publication_status:'verified_snapshot'}]})}]})};
  await assert.rejects(checkPacks(client,commit,{packs:[p],skills}),/includes/);
+});
+
+
+test('retained legacy pack bytes keep their original URI and digest', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'legacy-pack-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await mkdir(join(root, 'packs'));
+  const legacy = JSON.parse(JSON.stringify(def).replaceAll('skill://skillar/iyen/', 'skill://gisul/gisul/'));
+  const bytes = JSON.stringify(legacy);
+  await writeFile(join(root, 'packs/example-pack.json'), bytes);
+  const skills = legacy.members.map(({ uri }) => ({ uri }));
+  const [pack] = await readPacks(root, skills);
+  assert.equal(pack.uri, 'pack://gisul/gisul/example-pack');
+  assert.deepEqual(pack.definition, legacy);
+  assert.equal(await readFile(join(root, 'packs/example-pack.json'), 'utf8'), bytes);
+  await assert.rejects(readPacks(root, def.members.map(({ uri }) => ({ uri }))), /Unavailable/);
 });

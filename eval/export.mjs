@@ -11,7 +11,7 @@ const attr = (key, value) => ({ key, value: Array.isArray(value) ? { arrayValue:
 export function experimentSpan(protocol, item, result, datasetId, cohort = null) {
   const traceId = digest(protocol.id + ':' + item.id).slice(0, 32), spanId = digest(traceId + ':root').slice(0, 16);
   const run = { source: 'codex', session_id: result.threadId, turn_id: result.turnId ?? null, synthetic: true, experiment: protocol.id, case_id: item.id, protocol_hash: protocol.hash };
-  const gisul = { release: protocol.reader.release, commit: protocol.reader.commit, reader_sha256: protocol.reader.bundleHash, observations: result.gisulEvents.filter(x => x.commit).map(({ event, uri, commit, release, manifest_digest }) => ({ event, uri, commit, release, manifest_digest })) };
+  const gisul = { release: protocol.reader.release, commit: protocol.reader.commit, reader_sha256: protocol.reader.bundleHash, observations: (result.skillarEvents ?? result.gisulEvents ?? []).filter(x => x.commit).map(({ event, uri, commit, release, manifest_digest }) => ({ event, uri, commit, release, manifest_digest })) };
   const attributes = {
     'langfuse.environment': 'evaluation', 'langfuse.trace.name': 'agent-env-v1/' + item.id,
     'langfuse.trace.tags': ['synthetic', 'evaluation', 'agent-env-v1'],
@@ -149,7 +149,7 @@ async function exportUnlocked(root, projectId, { api, apply = false, readbackAtt
     const batch = unsent.slice(i, i + 5);
     for (const span of batch) intent.spans[span.spanId] = digest(JSON.stringify(span));
     await writeFile(intentPath, JSON.stringify(intent, null, 2) + '\n', { mode: 0o600 });
-    const response = await api.request('/api/public/otel/v1/traces', { method: 'POST', body: { resourceSpans: [{ resource: { attributes: [attr('service.name','gisul-formal-eval'),attr('langfuse.environment','evaluation')] }, scopeSpans: [{ scope: { name: 'gisul-formal-eval', version: '1' }, spans: batch }] }] } });
+    const response = await api.request('/api/public/otel/v1/traces', { method: 'POST', body: { resourceSpans: [{ resource: { attributes: [attr('service.name','skillar-formal-eval'),attr('langfuse.environment','evaluation')] }, scopeSpans: [{ scope: { name: 'skillar-formal-eval', version: '1' }, spans: batch }] }] } });
     if (Number(response.partialSuccess?.rejectedSpans ?? 0) !== 0 || response.partialSuccess?.errorMessage) throw new Error('OTLP ingestion partly rejected; reconcile recorded intent, do not resend');
   }
   let observed, experiment, lastError;

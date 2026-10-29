@@ -9,7 +9,7 @@ notifications:
   slack: {manual_send: never}
 policy_file: dev-tools-delivery.md
 repos:
-  - {name: gisul, url: 'https://github.com/changeroa/gisul'}
-  - {name: gisul-skills, url: 'https://github.com/changeroa/gisul-skills'}
+  - {name: skillar, url: 'https://github.com/changeroa/skillar'}
+  - {name: iyen-skills, url: 'https://github.com/changeroa/iyen-skills'}
   - {name: langfuse-masked, url: 'https://github.com/changeroa/langfuse-masked'}
 verified_at: '2026-09-17'

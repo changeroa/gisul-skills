@@ -1,19 +1,19 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.ko.md">한국어</a></p>
 
 <p align="center">
-  <img src="docs/assets/gisul-workshop.png" alt="The gisul workshop: instruction cards, measuring tools, and a verification bench" width="100%">
+  <img src="docs/assets/iyen-workshop.png" alt="The skillar workshop: instruction cards, measuring tools, and a verification bench" width="100%">
 </p>
-<h1 align="center">gisul-skills</h1>
+<h1 align="center">iyen-skills</h1>
 <p align="center"><strong>“Just do it well” isn't a procedure.</strong><br>Less hand-waving. More procedure.</p>
 <p align="center">
   <a href="#pick-a-problem">Pick a skill</a> ·
   <a href="#use-it">Use it</a> ·
   <a href="#contribute-a-skill">Contribute</a> ·
-  <a href="https://github.com/changeroa/gisul">Connect with gisul</a>
+  <a href="https://github.com/changeroa/skillar">Connect with skillar</a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/format-SKILL.md-242424?style=flat-square" alt="SKILL.md format">
-  <img src="https://img.shields.io/badge/delivery-gisul_MCP-c6492d?style=flat-square" alt="Delivered by gisul MCP">
+  <img src="https://img.shields.io/badge/delivery-skillar_MCP-c6492d?style=flat-square" alt="Delivered by skillar MCP">
 </p>
 
 ---
@@ -80,11 +80,11 @@ This is a problem-first entry point, not the entire catalog. Book-derived workfl
 
 **No installation needed to read a skill.** Open any `SKILL.md` linked above.
 
-To use the catalog through an agent, follow [gisul's runtime connection guides](https://github.com/changeroa/gisul#get-started). This repository holds the instructions. gisul provides the server and clients that discover and deliver them.
+To use the catalog through an agent, follow [skillar's runtime connection guides](https://github.com/changeroa/skillar#get-started). This repository holds the instructions. skillar provides the server and clients that discover and deliver them.
 
 Example request for a connected agent:
 
-> Find and read ux-state-review on Gisul. Review this signup flow's loading, verification-pending, failure, and re-entry states. Separate verified evidence from unchecked assumptions.
+> Find and read ux-state-review on Skillar. Review this signup flow's loading, verification-pending, failure, and re-entry states. Separate verified evidence from unchecked assumptions.
 
 Keep the selected skill and supporting material pinned to the same commit. Skills are instructions, not permission grants. Your environment still controls tool access and execution authority.
 
@@ -98,8 +98,8 @@ Skip the “You are the world's greatest expert” preamble. Give us:
 4. **Where it came from.** References, upstream sources, and the scope of your changes.
 
 ```sh
-git clone https://github.com/changeroa/gisul-skills.git
-cd gisul-skills
+git clone https://github.com/changeroa/iyen-skills.git
+cd iyen-skills
 npm ci
 npm run validate
 npm test
@@ -121,4 +121,4 @@ Check each item's provenance and applicable terms before reuse. Importing conten
 
 **Instructions you can read. Results you can check.**
 
-[gisul](https://github.com/changeroa/gisul) · [All skills](skills/) · [Quality](docs/quality.md) · [Releases](docs/releases.md) · [Issues](https://github.com/changeroa/gisul-skills/issues)
+[skillar](https://github.com/changeroa/skillar) · [All skills](skills/) · [Quality](docs/quality.md) · [Releases](docs/releases.md) · [Issues](https://github.com/changeroa/iyen-skills/issues)

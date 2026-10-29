@@ -15,7 +15,7 @@ metadata:
 - Do not disclose secrets or personal data. Source changes, package installation, external transmission, comment publication, commits, and merges are outside this skill's scope.
 - Failing to find a risk is not proof of safety. Identify unread scope and checks that could not be run.
 
-For runtime-dependent findings or proposed remedies, apply the relevant sections of [context and remediation](skill://gisul/gisul/review-orchestrator/references/context-and-remediation.md), including when invoked independently. Keep defect validity separate from whether the proposed remedy has adequate research and applicability evidence.
+For runtime-dependent findings or proposed remedies, apply the relevant sections of [context and remediation](skill://skillar/iyen/review-orchestrator/references/context-and-remediation.md), including when invoked independently. Keep defect validity separate from whether the proposed remedy has adequate research and applicability evidence.
 
 ## Applicability and responsibility
 

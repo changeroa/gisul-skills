@@ -7,55 +7,55 @@
   "scope": "요청한 기능·변경 범위의 관찰 가능한 계약과 회귀 위험에 맞춰 테스트를 설계·리뷰·개선한다. coverage나 테스트 수를 품질 대리값으로 쓰지 않으며, 팩을 읽는 것은 코드 변경·실행·commit·push·배포 권한을 부여하지 않는다.",
   "members": [
     {
-      "uri": "skill://gisul/gisul/review-orchestrator/SKILL.md",
+      "uri": "skill://skillar/iyen/review-orchestrator/SKILL.md",
       "phase": "scope",
       "selection": "required",
       "when": "revision, 요구 계약, 변경 범위, 실행 권한과 필요한 증거를 고정한다."
     },
     {
-      "uri": "skill://gisul/gisul/testing/SKILL.md",
+      "uri": "skill://skillar/iyen/testing/SKILL.md",
       "phase": "investigate",
       "selection": "required",
       "when": "테스트 위험과 층을 분류하고 현재 작업에 필요한 전문 스킬만 선택한다."
     },
     {
-      "uri": "skill://gisul/gisul/testing-unit-design/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-unit-design/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "단위 테스트 경계, AAA, fixture, 이름, assertion, parameterized case를 작성·리뷰할 때."
     },
     {
-      "uri": "skill://gisul/gisul/testing-test-doubles/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-test-doubles/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "mock, stub, spy, fake 또는 interaction verification이 범위에 있을 때."
     },
     {
-      "uri": "skill://gisul/gisul/testing-testability/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-testability/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "복잡한 도메인 로직과 I/O 조정이 섞여 테스트 비용이 큰 구조를 리팩터링할 때."
     },
     {
-      "uri": "skill://gisul/gisul/testing-integration/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-integration/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "실제 구성, 영속화, 외부 adapter와 대표 통합 시나리오를 검증할 때."
     },
     {
-      "uri": "skill://gisul/gisul/testing-database/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-database/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "실제 DBMS, migration, transaction, ORM, query와 test data lifecycle이 범위에 있을 때."
     },
     {
-      "uri": "skill://gisul/gisul/testing-antipatterns/SKILL.md",
+      "uri": "skill://skillar/iyen/testing-antipatterns/SKILL.md",
       "phase": "investigate",
       "selection": "when_applicable",
       "when": "private 노출, test-only production code, 알고리즘 복제, partial mock, 시간·전역 상태 문제를 진단할 때."
     },
     {
-      "uri": "skill://gisul/gisul/review-verifier/SKILL.md",
+      "uri": "skill://skillar/iyen/review-verifier/SKILL.md",
       "phase": "verify",
       "selection": "required",
       "when": "테스트가 실제 계약을 검증하는지, mock이 위험을 제거하지 않았는지, 실행·미실행 주장과 반증을 재확인한다."

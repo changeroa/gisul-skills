@@ -8,8 +8,8 @@ import { frontmatter } from "./validate.mjs";
 
 export async function smokeR2(base, token, expected, { pinned = false, manifest } = {}) {
   assert.ok(token, "Missing MCP reader token");
-  const client = new Client({ name: "gisul-r2-publication-check", version: "1" });
-  const meta = pinned ? { _meta: { "io.gisul/commit": expected.commit } } : {};
+  const client = new Client({ name: "skillar-r2-publication-check", version: "1" });
+  const meta = pinned ? { _meta: { "io.skillar/commit": expected.commit } } : {};
   const endpoint = new URL("/mcp", base);
   const transport = new StreamableHTTPClientTransport(endpoint, { requestInit: { headers: { authorization: `Bearer ${token}` }, redirect: "error" } });
   try {
@@ -25,7 +25,7 @@ export async function smokeR2(base, token, expected, { pinned = false, manifest 
     assert.equal(loaded._meta.commit, expected.commit);
     const reads = [];
     async function read(file) {
-      const result = await client.readResource({ uri: file.uri, _meta: { "io.gisul/commit": loaded._meta.commit } });
+      const result = await client.readResource({ uri: file.uri, _meta: { "io.skillar/commit": loaded._meta.commit } });
       assert.equal(result.contents.length, 1);
       const content = result.contents[0];
       assert.equal(content.uri, file.uri);

@@ -7,7 +7,7 @@ description: "Clean Code 2판의 concurrency 원칙으로 threaded·async·paral
 
 동시성은 성능 장식이 아니라 별도의 복잡성 원인이다. 실제 latency·throughput·responsiveness·구조적 분리가 필요할 때만 도입하고, 공유 상태·lifecycle·failure를 작고 명시적인 경계 안에 둔다.
 
-일반 객체·컴포넌트 설계는 `clean-code-design`, 시스템 프로세스·서비스 경계는 `clean-code-architecture`와 함께 사용할 수 있다. 2판 22장의 출처와 적용 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+일반 객체·컴포넌트 설계는 `clean-code-design`, 시스템 프로세스·서비스 경계는 `clean-code-architecture`와 함께 사용할 수 있다. 2판 22장의 출처와 적용 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

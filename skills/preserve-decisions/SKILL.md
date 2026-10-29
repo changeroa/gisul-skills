@@ -10,7 +10,7 @@ Preserve effective agreements while applying the user's explicit changes. Severa
 
 ## Keep the smallest useful record
 
-Questions, short research and ordinary edits use the current request or existing issue. Substantial implementation/deployment, material requirement changes and cross-session handoffs use a short durable record when losing scope would affect the result. Link existing specifications instead of copying them. Keep workflow guidance remote in gisul; runtime code stays local.
+Questions, short research and ordinary edits use the current request or existing issue. Substantial implementation/deployment, material requirement changes and cross-session handoffs use a short durable record when losing scope would affect the result. Link existing specifications instead of copying them. Keep workflow guidance remote in skillar; runtime code stays local.
 
 ## Keep the objective and choose the next action
 
@@ -64,7 +64,7 @@ Use the hook-provided runtime CLI and session ID. When `verify help` is availabl
 
 Keep the task ID stable within an objective. Preserve withdrawn requirements as `superseded` with `decision_basis`; material revisions include `change_basis`. A distinct objective uses a distinct task ID. Do not weaken checks or drop scope to make completion pass.
 
-For older runtimes, descriptive handoffs or manual assessments, read [runtime-contract.md](references/runtime-contract.md) through gisul with this load's `load_id`. Its schema-v1 evidence is self-reported. That reference also covers execution tools and owned processes; read it only when needed.
+For older runtimes, descriptive handoffs or manual assessments, read [runtime-contract.md](references/runtime-contract.md) through skillar with this load's `load_id`. Its schema-v1 evidence is self-reported. That reference also covers execution tools and owned processes; read it only when needed.
 
 ## Verify the outcome
 

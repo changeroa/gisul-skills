@@ -127,17 +127,23 @@ Inspect the actual changes, integrate them coherently, and run checks appropriat
 
 Finish when the user's acceptance criteria are met and all required assignments are accounted for. Report the outcome, verification, and remaining limitations concisely. Preserve useful artifacts and leave unrelated agents and user-managed tabs intact.
 
-## gisool tracing
+## skillar tracing
 
-Register this task's intended workflow with gisool before opening panes, then attach each pane to its step. Tracing is best-effort observation: if gisool is unavailable, continue orchestration and note the tracing gap. Intended skills are guidance for the agents, not restrictions; differences between the plan and actual skill use are feedback data.
+Register this task's intended workflow with skillar before opening panes, then attach each pane to its step. Tracing is best-effort observation: if skillar is unavailable, continue orchestration and note the tracing gap. Intended skills are guidance for the agents, not restrictions; differences between the plan and actual skill use are feedback data.
 
-Use the workspace containing the verified goal tab as `HERDR_WORKSPACE_ID` and `goal_tab_id` as `HERDR_TAB_ID`; never substitute the UI-focused tab. Read the local port from `~/.gisool/config.json` (`port`, default `8799`) and authenticate with `~/.gisool/token`. Keep the flow ID in the task ledger for recovery.
+Use the workspace containing the verified goal tab as `HERDR_WORKSPACE_ID` and `goal_tab_id` as `HERDR_TAB_ID`; never substitute the UI-focused tab. Use `SKILLAR_HOME` when set, otherwise `~/.skillar`; if the default directory is absent, use the legacy `~/.gisool` directory (an explicit `SKILLAR_HOME` always wins). Read its `config.json` (`port`, default `8799`) and authenticate with its `token`. Keep the flow ID in the task ledger for recovery.
 
 Before opening panes, adapt this example's spec name, step IDs, and intended skills to the task. Spec and step IDs are slugs of at most 64 characters; a spec has 1-50 unique steps, each with up to 10 intended skills. `together: true` means all listed skills are expected in that step; `false` means any one satisfies the intention. `expectTools` and `doneWhen` describe expected activity and completion without enforcing either.
 
 ```sh
-GISOOL_PORT=$(jq -r '.port // 8799' ~/.gisool/config.json 2>/dev/null) || true
-GISOOL_URL="http://127.0.0.1:${GISOOL_PORT:-8799}"
+if [ -z "${SKILLAR_HOME:-}" ]; then
+  SKILLAR_HOME="$HOME/.skillar"
+  if [ ! -d "$SKILLAR_HOME" ] && [ -d "$HOME/.gisool" ]; then
+    SKILLAR_HOME="$HOME/.gisool"
+  fi
+fi
+SKILLAR_PORT=$(jq -r '.port // 8799' "$SKILLAR_HOME/config.json" 2>/dev/null) || true
+SKILLAR_URL="http://127.0.0.1:${SKILLAR_PORT:-8799}"
 SPEC_NAME="task-workflow"
 WORKFLOW_SPEC=$(jq -n --arg name "$SPEC_NAME" '{
   name: $name,
@@ -149,15 +155,15 @@ WORKFLOW_SPEC=$(jq -n --arg name "$SPEC_NAME" '{
   ]
 }') || true
 
-curl -fsS --connect-timeout 2 --max-time 5 -X POST "$GISOOL_URL/api/workflows" \
-  -H "Authorization: Bearer $(cat ~/.gisool/token)" \
+curl -fsS --connect-timeout 2 --max-time 5 -X POST "$SKILLAR_URL/api/workflows" \
+  -H "Authorization: Bearer $(cat "$SKILLAR_HOME/token")" \
   -H 'Content-Type: application/json' \
   --data "$WORKFLOW_SPEC" || true
 
 # Do not use curl -f here: HTTP 409 carries the existing flowId to reuse.
 FLOW_RESPONSE=$(curl -sS --connect-timeout 2 --max-time 5 \
-  -X POST "$GISOOL_URL/api/flows" \
-  -H "Authorization: Bearer $(cat ~/.gisool/token)" \
+  -X POST "$SKILLAR_URL/api/flows" \
+  -H "Authorization: Bearer $(cat "$SKILLAR_HOME/token")" \
   -H 'Content-Type: application/json' \
   --data "$(jq -n --arg workspaceId "$HERDR_WORKSPACE_ID" \
     --arg tabId "$HERDR_TAB_ID" --arg name "$SPEC_NAME" \
@@ -176,8 +182,8 @@ Immediately after each `herdr pane split`, take the new pane ID from Herdr's res
 ```sh
 if [ -n "$FLOW_ID" ]; then
   curl -fsS --connect-timeout 2 --max-time 5 \
-    -X POST "$GISOOL_URL/api/flows/$FLOW_ID/steps" \
-    -H "Authorization: Bearer $(cat ~/.gisool/token)" \
+    -X POST "$SKILLAR_URL/api/flows/$FLOW_ID/steps" \
+    -H "Authorization: Bearer $(cat "$SKILLAR_HOME/token")" \
     -H 'Content-Type: application/json' \
     --data "$(jq -n --arg paneId "$PANE_ID" --arg stepId "$STEP_ID" \
       '{paneId: $paneId, stepId: $stepId}')" || true
@@ -191,8 +197,8 @@ At the end of orchestration, after accounting for the assignments and recording 
 ```sh
 if [ -n "$FLOW_ID" ]; then
   curl -fsS --connect-timeout 2 --max-time 5 \
-    -X POST "$GISOOL_URL/api/flows/$FLOW_ID/end" \
-    -H "Authorization: Bearer $(cat ~/.gisool/token)" \
+    -X POST "$SKILLAR_URL/api/flows/$FLOW_ID/end" \
+    -H "Authorization: Bearer $(cat "$SKILLAR_HOME/token")" \
     -H 'Content-Type: application/json' --data '{}' || true
 fi
 ```

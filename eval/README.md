@@ -4,7 +4,7 @@
 must not be used to tune a candidate. Source traces support the observed failure;
 scenario inputs are redacted fixtures, not complete historical replays.
 
-`candidates/bootstrap/AGENTS.md` and `gisul-SKILL.md` are instruction candidates.
+`candidates/bootstrap/AGENTS.md` and `skillar-SKILL.md` are instruction candidates.
 `candidates/workflows/skills/` contains linear-delivery, agent-improvement and
 project-runtime.
 They are not installed globally and are excluded from production release builds.
@@ -54,26 +54,26 @@ candidate workflow catalog. A required skill absent from that release stays abse
 
 Run commands from this repository root after `npm ci`, with a signed-in Codex CLI
 and `~/.codex/auth.json` on the same machine. This runner was verified with Codex
-0.155.1. Find the plugin root in the enabled gisul plugin's `.mcp.json`; the bundle
-is its `runtime/codex.mjs` and loader is `skills/gisul/SKILL.md`. Use that configured
+0.155.1. Find the plugin root in the enabled skillar plugin's `.mcp.json`; the bundle
+is its `runtime/codex.mjs` and loader is `skills/skillar/SKILL.md`. Use that configured
 Worker endpoint and bearer file. Take commit/release from a successful installed
 reader response or the verified deployment receipt, not a Git branch name.
 The descriptor is JSON, with all paths absolute:
 
 ```json
 {
-  "bundle": "/installed/gisul/runtime/codex.mjs",
+  "bundle": "/installed/skillar/runtime/codex.mjs",
   "bundleHash": "SHA256_OF_BUNDLE",
-  "loader": "/installed/gisul/skills/gisul/SKILL.md",
+  "loader": "/installed/skillar/skills/skillar/SKILL.md",
   "pluginVersion": "INSTALLED_PLUGIN_VERSION",
   "endpoint": "https://YOUR_WORKER/mcp",
-  "tokenFile": "/private/gisul/mcp-bearer",
+  "tokenFile": "/private/skillar/mcp-bearer",
   "commit": "FULL_CONTENT_COMMIT",
   "release": "CONTENT_RELEASE"
 }
 ```
 
-Compute `bundleHash` with `shasum -a 256 /installed/gisul/runtime/codex.mjs`.
+Compute `bundleHash` with `shasum -a 256 /installed/skillar/runtime/codex.mjs`.
 Langfuse export reads the existing private `~/.codex/langfuse-masked.json`, or
 the path in `LANGFUSE_CONFIG`, with `base_url`, `public_key` and `secret_key`.
 `PROJECT_ID` must be the sole project returned for those API keys. The hosted

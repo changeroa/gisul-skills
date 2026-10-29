@@ -1,6 +1,6 @@
 # README artwork
 
-Original illustration generated with the built-in image generation tool on 2026-10-12 for these repositories. No third-party logo or reference image was supplied. Shared across gisul and gisul-skills.
+Original illustration generated with the built-in image generation tool on 2026-10-12 for these repositories. No third-party logo or reference image was supplied. Shared across skillar and iyen-skills (formerly gisul and gisul-skills). The original prompt below is retained as artwork provenance.
 
 ## Prompt
 

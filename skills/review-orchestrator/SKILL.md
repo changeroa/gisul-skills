@@ -15,7 +15,7 @@ Unless a full repository audit was requested, focus on the change's impact scope
 
 First read the [review contract](references/review-contract.md).
 Read the [output schema](references/report.schema.json) only when machine-readable JSON output is required. The schema's legacy module key `review-frontend` maps to the renamed skill `review-client-runtime`; do not load an obsolete skill under the old name.
-Discover selected specialist skills through Gisul and load their exact returned URIs at the same pinned catalog commit. Load each specialist only when its scope fits; do not assume local sibling directories exist.
+Discover selected specialist skills through Skillar and load their exact returned URIs at the same pinned catalog commit. Load each specialist only when its scope fits; do not assume local sibling directories exist.
 Never report that an unavailable skill was executed.
 
 ## 1. Trust boundaries and execution permissions

@@ -11,7 +11,7 @@ metadata:
 
 Pin the source revision and follow the actual user action through event handler, local state, request, response and rendered result. This skill provides review guidance, not execution permissions. Read upstream guards and actual framework/runtime configuration before making a claim. Keep secrets out of evidence and leave inaccessible or unexecuted paths explicit.
 
-For runtime-dependent findings and before recommending a remedy, use [context and remediation](skill://gisul/gisul/review-orchestrator/references/context-and-remediation.md). Load the owning review-orchestrator skill at the pinned catalog commit before reading its resource. Research applicable primary-source guidance and keep defect validity separate from remediation readiness.
+For runtime-dependent findings and before recommending a remedy, use [context and remediation](skill://skillar/iyen/review-orchestrator/references/context-and-remediation.md). Load the owning review-orchestrator skill at the pinned catalog commit before reading its resource. Research applicable primary-source guidance and keep defect validity separate from remediation readiness.
 
 The earlier review-frontend skill mixed mechanisms with state design and visual inspection. This skill owns the mechanism: identify the code path that can produce the wrong client result. It does not claim ownership of every frontend concern.
 

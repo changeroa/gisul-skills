@@ -15,7 +15,7 @@ const exec = promisify(execFile);
 const { cases } = await dataset();
 const byId = id => cases.find(item => item.id === id);
 async function directories(t) {
-  const root = await mkdtemp(join(tmpdir(), "gisul-prepare-"));
+  const root = await mkdtemp(join(tmpdir(), "skillar-prepare-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   return { root, workspace: join(root, "task"), privateDir: join(root, "private") };
 }
@@ -46,7 +46,7 @@ test("all 22 frozen inputs prepare without exposing case labels or other scenari
     assert.ok(relative(await realpath(workspace), prepared.linearFixture).startsWith(".."));
     assert.equal((await stat(prepared.linearFixture)).mode & 0o777, 0o600);
     assert.equal(prepared.timeoutOnce, item.id === "L-08");
-    assert.equal(prepared.offlineGisul, item.id === "S-10");
+    assert.equal(prepared.offlineSkillar, item.id === "S-10");
     assert.equal(prepared.limitations.length, item.id === "F-02" ? 1 : 0);
     assert.doesNotMatch(await readFile(join(workspace, "scenario.json"), "utf8"), /"(?:expected|rubric|split|caseid|case_id|answers)"/i);
     const git = await exec("git", ["rev-parse", "--show-toplevel"], { cwd: workspace });

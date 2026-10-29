@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { compareDevices, devices } from '../scripts/check-device.mjs';
 
 const now = Date.parse('2026-09-18T08:00:00Z');
-const snapshots = () => devices.map(device => ({ schema_version: 1, device, complete: true, checked_at: new Date(now).toISOString(), errors: [], agents: { digest: `sha256:${'a'.repeat(64)}` }, plugins: { gisul: { enabled: true, version: '1' }, 'langfuse-masked': { enabled: true, version: '2' } }, gisul: { endpoint: 'https://example.test/mcp', release: 'test.1', commit: 'b'.repeat(40), manifest_digest: `sha256:${'c'.repeat(64)}` } }));
+const snapshots = () => devices.map(device => ({ schema_version: 1, device, complete: true, checked_at: new Date(now).toISOString(), errors: [], agents: { digest: `sha256:${'a'.repeat(64)}` }, plugins: { skillar: { enabled: true, version: '1' }, 'langfuse-masked': { enabled: true, version: '2' } }, skillar: { endpoint: 'https://example.test/mcp', release: 'test.1', commit: 'b'.repeat(40), manifest_digest: `sha256:${'c'.repeat(64)}` } }));
 
 test('device comparison requires three fresh, complete, independently named snapshots', () => {
   assert.equal(compareDevices(snapshots(), { now }).passed, true);
@@ -11,17 +11,17 @@ test('device comparison requires three fresh, complete, independently named snap
   const duplicate = snapshots(); duplicate[2].device = 'macmini';
   assert.equal(compareDevices(duplicate, { now }).passed, false);
   assert.equal(compareDevices(snapshots(), { now: now + 86400001 }).passed, false);
-  const withoutEndpoints = snapshots(); withoutEndpoints.forEach(s => { delete s.gisul.endpoint; });
+  const withoutEndpoints = snapshots(); withoutEndpoints.forEach(s => { delete s.skillar.endpoint; });
   assert.equal(compareDevices(withoutEndpoints, { now }).passed, false);
 });
 
 test('matching release labels cannot hide different content, instructions or missing plugins', () => {
   for (const mutate of [
-    s => { s.gisul.commit = 'd'.repeat(40); },
+    s => { s.skillar.commit = 'd'.repeat(40); },
     s => { s.agents.digest = `sha256:${'e'.repeat(64)}`; },
-    s => { delete s.plugins.gisul; },
+    s => { delete s.plugins.skillar; },
     s => { s.complete = false; },
-    s => { s.gisul.manifest_digest = null; },
+    s => { s.skillar.manifest_digest = null; },
   ]) {
     const items = snapshots(); mutate(items[1]);
     assert.equal(compareDevices(items, { now }).passed, false);

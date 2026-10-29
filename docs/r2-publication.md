@@ -33,7 +33,7 @@ SKILL.md digest and preserve other files.
 
 ## Publication and concurrency
 
-Every main push enters one fixed `gisul-r2-production` concurrency group, with
+Every main push enters one fixed `skillar-r2-production` concurrency group, with
 running jobs left intact. The publisher itself skips changes irrelevant to the
 catalog/build. A workflow path filter would lose relevant changes when a later
 documentation commit supersedes a pending run, so there is no path filter.
@@ -64,8 +64,8 @@ Release/commit also travel with bridge search/load/file events into Langfuse.
 
 ## Credentials and target
 
-Set repository variable `GISUL_RELEASE_BASE_URL` to the Worker origin, without
-`/mcp`. Set repository secrets `GISUL_PUBLISH_TOKEN` and `GISUL_BEARER_TOKEN`
+Set repository variable `SKILLAR_RELEASE_BASE_URL` to the Worker origin, without
+`/mcp`. Set repository secrets `SKILLAR_PUBLISH_TOKEN` and `SKILLAR_BEARER_TOKEN`
 through GitHub's encrypted Actions secret store. They must match the Worker's
 separate publisher and reader credentials. CI does not need Cloudflare account
 credentials or public bucket access. Never commit tokens or embed them in URLs.
@@ -83,11 +83,11 @@ has no R2 binding; candidate and future production share the R2 bucket and point
 After cutover, a preview is therefore not an isolated publication environment.
 Use the runtime commit pinned by `validate.yml` or a tested descendant and verify
 that the MCP `serverInfo.version` matches its full source commit. Follow the
-[runtime deployment guide](https://github.com/changeroa/gisul/blob/main/docs/deployment.md)
+[runtime deployment guide](https://github.com/changeroa/skillar/blob/main/docs/deployment.md)
 for version upload and activation. After actual installed-plugin and
 Langfuse checks, activate that Worker version, verify the production MCP endpoint,
 then change the repository variable to the stable production origin. Keep the R2 bucket
-private. Runtime deployment is maintained in `changeroa/gisul`.
+private. Runtime deployment is maintained in `changeroa/skillar`.
 
 ## Recovery and rollback
 
@@ -125,7 +125,7 @@ file. It checks exact release/commit, runtime version and manifest digest.
 The script feeds metadata from those real calls into an explicitly synthetic
 exporter fixture. No model is run, no production user turn is fabricated, and
 skill bodies are omitted. It invokes the installed masked hook, verifies every
-expected observation and the exact gisul connection join through the Langfuse
+expected observation and the exact skillar connection join through the Langfuse
 API, invokes the hook again and compares observation IDs and multiplicity.
 The expected project ID is required; credentials stay in the existing protected
 local configuration. Receipts and bridge events are written under ignored

@@ -21,7 +21,7 @@ The builder uses tracked Git bytes from a clean commit. It rejects invalid skill
 symbolic links and unresolved aliases. The package has per-skill manifests and an
 inventory covering every published file. Reusing an ID with different bytes fails.
 
-The publisher verifies before activation, switches `~/gisul/current` atomically,
+The publisher verifies before activation, switches `~/.skillar/current` atomically,
 restarts the HTTP service and checks stdio, bridge and authenticated HTTP. The same
 pointer selects skills, aliases and release metadata. Failed verification restores
 the previous pointer and service. An interrupted publish leaves its journal and

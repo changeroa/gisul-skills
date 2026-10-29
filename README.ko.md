@@ -1,19 +1,19 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.ko.md">한국어</a></p>
 
 <p align="center">
-  <img src="docs/assets/gisul-workshop.png" alt="검증 도구와 작업 지침 카드가 놓인 gisul 공방" width="100%">
+  <img src="docs/assets/iyen-workshop.png" alt="검증 도구와 작업 지침 카드가 놓인 skillar 공방" width="100%">
 </p>
-<h1 align="center">gisul-skills</h1>
+<h1 align="center">iyen-skills</h1>
 <p align="center"><strong>“알아서 잘해”는 작업 지침이 아니다.</strong><br>Less hand-waving. More procedure.</p>
 <p align="center">
   <a href="#어떤-문제부터-잡을까">스킬 고르기</a> ·
   <a href="#사용하기">사용하기</a> ·
   <a href="#스킬을-추가하려면">기여하기</a> ·
-  <a href="https://github.com/changeroa/gisul/blob/main/README.ko.md">gisul 연결</a>
+  <a href="https://github.com/changeroa/skillar/blob/main/README.ko.md">skillar 연결</a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/format-SKILL.md-242424?style=flat-square" alt="SKILL.md format">
-  <img src="https://img.shields.io/badge/delivery-gisul_MCP-c6492d?style=flat-square" alt="Delivered by gisul MCP">
+  <img src="https://img.shields.io/badge/delivery-skillar_MCP-c6492d?style=flat-square" alt="Delivered by skillar MCP">
 </p>
 
 ---
@@ -78,11 +78,11 @@ AI한테 암묵지를 넣었다고 한다. 노하우를 이식했다고 한다.<
 
 **읽어보는 데는 설치가 필요 없다.** 위 스킬 링크에서 `SKILL.md`를 열면 된다.
 
-에이전트에 연결해서 쓰려면 [gisul의 런타임별 연결 안내](https://github.com/changeroa/gisul/blob/main/README.ko.md#시작하기)를 따른다. 이 저장소는 작업 지침이고, gisul은 지침을 검색하고 전달하는 서버·클라이언트다.
+에이전트에 연결해서 쓰려면 [skillar의 런타임별 연결 안내](https://github.com/changeroa/skillar/blob/main/README.ko.md#시작하기)를 따른다. 이 저장소는 작업 지침이고, skillar은 지침을 검색하고 전달하는 서버·클라이언트다.
 
 연결한 에이전트에 요청할 예시:
 
-> Gisul에서 ux-state-review를 찾아 읽고, 이 가입 흐름의 로딩·인증 대기·실패·재진입 상태를 검토해줘. 확인한 근거와 미확인 항목을 구분해줘.
+> Skillar에서 ux-state-review를 찾아 읽고, 이 가입 흐름의 로딩·인증 대기·실패·재진입 상태를 검토해줘. 확인한 근거와 미확인 항목을 구분해줘.
 
 서버에 연결했다면 선택한 커밋의 스킬과 참고 자료를 함께 읽는다. 스킬은 지침이지 실행 허가가 아니다. 실제 도구 사용과 권한은 사용 중인 환경을 따른다.
 
@@ -96,8 +96,8 @@ AI한테 암묵지를 넣었다고 한다. 노하우를 이식했다고 한다.<
 4. **어디서 왔는가.** 참고 자료, 가져온 원본과 변경 범위.
 
 ```sh
-git clone https://github.com/changeroa/gisul-skills.git
-cd gisul-skills
+git clone https://github.com/changeroa/iyen-skills.git
+cd iyen-skills
 npm ci
 npm run validate
 npm test
@@ -118,4 +118,4 @@ npm test
 ---
 
 **절차는 읽을 수 있게. 결과는 확인할 수 있게.**<br>
-[gisul](https://github.com/changeroa/gisul/blob/main/README.ko.md) · [전체 스킬](skills/) · [품질 문서](docs/quality.md) · [릴리스 문서](docs/releases.md) · [이슈](https://github.com/changeroa/gisul-skills/issues)
+[skillar](https://github.com/changeroa/skillar/blob/main/README.ko.md) · [전체 스킬](skills/) · [품질 문서](docs/quality.md) · [릴리스 문서](docs/releases.md) · [이슈](https://github.com/changeroa/iyen-skills/issues)

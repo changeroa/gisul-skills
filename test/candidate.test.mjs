@@ -8,10 +8,10 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { materializeCandidate } from "../eval/materialize-candidate.mjs";
 import { dataset } from "../eval/dataset.mjs";
 test("candidate workflow resources include exact project/policy URIs through the real bridge",{timeout:30000},async t=>{
-  const root=await mkdtemp(join(tmpdir(),"gisul-candidate-"));t.after(()=>rm(root,{recursive:true,force:true}));
+  const root=await mkdtemp(join(tmpdir(),"skillar-candidate-"));t.after(()=>rm(root,{recursive:true,force:true}));
   const candidate=await materializeCandidate(root);
-  const server=process.env.GISUL_SERVER_PATH??new URL("../../gisul/server/dist/index.js",import.meta.url).pathname;
-  const transport=new StdioClientTransport({command:process.execPath,args:[join(dirname(server),"codex.js"),"--origin","candidate-fixture","--","env",`GISUL_ROOT=${root}`,`GISUL_SKILL_ROOTS=gisul=${join(root,"skills")}`,process.execPath,server],env:{...process.env,GISUL_EVENT_LOG_DIR:join(root,"events")},stderr:"pipe"});
+  const server=process.env.SKILLAR_SERVER_PATH??new URL("../../skillar/server/dist/index.js",import.meta.url).pathname;
+  const transport=new StdioClientTransport({command:process.execPath,args:[join(dirname(server),"codex.js"),"--origin","candidate-fixture","--","env",`SKILLAR_ROOT=${root}`,`SKILLAR_SKILL_ROOTS=iyen=${join(root,"skills")}`,process.execPath,server],env:{...process.env,SKILLAR_EVENT_LOG_DIR:join(root,"events")},stderr:"pipe"});
   transport.stderr.on("data",()=>{});const client=new Client({name:"candidate-validation",version:"1"});
   const call=async(name,args)=>{const result=await client.callTool({name,arguments:args});assert.ok(!result.isError,JSON.stringify(result));return JSON.parse(result.content[0].text);};
   try{

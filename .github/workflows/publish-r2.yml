@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: gisul-r2-production
+  group: skillar-r2-production
   cancel-in-progress: false
 jobs:
   validate:
@@ -33,10 +33,10 @@ jobs:
         run: node scripts/publish-r2.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          GISUL_RELEASE_BASE_URL: ${{ vars.GISUL_RELEASE_BASE_URL }}
-          GISUL_PUBLISH_TOKEN: ${{ secrets.GISUL_PUBLISH_TOKEN }}
-          GISUL_BEARER_TOKEN: ${{ secrets.GISUL_BEARER_TOKEN }}
-          GISUL_ROLLBACK_COMMIT: ${{ inputs.rollback_commit }}
+          SKILLAR_RELEASE_BASE_URL: ${{ vars.SKILLAR_RELEASE_BASE_URL || vars.GISUL_RELEASE_BASE_URL }}
+          SKILLAR_PUBLISH_TOKEN: ${{ secrets.SKILLAR_PUBLISH_TOKEN || secrets.GISUL_PUBLISH_TOKEN }}
+          SKILLAR_BEARER_TOKEN: ${{ secrets.SKILLAR_BEARER_TOKEN || secrets.GISUL_BEARER_TOKEN }}
+          SKILLAR_ROLLBACK_COMMIT: ${{ inputs.rollback_commit }}
       - name: Retain publication evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

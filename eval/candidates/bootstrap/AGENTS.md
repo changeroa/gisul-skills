@@ -5,8 +5,8 @@
 - Explain what the user's action changes on screen or in data first.
 
 # Discover context
-- Use gisul for reusable Linear, browser QA, session review, deployment or handoff workflows, or unknown team procedures. Skip discovery for general questions and small edits with enough context.
-- Read matching project policy and nested AGENTS.md when entering that code boundary. Report gisul failures accurately; continue independent work.
+- Use skillar for reusable Linear, browser QA, session review, deployment or handoff workflows, or unknown team procedures. Skip discovery for general questions and small edits with enough context.
+- Read matching project policy and nested AGENTS.md when entering that code boundary. Report skillar failures accurately; continue independent work.
 - Browser work uses aside-browser. In Herdr, use its skill and monitor agent/tab changes.
 
 # Code and handoff

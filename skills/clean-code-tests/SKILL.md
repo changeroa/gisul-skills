@@ -7,7 +7,7 @@ description: "Clean Code 2판의 testing disciplines, clean tests, acceptance te
 
 테스트를 구현 뒤의 장식이 아니라 동작을 반복 가능하게 증명하고 구조를 안전하게 바꾸는 도구로 만든다. 테스트 수나 coverage 숫자보다 요구 동작을 틀리게 바꿨을 때 빠르고 분명하게 실패하는지를 본다.
 
-이 스킬은 테스트 전략·코드와 실행 가능한 수용 조건을 담당한다. production 함수·객체·아키텍처 자체의 구조 개선은 해당 `clean-code-*` 전문 스킬로 넘기되, 필요한 회귀 증거는 여기서 설계한다. 판본, 14~16장과 부록의 TDD 논쟁은 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`에서 확인한다.
+이 스킬은 테스트 전략·코드와 실행 가능한 수용 조건을 담당한다. production 함수·객체·아키텍처 자체의 구조 개선은 해당 `clean-code-*` 전문 스킬로 넘기되, 필요한 회귀 증거는 여기서 설계한다. 판본, 14~16장과 부록의 TDD 논쟁은 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`에서 확인한다.
 
 ## 모드와 권한
 

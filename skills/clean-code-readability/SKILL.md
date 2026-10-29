@@ -7,7 +7,7 @@ description: "Clean Code 2판의 이름, 주석, 형식 원칙으로 source code
 
 코드의 의미와 관계가 처음 읽는 사람에게 드러나게 한다. 목표는 짧은 이름, 적은 주석, 작은 파일이 아니라 독자가 불필요한 추론과 왕복 탐색 없이 의도와 구조를 이해하는 것이다.
 
-이 스킬은 이름, 주석, 파일 내부의 배치와 형식을 다룬다. 함수 책임과 제어 흐름은 `clean-code-functions`, 객체·클래스 경계는 `clean-code-objects`의 주 책임이다. 판본과 원칙의 적용 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`에서 확인한다.
+이 스킬은 이름, 주석, 파일 내부의 배치와 형식을 다룬다. 함수 책임과 제어 흐름은 `clean-code-functions`, 객체·클래스 경계는 `clean-code-objects`의 주 책임이다. 판본과 원칙의 적용 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`에서 확인한다.
 
 ## 모드와 권한
 

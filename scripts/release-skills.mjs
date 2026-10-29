@@ -13,7 +13,7 @@ const quote = text => `'${text.replaceAll("'", "'\\''")}'`;
 const ssh = command => execFileSync("ssh", ["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", host, command], { encoding: "utf8", timeout: 120000, maxBuffer: 1024 * 1024 });
 const remoteHome = ssh("printf '%s' \"$HOME\"").trim();
 if (!/^\/[A-Za-z0-9_./-]+$/.test(remoteHome)) throw new Error("Unsupported remote home path");
-const remoteRoot = `${remoteHome}/gisul`;
+const remoteRoot = `${remoteHome}/.skillar`;
 const tools = `${remoteRoot}/.release-tools`;
 ssh(`mkdir -p ${quote(tools)}`);
 for (const file of ["release-files.mjs", "release-runtime.mjs"]) execFileSync("scp", [join(repo, "scripts", file), `${host}:${tools}/`], { stdio: "inherit" });

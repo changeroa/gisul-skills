@@ -16,21 +16,21 @@ jobs:
           cache: npm
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: changeroa/gisul
+          repository: changeroa/skillar
           ref: 02d782d61d062d503a2992214f254f7f20b0a3ad
-          path: .ci/gisul
+          path: .ci/skillar
       - run: npm ci
       - name: Install the runtime example browser
         run: npx playwright install --with-deps chromium
       - run: npm run validate
       - name: Prepare the pinned server and actual Worker runtime
         run: |
-          npm --prefix .ci/gisul/server ci
-          npm --prefix .ci/gisul/server run build
-          npm --prefix .ci/gisul/worker ci
-          npm --prefix .ci/gisul/worker run typecheck
+          npm --prefix .ci/skillar/server ci
+          npm --prefix .ci/skillar/server run build
+          npm --prefix .ci/skillar/worker ci
+          npm --prefix .ci/skillar/worker run typecheck
       - name: Verify catalog, publisher and actual serving contracts
         run: npm test
         env:
-          GISUL_SERVER_PATH: ${{ github.workspace }}/.ci/gisul/server/dist/index.js
-          GISUL_WORKER_PATH: ${{ github.workspace }}/.ci/gisul/worker
+          SKILLAR_SERVER_PATH: ${{ github.workspace }}/.ci/skillar/server/dist/index.js
+          SKILLAR_WORKER_PATH: ${{ github.workspace }}/.ci/skillar/worker
