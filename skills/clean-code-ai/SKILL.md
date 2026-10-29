@@ -7,7 +7,7 @@ description: "Clean Code 2판의 AI·LLM 장을 바탕으로 coding agent와 gen
 
 AI가 코드를 빠르게 생성하는 능력과 코드가 요구를 만족한다는 증거를 분리한다. 자연스러운 설명과 그럴듯한 테스트는 정확성의 보증이 아니다. 사람과 에이전트 모두 명세, 결과, 부수 효과와 구조에 책임을 진다.
 
-이 스킬은 Clean Code 2판 17장의 문제의식을 현재의 coding-agent 작업 흐름으로 적용하며, 생성 결과의 명세와 독립 검증을 담당한다. 발견된 함수·객체·테스트·아키텍처 문제의 상세 개선은 해당 `clean-code-*` 전문 스킬로 넘긴다. 판본과 확인 범위는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+이 스킬은 Clean Code 2판 17장의 문제의식을 현재의 coding-agent 작업 흐름으로 적용하며, 생성 결과의 명세와 독립 검증을 담당한다. 발견된 함수·객체·테스트·아키텍처 문제의 상세 개선은 해당 `clean-code-*` 전문 스킬로 넘긴다. 판본과 확인 범위는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

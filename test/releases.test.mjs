@@ -12,7 +12,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { z } from "zod";
 
 test("release build is committed, reproducible, tamper-evident and rollback is atomic", { timeout: 30000 }, async t => {
-  const root = await mkdtemp(join(tmpdir(), "gisul-publish-"));
+  const root = await mkdtemp(join(tmpdir(), "skillar-publish-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   const repo = join(root, "repo");
   const runtime = join(root, "runtime");
@@ -43,9 +43,9 @@ test("release build is committed, reproducible, tamper-evident and rollback is a
   assert.equal(await readlink(join(runtime, "current")), "releases/20260917.1");
   await activateRelease({ root: runtime, id: "20260917.2", smoke });
   assert.equal(await readlink(join(runtime, "current")), "releases/20260917.2");
-  const server = process.env.GISUL_SERVER_PATH ?? new URL("../../gisul/server/dist/index.js", import.meta.url).pathname;
+  const server = process.env.SKILLAR_SERVER_PATH ?? new URL("../../skillar/server/dist/index.js", import.meta.url).pathname;
   const client = new Client({ name: "release-pointer-test", version: "1" });
-  const transport = new StdioClientTransport({ command: process.execPath, args: [server], env: { ...process.env, GISUL_ROOT: runtime }, stderr: "pipe" });
+  const transport = new StdioClientTransport({ command: process.execPath, args: [server], env: { ...process.env, SKILLAR_ROOT: runtime }, stderr: "pipe" });
   transport.stderr.on("data", () => {});
   try {
     await client.connect(transport);

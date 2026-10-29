@@ -6,10 +6,10 @@ import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { skillRegistrations, githubActors } from "../scripts/skill-registration.mjs";
 
-const uri = "skill://gisul/gisul/example/SKILL.md";
+const uri = "skill://skillar/iyen/example/SKILL.md";
 const skills = [{ dir: "example", uri }];
 async function fixture(t) {
-  const root = await mkdtemp(join(tmpdir(), "gisul-registration-"));
+  const root = await mkdtemp(join(tmpdir(), "skillar-registration-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   const git = (args, env = {}) => execFileSync("git", args, { cwd: root, encoding: "utf8", env: { ...process.env, ...env }, stdio: ["pipe", "pipe", "pipe"] }).trim();
   git(["init", "-b", "main"]); git(["config", "user.name", "Fixture"]); git(["config", "user.email", "fixture@example.test"]);

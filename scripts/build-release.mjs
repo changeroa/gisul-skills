@@ -29,7 +29,7 @@ export async function buildRelease(repo, id) {
     await readPacks(staging, catalog.valid);
     const aliases = JSON.parse(await readFile(join(staging, "aliases.json"), "utf8"));
     const uris = new Set(catalog.valid.map(skill => skill.uri));
-    if (Object.entries(aliases).some(([from,to]) => !/^skill:\/\/gisul\//.test(from) || !uris.has(to))) throw new Error("Alias targets must be canonical release skills");
+    if (Object.entries(aliases).some(([from,to]) => !/^skill:\/\/(?:skillar|gisul)\//.test(from) || !uris.has(to))) throw new Error("Alias targets must be canonical release skills");
     const record = { release: id, commit, created_at: git(["show", "-s", "--format=%cI", "HEAD"]), skills: catalog.valid.map(({ name, uri, manifest_digest }) => ({ name, uri, manifest_digest })) };
     await writeFile(join(staging, "release.json"), JSON.stringify(record, null, 2) + "\n");
     await writeFile(join(staging, "inventory.json"), JSON.stringify(await inventory(staging), null, 2) + "\n");

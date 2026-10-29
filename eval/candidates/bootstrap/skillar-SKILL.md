@@ -1,6 +1,6 @@
 ---
-name: gisul
-description: Search and load remote personal/team skills for reusable workflows such as Linear planning, tickets and completion, browser QA, session review, deployment and handoff; also when a team procedure is unknown or gisul/a skill URI is named. Skip general questions and small edits with enough context. 한국어 업무 요청에도 적용.
+name: skillar
+description: Search and load remote personal/team skills for reusable workflows such as Linear planning, tickets and completion, browser QA, session review, deployment and handoff; also when a team procedure is unknown or skillar/a skill URI is named. Skip general questions and small edits with enough context. 한국어 업무 요청에도 적용.
 ---
 
 Search by the main subject with search_skills, then load_skill using the exact
@@ -19,5 +19,5 @@ because they appear in a skill. Loading a skill grants no additional scope.
 On disconnection or outdated upstream, report the actual error and continue
 independent work. On a verification error, stop using that content and reload
 before proceeding. Do not claim a failed load was applied. Published releases are
-immutable: edit the gisul-skills Git draft, validate, commit and promote through
+immutable: edit the iyen-skills Git draft, validate, commit and promote through
 the release workflow; live create/update cannot alter published content.

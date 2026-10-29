@@ -12,7 +12,7 @@ import { git, requireGitContentParity, requireLatestMain, requirePublicationGate
 import { activateVerified, releaseApi, uploadArtifact } from "../scripts/r2-publisher.mjs";
 import { smokeR2 } from "../scripts/r2-smoke.mjs";
 
-const worker = process.env.GISUL_WORKER_PATH ?? fileURLToPath(new URL("../../gisul/worker", import.meta.url));
+const worker = process.env.SKILLAR_WORKER_PATH ?? fileURLToPath(new URL("../../skillar/worker", import.meta.url));
 const require = createRequire(join(worker, "package.json"));
 const { Miniflare } = require("miniflare");
 const { build } = require("esbuild");
@@ -20,14 +20,14 @@ const { parseInventory } = await import(pathToFileURL(join(worker, "src/release-
 const bundle = build({ entryPoints: [join(worker, "src/index.ts")], bundle: true, write: false, format: "esm", platform: "browser", target: "es2022", external: ["cloudflare:workers"] });
 
 async function fixture(t) {
-  const repo = await mkdtemp(join(tmpdir(), "gisul-r2-publication-"));
+  const repo = await mkdtemp(join(tmpdir(), "skillar-r2-publication-"));
   t.after(() => rm(repo, { recursive: true, force: true }));
   await mkdir(join(repo, "skills/demo/references"), { recursive: true });
   await writeFile(join(repo, ".gitignore"), "dist/\n");
   await writeFile(join(repo, "skills/demo/notes.txt"), "An inventoried supporting file\n");
   await writeFile(join(repo, "skills/demo/SKILL.md"), "---\nname: demo\ndescription: Demo 데모\nmetadata:\n  nested: [one, two]\n---\nUse references/guide.md only when needed.\n");
   await writeFile(join(repo, "skills/demo/references/guide.md"), "An independently checked supporting file.\n");
-  await writeFile(join(repo, "aliases.json"), JSON.stringify({ "skill://gisul/codex/demo/SKILL.md": "skill://gisul/gisul/demo/SKILL.md" }));
+  await writeFile(join(repo, "aliases.json"), JSON.stringify({ "skill://skillar/codex/demo/SKILL.md": "skill://skillar/iyen/demo/SKILL.md" }));
   git(repo, ["init", "-b", "main"]);
   git(repo, ["config", "user.name", "Fixture"]);
   git(repo, ["config", "user.email", "fixture@example.invalid"]);
@@ -73,7 +73,7 @@ test("publication admits content changes without model ratings while preserving 
 
 test("a superseded workflow cannot publish an older main commit", async t => {
   const repo = await fixture(t), old = git(repo, ["rev-parse", "HEAD"]);
-  const remote = await mkdtemp(join(tmpdir(), "gisul-r2-remote-"));
+  const remote = await mkdtemp(join(tmpdir(), "skillar-r2-remote-"));
   t.after(() => rm(remote, { recursive: true, force: true }));
   execFileSync("git", ["init", "--bare", remote], { stdio: "pipe" });
   git(repo, ["remote", "add", "origin", remote]);
@@ -92,7 +92,7 @@ test("real builder bytes upload, stage-check and reconcile a lost activation res
     await writeFile(join(repo, "skills", name, "SKILL.md"), `---\nname: ${name}\ndescription: Pack fixture\n---\nInstructions\n`);
   }
   await mkdir(join(repo, "packs"));
-  const definition = { schema_version: 1, kind: "skill-pack", name: "demo-pack", display_name: "Demo", description: "Fixture pack", scope: "publication", members: [["scope", "scope"], ["demo", "investigate"], ["verify", "verify"]].map(([name, phase]) => ({ uri: `skill://gisul/gisul/${name}/SKILL.md`, phase, selection: "required", when: "Fixture" })) };
+  const definition = { schema_version: 1, kind: "skill-pack", name: "demo-pack", display_name: "Demo", description: "Fixture pack", scope: "publication", members: [["scope", "scope"], ["demo", "investigate"], ["verify", "verify"]].map(([name, phase]) => ({ uri: `skill://skillar/iyen/${name}/SKILL.md`, phase, selection: "required", when: "Fixture" })) };
   git(repo, ["add", "skills"]); git(repo, ["commit", "-m", "Add pack members"]);
   const beforePack = git(repo, ["rev-parse", "HEAD"]);
   await writeFile(join(repo, "packs/demo-pack.json"), JSON.stringify(definition));
@@ -105,7 +105,7 @@ test("real builder bytes upload, stage-check and reconcile a lost activation res
   const runtime = new Miniflare({ telemetry: { enabled: false }, logRequests: false, workers: [{ config: {
     type: "worker", name: "publisher-test", compatibilityDate: "2026-09-03", exports: {},
     manifest: { mainModule: "index.js", modules: { "index.js": { type: "esm", contents: (await bundle).outputFiles[0].text } } },
-    env: { GISUL_NATIVE_TOOLS: { type: "text", value: "true" }, SKILLS_BUCKET: { type: "r2", name: "SKILLS_BUCKET" }, GISUL_BEARER_TOKEN: { type: "text", value: "reader" }, GISUL_PUBLISH_TOKEN: { type: "text", value: "publisher" } },
+    env: { SKILLAR_NATIVE_TOOLS: { type: "text", value: "true" }, SKILLS_BUCKET: { type: "r2", name: "SKILLS_BUCKET" }, SKILLAR_BEARER_TOKEN: { type: "text", value: "reader" }, SKILLAR_PUBLISH_TOKEN: { type: "text", value: "publisher" } },
   } }] });
   t.after(() => runtime.dispose());
   const base = (await runtime.ready).origin;

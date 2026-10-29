@@ -52,7 +52,7 @@ For static evidence, retrace the claim using concrete values, ordering, or queri
 Do not automatically discard an obvious static defect because execution is unavailable; label it SOURCE_TRACED instead.
 A structural validator's PASS does not establish that evidence is truthful.
 
-Review proposed remedies separately using [context and remediation](skill://gisul/gisul/review-orchestrator/references/context-and-remediation.md). Check the relevant primary-source guidance, version/conditions, fit to current safeguards, tradeoffs and proposed verification. Links alone do not validate a solution. Preserve a supported defect verdict while labeling an unsupported remedy conditional; never report proposed names, tests or behavior as implemented or executed.
+Review proposed remedies separately using [context and remediation](skill://skillar/iyen/review-orchestrator/references/context-and-remediation.md). Check the relevant primary-source guidance, version/conditions, fit to current safeguards, tradeoffs and proposed verification. Links alone do not validate a solution. Preserve a supported defect verdict while labeling an unsupported remedy conditional; never report proposed names, tests or behavior as implemented or executed.
 
 ## VER-05 — Change relevance, duplication, and severity
 

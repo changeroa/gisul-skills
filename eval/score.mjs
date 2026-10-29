@@ -65,19 +65,20 @@ function observations(result) {
   return { mockCalls, mockResults, itemCalls, itemResults, attempts, successes: [...mockResults, ...itemResults] };
 }
 
-function gisulObservations(result, observed, tool) {
-  const logs = (result.gisulEvents ?? []).flatMap((event, index) => {
+function skillarObservations(result, observed, tool) {
+  const eventsKey = Array.isArray(result.skillarEvents) ? "skillarEvents" : "gisulEvents";
+  const logs = (result[eventsKey] ?? []).flatMap((event, index) => {
     const operationName = event.event === "error" ? event.operation : event.event ?? event.tool;
     const operation = operationName === "search" ? "search_skills" : toolName(operationName);
     if (operation !== tool) return [];
-    return [{ tool, args: event.args ?? { uri: event.uri }, result: event, source: `gisulEvents[${index}]`, success: event.event !== "error" && event.phase !== "call" && !event.error && !event.code && !event.isError }];
+    return [{ tool, args: event.args ?? { uri: event.uri }, result: event, source: `${eventsKey}[${index}]`, success: event.event !== "error" && event.phase !== "call" && !event.error && !event.code && !event.isError }];
   });
   const items = observed.itemCalls.filter(record => record.tool === tool);
   const successes = [
     ...logs.filter(record => record.success),
     ...observed.itemResults.filter(record => record.tool === tool),
   ];
-  return { attempts: logs.length >= items.length ? logs : items, successes, available: Array.isArray(result.gisulEvents) || Array.isArray(result.items) };
+  return { attempts: logs.length >= items.length ? logs : items, successes, available: (Array.isArray(result.skillarEvents) || Array.isArray(result.gisulEvents)) || Array.isArray(result.items) };
 }
 
 function issueObjects(value) {
@@ -142,7 +143,7 @@ export function scoreCase(item, result = {}) {
   const usageAvailable = usage && typeof usage === "object" && Object.entries(usage).some(([key, value]) => /tokens/i.test(key) && typeof value === "number" && Number.isFinite(value) && value >= 0);
   add("usage", usageAvailable ? "pass" : "unverified", { usage: usage ?? null, ...(usageAvailable ? {} : { reason: "Token usage was not captured." }) });
 
-  const loads = gisulObservations(result, observed, "load_skill"), searches = gisulObservations(result, observed, "search_skills");
+  const loads = skillarObservations(result, observed, "load_skill"), searches = skillarObservations(result, observed, "search_skills");
   for (const [field, data] of [["max_loads", loads], ["max_searches", searches]]) {
     if (expected[field] === undefined) continue;
     add(field, data.attempts.length > expected[field] ? "fail" : data.available && completedRun ? "pass" : "unverified", { limit: expected[field], count: data.attempts.length, events: data.attempts.map(evidence), complete: data.available && completedRun });
@@ -152,7 +153,7 @@ export function scoreCase(item, result = {}) {
       const uri = record.result?.uri;
       return typeof uri === "string" && uri.split("/").at(-2) === skill && uri.endsWith("/SKILL.md");
     });
-    const completeEvidence = completedRun && Array.isArray(result.items) && Array.isArray(result.gisulEvents);
+    const completeEvidence = completedRun && Array.isArray(result.items) && (Array.isArray(result.skillarEvents) || Array.isArray(result.gisulEvents));
     add(`must_load:${skill}`, found.length ? "pass" : completeEvidence ? "fail" : "unverified", found.length ? found.map(evidence) : { reason: "No successful skill-load result was observed.", complete: completeEvidence });
   }
 

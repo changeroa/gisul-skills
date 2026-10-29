@@ -16,17 +16,17 @@ The production endpoint is `https://gisul-mcp.changeroa.workers.dev/mcp`. Worker
 | Installed gisul | `0.1.0+codex.20260917081254` |
 | Installed masked exporter | `0.1.0+codex.20260917083950`, source `809ddcd656180bbfea8c294e7fa18b45cd956b0b` |
 
-These runtime/content identities are distinct from later routing and documentation commits. The routing change in [changeroa/gisul](https://github.com/changeroa/gisul) is on main at `9959728c1726f50c5e7dd4890116d3091bd0a6b1`; it did not change the active runtime code.
+These runtime/content identities are distinct from later routing and documentation commits. The routing change in [changeroa/gisul](https://github.com/changeroa/skillar) is on main at `9959728c1726f50c5e7dd4890116d3091bd0a6b1`; it did not change the active runtime code.
 
 ## Publication and recovery evidence
 
 | Actions run | Verified outcome |
 | --- | --- |
-| [35196744614](https://github.com/changeroa/gisul-skills/actions/runs/35196744614) | First immutable release `20260917.6`, content `6dccec5d232a1a935dbfb12bab2ff2fcccc5087d`; pointer revision/sequence `1/1`. |
-| [35198044520](https://github.com/changeroa/gisul-skills/actions/runs/35198044520) | Custom-domain browser challenge before `/admin/current`; existing release and pointer remained unchanged. |
-| [35198688180](https://github.com/changeroa/gisul-skills/actions/runs/35198688180) | Automatic main publication of `20260917.10` through the stable endpoint; pointer revision/sequence `2/3`. |
-| [35199495599](https://github.com/changeroa/gisul-skills/actions/runs/35199495599) | Actual rollback to retained `20260917.6`; pointer revision/sequence `3/4`, promotion high-water preserved. |
-| [35200085460](https://github.com/changeroa/gisul-skills/actions/runs/35200085460) | Restored retained `20260917.10`; pointer revision/sequence `4/5`, promotion high-water preserved. |
+| [35196744614](https://github.com/changeroa/iyen-skills/actions/runs/35196744614) | First immutable release `20260917.6`, content `6dccec5d232a1a935dbfb12bab2ff2fcccc5087d`; pointer revision/sequence `1/1`. |
+| [35198044520](https://github.com/changeroa/iyen-skills/actions/runs/35198044520) | Custom-domain browser challenge before `/admin/current`; existing release and pointer remained unchanged. |
+| [35198688180](https://github.com/changeroa/iyen-skills/actions/runs/35198688180) | Automatic main publication of `20260917.10` through the stable endpoint; pointer revision/sequence `2/3`. |
+| [35199495599](https://github.com/changeroa/iyen-skills/actions/runs/35199495599) | Actual rollback to retained `20260917.6`; pointer revision/sequence `3/4`, promotion high-water preserved. |
+| [35200085460](https://github.com/changeroa/iyen-skills/actions/runs/35200085460) | Restored retained `20260917.10`; pointer revision/sequence `4/5`, promotion high-water preserved. |
 
 Each successful publication or rollback retained a `r2-publication.json` Actions artifact with staged and fresh MCP readback. The final restore became active at `2026-09-17T08:33:35.411Z`. Independent authenticated current-pointer readback confirmed its commit, digest, sequence and high-water mark.
 

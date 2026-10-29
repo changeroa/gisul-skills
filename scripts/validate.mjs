@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 
 const sha256 = bytes => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
-const uri = (...parts) => `skill://gisul/gisul/${parts.flatMap(part => part.split("/")).map(encodeURIComponent).join("/")}`;
+const uri = (...parts) => `skill://skillar/iyen/${parts.flatMap(part => part.split("/")).map(encodeURIComponent).join("/")}`;
 export function frontmatter(markdown) {
   if (!markdown.startsWith("---\n")) return null;
   const end = markdown.indexOf("\n---", 4);

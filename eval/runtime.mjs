@@ -13,7 +13,7 @@ const ENV_KEYS = ['PATH', 'HOME', 'USER', 'LOGNAME', 'SHELL', 'TMPDIR', 'LANG', 
 const READER_TOOLS = ['search_skills', 'load_skill', 'read_skill_file'];
 const PROFILE_NAMES = ['eval-baseline', 'eval-candidate'];
 const within = (root, path) => path === root || path.startsWith(root + sep);
-const loaderAt = cwd => join(cwd, '.agents', 'skills', 'gisul', 'SKILL.md');
+const loaderAt = cwd => join(cwd, '.agents', 'skills', 'skillar', 'SKILL.md');
 const omitNulls = value => Array.isArray(value) ? value.map(omitNulls) : value && typeof value === 'object'
   ? Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null).map(([key, item]) => [key, omitNulls(item)])) : value;
 function differingPaths(actual, expected, path) {
@@ -58,8 +58,8 @@ async function canonical(path) {
 }
 
 function mcpDescriptors(servers) {
-  if (!servers || Array.isArray(servers) || Object.keys(servers).sort().join(',') !== 'gisul,linear') {
-    throw new Error('Exactly gisul and linear MCP descriptors are required');
+  if (!servers || Array.isArray(servers) || Object.keys(servers).sort().join(',') !== 'linear,skillar') {
+    throw new Error('Exactly skillar and linear MCP descriptors are required');
   }
   const allowedKeys = new Set(['command', 'args', 'cwd', 'env', 'env_vars', 'url', 'http_headers', 'env_http_headers', 'bearer_token_env_var', 'startup_timeout_sec', 'tool_timeout_sec', 'enabled_tools']);
   return Object.fromEntries(Object.entries(servers).map(([name, descriptor]) => {
@@ -72,7 +72,7 @@ function mcpDescriptors(servers) {
     return [`mcp_servers.${name}`, {
       ...descriptor, enabled: true, startup_timeout_sec: descriptor.startup_timeout_sec ?? 30,
       tool_timeout_sec: descriptor.tool_timeout_sec ?? 30,
-      ...(name === 'gisul' ? { enabled_tools: READER_TOOLS } : {}),
+      ...(name === 'skillar' ? { enabled_tools: READER_TOOLS } : {}),
       // These calls mutate only the pinned in-memory fixture. The application
       // approval policy is independent of Codex's shell approval_policy=never.
       ...(name === 'linear' ? { tools: { save_issue: { approval_mode: 'approve' }, send_slack_message: { approval_mode: 'approve' } } } : {}),
@@ -155,8 +155,8 @@ export async function assertSkillCatalog(api, workspace = api.cwd) {
     throw new Error('Skill discovery failed');
   }
   const enabled = listed.data.flatMap(entry => entry.skills.filter(skill => skill.enabled));
-  if (enabled.length !== 1 || enabled[0].name !== 'gisul' || await canonical(enabled[0].path) !== await canonical(loaderAt(workspace))) {
-    throw new Error('Enabled skill catalog must contain only the workspace gisul loader');
+  if (enabled.length !== 1 || enabled[0].name !== 'skillar' || await canonical(enabled[0].path) !== await canonical(loaderAt(workspace))) {
+    throw new Error('Enabled skill catalog must contain only the workspace skillar loader');
   }
   return listed;
 }
@@ -235,7 +235,7 @@ export class CodexSession extends EventEmitter {
   async initialize() {
     try {
       if (this.initialized) throw new Error('Session is already initialized');
-      const result = await this.rpc('initialize', { clientInfo: { name: 'gisul-formal-eval-runner', version: '1' }, capabilities: { experimentalApi: true } });
+      const result = await this.rpc('initialize', { clientInfo: { name: 'skillar-formal-eval-runner', version: '1' }, capabilities: { experimentalApi: true } });
       this.child.stdin.write(JSON.stringify({ method: 'initialized', params: {} }) + '\n');
       const { config } = await this.rpc('config/read', { cwd: this.cwd, includeLayers: false });
       for (const [key, expected] of Object.entries(this.config)) {
@@ -368,8 +368,8 @@ export async function verifyBoundary(api, { workspace, allowedPath, deniedPaths 
   } catch (error) { api.fail?.(error); throw error; }
 }
 
-export async function readyServers(api, allowed = ['gisul', 'linear'], timeoutMs = 45000) {
-  if (!Array.isArray(allowed) || new Set(allowed).size !== allowed.length || allowed.some(name => !['gisul', 'linear'].includes(name))) throw new Error('Unsupported evaluation MCP allowlist');
+export async function readyServers(api, allowed = ['skillar', 'linear'], timeoutMs = 45000) {
+  if (!Array.isArray(allowed) || new Set(allowed).size !== allowed.length || allowed.some(name => !['skillar', 'linear'].includes(name))) throw new Error('Unsupported evaluation MCP allowlist');
   const deadline = Date.now() + timeoutMs;
   try {
     do {
@@ -380,8 +380,8 @@ export async function readyServers(api, allowed = ['gisul', 'linear'], timeoutMs
       if (page.data.some(server => ['failed', 'cancelled', 'authenticationRequired', 'disabled'].includes(server.runtimeStatus) || server.toolsError)) throw new Error('MCP startup failed');
       const connected = page.data.filter(server => server.runtimeStatus === 'connected');
       if (connected.length === allowed.length && allowed.every(name => connected.some(server => server.name === name))) {
-        const gisul = connected.find(server => server.name === 'gisul');
-        if (gisul && Object.keys(gisul.tools ?? {}).sort().join(',') !== [...READER_TOOLS].sort().join(',')) throw new Error('Gisul must expose exactly the three reader tools');
+        const skillar = connected.find(server => server.name === 'skillar');
+        if (skillar && Object.keys(skillar.tools ?? {}).sort().join(',') !== [...READER_TOOLS].sort().join(',')) throw new Error('Skillar must expose exactly the three reader tools');
         const linear = connected.find(server => server.name === 'linear');
         if (linear && linear.serverInfo?.name !== 'linear-evaluation-fixture') throw new Error('Linear MCP is not the evaluation fixture');
         api.serversReady = true;

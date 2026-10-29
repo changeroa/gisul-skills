@@ -16,7 +16,7 @@ test('stop rules preserve infra, isolation and budget failures rather than retry
   assert.equal(stopReason([{status:'failed',failure:{type:'execution'},usage:{totalTokens:1}}],10),null);
 });
 test('startup failures stop immediately even when their wording lacks isolation', () => {
-  for (const message of ['Effective configuration differs: permissions.eval','Enabled skill catalog must contain only the workspace gisul loader','Thread startup did not preserve the pinned model','MCP startup failed']) {
+  for (const message of ['Effective configuration differs: permissions.eval','Enabled skill catalog must contain only the workspace skillar loader','Thread startup did not preserve the pinned model','MCP startup failed']) {
     const failure = {type:classifyFailure(new Error(message),'preflight')};
     assert.equal(stopReason([{failure}],100),'isolation_failure');
   }

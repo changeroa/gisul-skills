@@ -17,7 +17,7 @@ export function githubActors(repository, token, overrides = {}, fetcher = fetch)
       if (login === undefined) {
         assert.ok(token, "GitHub read token is required to resolve registration accounts");
         const response = await fetcher(`https://api.github.com/repos/${repository}/commits/${commit}`, {
-          headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28", "user-agent": "gisul-registration" },
+          headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28", "user-agent": "skillar-registration" },
           redirect: "error", signal: AbortSignal.timeout(15_000),
         });
         assert.ok(response.ok, `Cannot resolve registration account for ${commit}: GitHub ${response.status}`);
@@ -38,7 +38,7 @@ export async function skillRegistrations(repo, commit, skills, actor, kind = "sk
   assert.equal(git(["rev-parse", "--is-shallow-repository"]), "false", "Registration requires complete Git history");
   if (!actor) {
     const overrides = JSON.parse(await readFile(join(repo, "registration-accounts.json"), "utf8"));
-    actor = githubActors(process.env.GITHUB_REPOSITORY ?? "changeroa/gisul-skills", process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN, overrides);
+    actor = githubActors(process.env.GITHUB_REPOSITORY ?? "changeroa/iyen-skills", process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN, overrides);
   }
   const result = new Map();
   for (const { dir, uri } of skills) {

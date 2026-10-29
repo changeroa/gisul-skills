@@ -7,7 +7,7 @@ description: "Clean Code 2판의 simple design, SOLID, component principles, con
 
 현재 요구를 분명하게 구현하면서 다음의 가능성 있는 변경 비용을 낮춘다. 설계 원칙은 패턴을 많이 사용하거나 diagram을 이상적으로 만드는 규칙이 아니다. 무엇을 보호하고 무엇을 쉽게 바꿀지 결정하는 도구다.
 
-한 함수·클래스의 국소 정리는 각각 `clean-code-functions`, `clean-code-objects`를 우선한다. 시스템 정책과 framework·database 경계는 `clean-code-architecture`가 주 책임이다. 장별 근거와 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+한 함수·클래스의 국소 정리는 각각 `clean-code-functions`, `clean-code-objects`를 우선한다. 시스템 정책과 framework·database 경계는 `clean-code-architecture`가 주 책임이다. 장별 근거와 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

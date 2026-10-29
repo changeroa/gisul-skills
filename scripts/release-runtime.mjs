@@ -3,6 +3,7 @@ import { chmod, lstat, mkdir, readFile, readlink, rename, rm, symlink, writeFile
 import { join, resolve } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { inventory, releaseId, verifyRelease } from "./release-files.mjs";
+import { selectReleaseConfiguration } from "./runtime-compat.mjs";
 
 async function pointer(root) {
   try { return await readlink(join(root, "current")); }
@@ -84,19 +85,20 @@ export async function activateRelease({ root, id, staging, smoke, restart = asyn
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [root, id, staging] = process.argv.slice(2);
   if (!root || !id) throw new Error("Usage: release-runtime.mjs <root> <release-id> [staging]");
+  const configuration = await selectReleaseConfiguration();
   const { smokeServer } = await import(pathToFileURL(join(root, "server/smoke-server.mjs")));
   const restart = async () => {
-    const label = `gui/${process.getuid()}/com.iyendev.gisul-mcp`;
+    const label = `gui/${process.getuid()}/${configuration.label}`;
     try { execFileSync("launchctl", ["kickstart", "-k", label], { timeout: 15000, stdio: "pipe" }); }
     catch (error) {
       if (error.code !== "ETIMEDOUT") throw error;
       execFileSync("launchctl", ["bootout", label], { timeout: 15000, stdio: "pipe" });
-      execFileSync("launchctl", ["bootstrap", `gui/${process.getuid()}`, join(process.env.HOME, "Library/LaunchAgents/com.iyendev.gisul-mcp.plist")], { timeout: 15000, stdio: "pipe" });
+      execFileSync("launchctl", ["bootstrap", `gui/${process.getuid()}`, configuration.plist], { timeout: 15000, stdio: "pipe" });
     }
   };
   const smoke = async (content, expected, live) => {
-    const tokenFile = join(process.env.HOME, ".config/secrets/gisul-mcp-bearer-token");
-    const env = { ...process.env, GISUL_ROOT: root, GISUL_SKILL_ROOTS: `gisul=${join(content, "skills")}`, GISUL_RELEASE_FILE: join(content, "release.json"), GISUL_ALIASES_FILE: join(content, "aliases.json"), GISUL_BEARER_TOKEN_FILE: tokenFile };
+    const tokenFile = configuration.tokenFile;
+    const env = { ...process.env, SKILLAR_ROOT: root, SKILLAR_SKILL_ROOTS: `iyen=${join(content, "skills")}`, SKILLAR_RELEASE_FILE: join(content, "release.json"), SKILLAR_ALIASES_FILE: join(content, "aliases.json"), SKILLAR_BEARER_TOKEN_FILE: tokenFile };
     const result = await smokeServer({ root: join(root, "server"), env, ...(live ? { httpUrl: "http://127.0.0.1:8788/mcp" } : {}) });
     if (result.release !== expected) throw new Error("Smoke returned a different release");
   };

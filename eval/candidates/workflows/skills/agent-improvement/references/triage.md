@@ -1,6 +1,6 @@
 # 사례 분석
 
-1. 날짜 경계·시간대·프로젝트를 고정한다. gisul-skills의 `scripts/langfuse-quality.mjs`가 만든 해당 날짜의 품질 JSON을 먼저 읽는다. `complete`, `unknown_turn_identity`, 결측과 합성 분리 결과를 확인한다. 429이면 저장된 cursor와 Retry-After를 따라 재개하며 부분 결과를 전수 분석으로 표현하지 않는다. API v2의 논리적 root observation과 구 API의 trace 최상위 필드는 구분한다.
+1. 날짜 경계·시간대·프로젝트를 고정한다. iyen-skills의 `scripts/langfuse-quality.mjs`가 만든 해당 날짜의 품질 JSON을 먼저 읽는다. `complete`, `unknown_turn_identity`, 결측과 합성 분리 결과를 확인한다. 429이면 저장된 cursor와 Retry-After를 따라 재개하며 부분 결과를 전수 분석으로 표현하지 않는다. API v2의 논리적 root observation과 구 API의 trace 최상위 필드는 구분한다.
 2. session/turn/run 식별자로 중복·parent-child 관계를 확인한다. 동일 텍스트라는 이유만으로 실제 반복 행동을 중복 삭제하지 않는다. 합성 테스트·heartbeat·미완료 실행·입출력 누락을 따로 표시한다.
 3. 사용자 정정, 재작업, 재오픈, 도구 실패, 근거 없는 완료 주장을 후보로 수집한다. 요구 변경·추가 질문·말투·오래 걸린 시간만으로 실패를 확정하지 않는다.
 4. 관련 앞뒤 대화와 observation을 읽는다. 누락·마스킹·절단된 내용은 추측하지 않는다. 전체 시스템 지침을 복원하지 못했다면 원인 단정의 한계를 남긴다.

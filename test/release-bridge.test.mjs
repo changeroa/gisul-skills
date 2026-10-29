@@ -9,9 +9,9 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { validate } from "../scripts/validate.mjs";
 
-test("the imported catalog loads through the real bridge with release identity and all 28 old URIs", { timeout: 60000 }, async t => {
+test("the imported catalog loads through the real bridge with release identity and all legacy URIs", { timeout: 60000 }, async t => {
   const repo = fileURLToPath(new URL("..", import.meta.url));
-  const root = await mkdtemp(join(tmpdir(), "gisul-release-bridge-"));
+  const root = await mkdtemp(join(tmpdir(), "skillar-release-bridge-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   const catalog = await validate(join(repo, "skills"));
   assert.equal(catalog.invalid.length, 0);
@@ -19,9 +19,9 @@ test("the imported catalog loads through the real bridge with release identity a
   const commit = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
   const release = "fixture-20260916.1";
   await writeFile(join(root, "release.json"), JSON.stringify({ release, commit, skills: catalog.valid.map(({ uri, manifest_digest }) => ({ uri, manifest_digest })) }));
-  const server = process.env.GISUL_SERVER_PATH ?? fileURLToPath(new URL("../../gisul/server/dist/index.js", import.meta.url));
+  const server = process.env.SKILLAR_SERVER_PATH ?? fileURLToPath(new URL("../../skillar/server/dist/index.js", import.meta.url));
   const client = new Client({ name: "release-bridge-parity", version: "1" });
-  const transport = new StdioClientTransport({ command: process.execPath, args: [join(dirname(server), "codex.js"), "--origin", "release-acceptance-fixture", "--", "env", `GISUL_ROOT=${root}`, `GISUL_SKILL_ROOTS=gisul=${join(repo, "skills")}`, `GISUL_RELEASE_FILE=${join(root, "release.json")}`, `GISUL_ALIASES_FILE=${join(repo, "aliases.json")}`, process.execPath, server], env: { ...process.env, GISUL_EVENT_LOG_DIR: join(root, "events") }, stderr: "pipe" });
+  const transport = new StdioClientTransport({ command: process.execPath, args: [join(dirname(server), "codex.js"), "--origin", "release-acceptance-fixture", "--", "env", `SKILLAR_ROOT=${root}`, `SKILLAR_SKILL_ROOTS=iyen=${join(repo, "skills")}`, `SKILLAR_RELEASE_FILE=${join(root, "release.json")}`, `SKILLAR_ALIASES_FILE=${join(repo, "aliases.json")}`, process.execPath, server], env: { ...process.env, SKILLAR_EVENT_LOG_DIR: join(root, "events") }, stderr: "pipe" });
   transport.stderr.on("data", () => {});
   const call = async (name, args) => {
     const result = await client.callTool({ name, arguments: args });
@@ -31,7 +31,8 @@ test("the imported catalog loads through the real bridge with release identity a
   try {
     await client.connect(transport);
     assert.equal((await call("search_skills", { limit: 50 })).totalMatches, catalog.valid.length);
-    assert.equal(Object.keys(aliases).length, 28);
+    assert.equal(Object.keys(aliases).length, 28 + catalog.valid.length);
+    assert.ok(catalog.valid.every(skill => aliases[skill.uri.replace("skill://skillar/iyen/", "skill://gisul/gisul/")] === skill.uri));
     for (const [oldUri, uri] of Object.entries(aliases)) {
       const loaded = await call("load_skill", { uri: oldUri });
       assert.equal(loaded.uri, uri);

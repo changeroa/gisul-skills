@@ -117,7 +117,7 @@ export async function prepareCase({ item, workspace, privateDir }) {
   return {
     prompt: item.input.prompt, linearFixture,
     timeoutOnce: key === "L-08" && scenario.inject === "successful_create_then_lost_response",
-    offlineGisul: key === "S-10" && scenario.gisul_error === "Not connected",
+    offlineSkillar: key === "S-10" && (scenario.skillar_error ?? scenario.gisul_error) === "Not connected",
     inputFiles: [...new Set(inputFiles)].sort(),
     limitations: key === "F-02" ? ["F-02 has no browser-specific fixture; this run cannot establish live login-to-editor flow verification."] : [],
   };

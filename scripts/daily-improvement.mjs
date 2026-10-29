@@ -18,7 +18,7 @@ export function analysisGate(report, projectId, date) {
 }
 export function validateAnalysisConfig(config) {
   assert.match(config.projectId ?? '', /^[a-z0-9]+$/);
-  assert.equal(config.githubRepo, 'changeroa/gisul-skills');
+  assert.equal(config.githubRepo, 'changeroa/iyen-skills');
   assert.ok(typeof config.model === 'string' && config.model.length && !/[<>\s]/.test(config.model), 'Choose the model explicitly');
   assert.ok(['low', 'medium', 'high', 'xhigh', 'max'].includes(config.reasoning));
   assert.ok(Number.isInteger(config.maxRunSeconds) && config.maxRunSeconds >= 30 && config.maxRunSeconds <= 1800, 'Set a bounded model run duration');

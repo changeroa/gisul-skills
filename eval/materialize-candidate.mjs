@@ -17,7 +17,7 @@ export async function materializeCandidate(destination) {
     if (!/^[a-z0-9-]+\.md$/.test(config.policy_file)) throw new Error("Invalid policy file");
     await readFile(join(context,"policies",config.policy_file));
     index.push({key:config.key,workspace_id:config.linear.workspace.id,team_id:config.linear.team.id,project_id:config.linear.project.id,
-      project_uri:`skill://gisul/gisul/linear-delivery/references/projects/${name}`,policy_uri:`skill://gisul/gisul/linear-delivery/references/policies/${config.policy_file}`});
+      project_uri:`skill://skillar/iyen/linear-delivery/references/projects/${name}`,policy_uri:`skill://skillar/iyen/linear-delivery/references/policies/${config.policy_file}`});
   }
   await writeFile(join(context,"projects/index.json"),JSON.stringify(index,null,2)+"\n");
   const catalog=await validate(join(destination,"skills"));

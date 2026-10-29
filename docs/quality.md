@@ -1,6 +1,6 @@
 # Daily collection quality
 
-The source is Langfuse's [Observations API v2](https://langfuse.com/docs/api-and-data-platform/features/observations-api). The collector uses cursor pagination and logical roots (`isRootObservation=true`), including SDK roots with a non-null physical parent. Logical roots include tools and subagent lifecycle records as well as turns. Input/output and expanded run/quality/gisul metadata are requested explicitly; the older trace API is not required.
+The source is Langfuse's [Observations API v2](https://langfuse.com/docs/api-and-data-platform/features/observations-api). The collector uses cursor pagination and logical roots (`isRootObservation=true`), including SDK roots with a non-null physical parent. Logical roots include tools and subagent lifecycle records as well as turns. Input/output and expanded run/quality/skillar metadata are requested explicitly; the older trace API is not required.
 
 ```sh
 node scripts/langfuse-quality.mjs --date 2026-09-17 --tz Asia/Seoul --project PROJECT_ID
@@ -70,7 +70,7 @@ HTTP 429 and successful checkpoint resume. It returned 3,913 logical roots and
 duplicate turns were zero. Overall quality still failed: three aborted Codex
 turns lacked final output and all 90 legacy OpenClaw turns lacked canonical
 identity/run metadata. The OpenClaw collector deployment documented in
-[OpenClaw gisul](openclaw-gisul.md) affects new turns, not historical records.
+[OpenClaw skillar](openclaw-skillar.md) affects new turns, not historical records.
 
 The existing 09:00 KST schedule remains on MacBook Pro. This manual audit is not
 evidence of three consecutive scheduled executions. Mac mini could reach that

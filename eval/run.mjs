@@ -63,16 +63,16 @@ async function verifyFrozen(protocol) {
 }
 
 export async function runCase({ item, slot, protocol, root, preflight = false }) {
-  const privateDir = join(root, 'runs', slot.id), home = join(privateDir, 'codex-home'), eventDir = join(privateDir, 'gisul-events');
+  const privateDir = join(root, 'runs', slot.id), home = join(privateDir, 'codex-home'), eventDir = join(privateDir, 'skillar-events');
   await mkdir(eventDir, { recursive: true });
   let api, log, prepared, boundary, capabilities, runtime, failure = null, stage = 'preflight';
   const startedAt = new Date().toISOString();
-  const result = { id: slot.id, caseId: item.id, split: item.split, critical: item.critical, profile: slot.profile, synthetic: true, protocolHash: protocol.hash, model: protocol.model, effort: protocol.effort, startedAt, status: 'failed', items: [], mockEvents: [], gisulEvents: [], files: {}, finalText: '', usage: null };
+  const result = { id: slot.id, caseId: item.id, split: item.split, critical: item.critical, profile: slot.profile, synthetic: true, protocolHash: protocol.hash, model: protocol.model, effort: protocol.effort, startedAt, status: 'failed', items: [], mockEvents: [], skillarEvents: [], files: {}, finalText: '', usage: null };
   try {
     await verifyFrozen(protocol);
     prepared = await prepareCase({ item, workspace: slot.workspace, privateDir });
     const servers = {
-      gisul: { command: process.execPath, args: [join(HERE, 'reader.mjs')], cwd: REPO, env: { EVAL_READER_CONFIG: join(root, 'reader.json'), GISUL_EVENT_LOG_DIR: eventDir, EVAL_GISUL_OFFLINE: prepared.offlineGisul ? '1' : '0' }, startup_timeout_sec: 30, tool_timeout_sec: 30 },
+      skillar: { command: process.execPath, args: [join(HERE, 'reader.mjs')], cwd: REPO, env: { EVAL_READER_CONFIG: join(root, 'reader.json'), SKILLAR_EVENT_LOG_DIR: eventDir, EVAL_SKILLAR_OFFLINE: prepared.offlineSkillar ? '1' : '0' }, startup_timeout_sec: 30, tool_timeout_sec: 30 },
       linear: { command: process.execPath, args: [join(HERE, 'mock-linear.mjs')], cwd: REPO, env: { EVAL_LINEAR_FIXTURE: prepared.linearFixture, EVAL_WRITE_LOG: join(privateDir, 'mock.jsonl'), EVAL_TIMEOUT_ONCE: prepared.timeoutOnce ? '1' : '0' }, startup_timeout_sec: 30, tool_timeout_sec: 5 },
     };
     const env = await buildEnvironment({ home, workspace: slot.workspace, agentsMarkdown: protocol.instructions[slot.profile], loaderMarkdown: protocol.loaderMarkdown, model: protocol.model, effort: protocol.effort, servers, deniedPaths: [REPO, root, resolve(REPO, '../../../../session-notes'), join(homedir(), 'dev-tools'), ...protocol.schedule.filter(x => x.id !== slot.id).map(x => x.workspace)], authSource: join(homedir(), '.codex/auth.json') });
@@ -81,17 +81,17 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
     result.host = await api.initialize();
     const catalog = await api.rpc('skills/list', { cwds: [slot.workspace], forceReload: true });
     const enabled = catalog.data.flatMap(x => x.skills.filter(x => x.enabled));
-    assert.deepEqual(enabled.map(x => x.name).sort(), ['gisul'], 'Isolation: unexpected native skills');
+    assert.deepEqual(enabled.map(x => x.name).sort(), ['skillar'], 'Isolation: unexpected native skills');
     assert.ok(catalog.data.every(x => !x.errors?.length), 'Isolation: skill discovery errors');
     runtime = await api.start(slot.workspace, { developerInstructions: COMMON });
     assert.equal(runtime.model, protocol.model, 'Model drift');
     assert.equal(runtime.reasoningEffort, protocol.effort, 'Effort drift');
     boundary = await verifyBoundary(api, { workspace: slot.workspace, allowedPath: env.loaderPath, deniedPaths: [join(root, 'protocol.json'), join(HERE, 'cases', item.id + '.yaml'), join(home, 'auth.json')] });
-    const connected = await readyServers(api, ['gisul', 'linear']);
+    const connected = await readyServers(api, ['skillar', 'linear']);
     capabilities = connected.map(x => ({ name: x.name, tools: Object.keys(x.tools).sort() }));
     if (!preflight) {
       stage = 'execution';
-      const completed = await api.turn(prepared.prompt, { timeoutMs: protocol.timeoutMs, responsesapiClientMetadata: { gisul_eval_run: protocol.id, synthetic: 'true' } });
+      const completed = await api.turn(prepared.prompt, { timeoutMs: protocol.timeoutMs, responsesapiClientMetadata: { skillar_eval_run: protocol.id, synthetic: 'true' } });
       result.turnId = completed.turn.id;
       if (completed.turn.status !== 'completed') throw new Error('Task turn ' + completed.turn.status);
     }
@@ -118,9 +118,9 @@ export async function runCase({ item, slot, protocol, root, preflight = false })
   result.runtime = runtime ? { model: runtime.model, reasoningEffort: runtime.reasoningEffort } : null;
   try {
     result.mockEvents = await lines(join(privateDir, 'mock.jsonl'));
-    for (const name of await readdir(eventDir)) if (name.endsWith('.jsonl')) result.gisulEvents.push(...await lines(join(eventDir, name)));
+    for (const name of await readdir(eventDir)) if (name.endsWith('.jsonl')) result.skillarEvents.push(...await lines(join(eventDir, name)));
     result.files = await files(slot.workspace);
-    if (result.gisulEvents.some(x => x.commit && x.commit !== protocol.reader.commit)) throw new Error('Observed content drift');
+    if (result.skillarEvents.some(x => x.commit && x.commit !== protocol.reader.commit)) throw new Error('Observed content drift');
   } catch (error) { failure ??= { type: classifyFailure(error, 'evidence'), message: String(error) }; }
   result.failure = failure;
   if (failure) result.status = 'failed';
@@ -142,7 +142,7 @@ async function main() {
   assert.equal(hash(await readFile(reader.bundle)), reader.bundleHash, 'Reader changed');
   await saveJson(join(root, 'reader.json'), reader);
   const id = 'agent-env-v1-' + values.profile + '-' + randomUUID();
-  const workspaceRoot = join(homedir(), 'tmp/gisul-formal-eval', id);
+  const workspaceRoot = join(homedir(), 'tmp/skillar-formal-eval', id);
   const schedule = selection.map(item => ({ id: randomUUID(), caseId: item.id, profile: values.profile, workspace: join(workspaceRoot, randomUUID()) }));
   const instructionPaths = { baseline: resolve(values['baseline-agents']), candidate: resolve(values['candidate-agents']) };
   const instructions = Object.fromEntries(await Promise.all(Object.entries(instructionPaths).map(async ([key, path]) => [key, await readFile(path, 'utf8')])));

@@ -7,7 +7,7 @@ description: "Clean Code 2판의 함수·메서드 원칙으로 function design�
 
 함수를 줄 수로 심사하지 않고, 독자가 호출부에서 목적을 이해하고 필요할 때만 세부 단계로 내려갈 수 있게 만든다. 함수 분리는 정보 숨김과 변경 국소화를 개선해야 한다. 단지 코드를 더 많은 이름으로 나누는 것은 목표가 아니다.
 
-이름·주석·배치는 `clean-code-readability`, 객체와 클래스의 책임 이동은 `clean-code-objects`가 주 책임이다. 판본과 논쟁적 원칙의 적용 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+이름·주석·배치는 `clean-code-readability`, 객체와 클래스의 책임 이동은 `clean-code-objects`가 주 책임이다. 판본과 논쟁적 원칙의 적용 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

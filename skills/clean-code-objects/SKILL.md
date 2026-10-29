@@ -7,7 +7,7 @@ description: "Clean Code 2판의 objects, data structures, clean classes 원칙�
 
 데이터 표현을 숨기고 행위를 요청하는 **객체**와, 데이터를 명시적으로 전달하는 **데이터 구조**를 의도적으로 선택한다. 둘을 섞어 양쪽의 단점만 얻지 않게 하고, 클래스나 모듈은 실제 변경 이유를 중심으로 응집시킨다.
 
-함수 내부 정리는 `clean-code-functions`, 컴포넌트·서비스 수준 경계는 `clean-code-design` 또는 `clean-code-architecture`가 주 책임이다. 장별 근거와 적용 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+함수 내부 정리는 `clean-code-functions`, 컴포넌트·서비스 수준 경계는 `clean-code-design` 또는 `clean-code-architecture`가 주 책임이다. 장별 근거와 적용 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

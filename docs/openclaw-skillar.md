@@ -1,13 +1,18 @@
-# OpenClaw gisul connection
+# OpenClaw skillar connection
+
+The primary setup is npm-installed Skillar with a local catalog. The former
+personal Cloudflare deployment is retired. The HTTPS bridge procedure and dated
+acceptance evidence below are retained for explicitly configured hosted
+installations; they do not identify a currently available personal endpoint.
 
 Use the same verified Worker content through a local stdio bridge. The bridge
 keeps digest verification and exposes only search, load and supporting-file reads.
 It does not restore the retired SSH/server-origin path.
 
 ```sh
-node scripts/configure-openclaw-gisul.mjs --check
-node scripts/configure-openclaw-gisul.mjs --install
-openclaw mcp probe gisul --json
+node scripts/configure-openclaw-skillar.mjs --check
+node scripts/configure-openclaw-skillar.mjs --install
+openclaw mcp probe skillar --json
 ```
 
 The installer takes the selected local Codex plugin's bundled runtime and HTTPS
@@ -15,7 +20,7 @@ configuration. It retains the runtime under a content-hash directory outside the
 plugin cache so a later Codex update cannot remove OpenClaw's executable. The
 reader credential remains in its existing owner-only external file. It uses
 OpenClaw's native `mcp add` probe/save flow, preserves other server definitions and
-refuses to replace a different existing gisul registration. Updating an installed
+refuses to replace a different existing skillar registration. Updating an installed
 runtime is an explicit replacement operation after checking the existing config.
 
 This was implemented against OpenClaw 2026.9.3's local `docs/cli/mcp.md` contract.

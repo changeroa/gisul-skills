@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readdir, readFile, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { digest } from './release-files.mjs';
-export const packUri = name => `pack://gisul/gisul/${name}`;
+export const packUri = (name, namespace = "skillar/iyen") => `pack://${namespace}/${name}`;
 const phases = ['scope', 'investigate', 'verify', 'handoff', 'explain'];
 const object = v => !!v && typeof v === 'object' && !Array.isArray(v);
 const exact = (v, keys) => Object.keys(v).length === keys.length && keys.every(k => Object.hasOwn(v, k));
@@ -11,7 +11,7 @@ export function validatePack(value, available) {
   assert.ok(object(value) && exact(value, ['schema_version','kind','name','display_name','description','scope','members']) && value.schema_version === 1 && value.kind === 'skill-pack' && typeof value.name === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value.name) && value.name.length <= 64 && text(value.display_name,128) && text(value.description,2048) && text(value.scope,4096) && Array.isArray(value.members) && value.members.length >= 3 && value.members.length <= 64, 'Invalid pack definition');
   const seen = new Set();
   for (const m of value.members) {
-    assert.ok(object(m) && exact(m,['uri','phase','selection','when']) && typeof m.uri === 'string' && /^skill:\/\/gisul\/gisul\/[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*\/SKILL\.md$/.test(m.uri) && !seen.has(m.uri) && phases.includes(m.phase) && ['required','when_applicable','when_requested'].includes(m.selection) && text(m.when,2048), 'Invalid or duplicate pack member');
+    assert.ok(object(m) && exact(m,['uri','phase','selection','when']) && typeof m.uri === 'string' && /^skill:\/\/(?:skillar\/iyen|gisul\/gisul)\/[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*\/SKILL\.md$/.test(m.uri) && !seen.has(m.uri) && phases.includes(m.phase) && ['required','when_applicable','when_requested'].includes(m.selection) && text(m.when,2048), 'Invalid or duplicate pack member');
     seen.add(m.uri);
     assert.ok(available.has(m.uri), `Unavailable canonical skill reference: ${m.uri}`);
   }
@@ -36,7 +36,9 @@ export async function readPacks(root, skills) {
     const bytes = await readFile(path);
     const definition = validatePack(JSON.parse(bytes), available);
     assert.equal(file, `${definition.name}.json`, 'Pack name differs from filename');
-    entries.push({ uri: packUri(definition.name), definition, digest: digest(bytes), size: bytes.length });
+    // Preserve the identity of retained immutable releases when verifying them.
+    const namespace = definition.members[0].uri.startsWith("skill://gisul/gisul/") ? "gisul/gisul" : "skillar/iyen";
+    entries.push({ uri: packUri(definition.name, namespace), definition, digest: digest(bytes), size: bytes.length });
   }
   return entries;
 }

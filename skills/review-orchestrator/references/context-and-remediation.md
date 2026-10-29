@@ -43,13 +43,13 @@ Include relevant background, administrative and deployment/recovery paths. Recor
 
 File or agent counts do not prove coverage. Unread relevant paths remain visible and affect completeness. For a normal PR, use affected paths rather than starting an unrelated full audit.
 
-## Preserve the handoff through Gisul
+## Preserve the handoff through Skillar
 
-When review findings move into explanation, a remediation/implementation task or another session, discover and load the current remote `preserve-decisions` skill using Gisul and retain its release/commit. Apply its **Carry reviewed evidence into explanation or implementation** section. Use the canonical review report and evidence as that record; do not copy the skill body into this package or create a parallel preservation schema.
+When review findings move into explanation, a remediation/implementation task or another session, discover and load the current remote `preserve-decisions` skill using Skillar and retain its release/commit. Apply its **Carry reviewed evidence into explanation or implementation** section. Use the canonical review report and evidence as that record; do not copy the skill body into this package or create a parallel preservation schema.
 
 The receiving step, including `review-explainer` when applicable, reads the same record before shortening explanations or drawing diagrams. The user must authorize any implementation or publication independently of this handoff.
 
-If Gisul or the skill is unavailable, state the limitation and continue supported review using existing artifacts. Do not claim the handoff was verified or invent missing context. This dependency does not apply to ordinary lookups or cosmetic edits without a substantive review handoff.
+If Skillar or the skill is unavailable, state the limitation and continue supported review using existing artifacts. Do not claim the handoff was verified or invent missing context. This dependency does not apply to ordinary lookups or cosmetic edits without a substantive review handoff.
 
 ## Existing report compatibility
 

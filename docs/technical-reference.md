@@ -1,11 +1,15 @@
-# Gisul skills
+# Iyen skills
 
-Private authoring source for workflow skills served by the gisul MCP server.
-The code repository is [changeroa/gisul](https://github.com/changeroa/gisul).
+Private authoring source for workflow skills served by the skillar MCP server.
+The code repository is [changeroa/skillar](https://github.com/changeroa/skillar).
+The primary runtime is Skillar installed from npm with a local catalog. The former
+personal Cloudflare endpoint is retired; Git pushes do not trigger hosted publication.
 
 `skills/` contains the imported content, with file bytes verified against the
 remote server's resource manifests. `migration/import.json` records the source
-URIs. `aliases.json` maps adopted `codex` URIs to canonical `gisul` URIs.
+URIs. `aliases.json` maps adopted `codex` and former `gisul/gisul` URIs to canonical
+`skill://skillar/iyen/…` URIs. Pack URIs use `pack://skillar/iyen/…`.
+Local MCP resources retain `skill://local/<rootId>/…`; root IDs are installation configuration.
 Importing content does not change the live server or delete its current roots.
 
 ```sh
@@ -27,7 +31,7 @@ with the server's eligibility rules. Invalid skills cause a nonzero exit.
 
 The integration test compares valid and skipped skill directories with the real
 server, including malformed frontmatter, limits, and symlink cases. Set
-`GISUL_SERVER_PATH` to the server's compiled `dist/index.js` when running it.
+`SKILLAR_SERVER_PATH` to the server's compiled `dist/index.js` when running it.
 
 Remote skills remain instructions and supporting data. Import and validation do
 not execute scripts contained in a skill.

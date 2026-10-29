@@ -13,10 +13,11 @@ const quote = text => `'${text.replaceAll("'", "'\\''")}'`;
 const ssh = command => execFileSync("ssh", ["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", host, command], { encoding: "utf8", timeout: 120000, maxBuffer: 1024 * 1024 });
 const remoteHome = ssh("printf '%s' \"$HOME\"").trim();
 if (!/^\/[A-Za-z0-9_./-]+$/.test(remoteHome)) throw new Error("Unsupported remote home path");
-const remoteRoot = `${remoteHome}/gisul`;
+const remoteRoot = process.env.SKILLAR_REMOTE_ROOT ?? ssh('if [ -d "$HOME/.skillar" ]; then printf "%s/.skillar" "$HOME"; elif [ -d "$HOME/gisul" ]; then printf "%s/gisul" "$HOME"; else printf "%s/.skillar" "$HOME"; fi').trim();
+if (!/^\/[A-Za-z0-9_./-]+$/.test(remoteRoot)) throw new Error("Unsupported remote runtime path");
 const tools = `${remoteRoot}/.release-tools`;
 ssh(`mkdir -p ${quote(tools)}`);
-for (const file of ["release-files.mjs", "release-runtime.mjs"]) execFileSync("scp", [join(repo, "scripts", file), `${host}:${tools}/`], { stdio: "inherit" });
+for (const file of ["release-files.mjs", "release-runtime.mjs", "runtime-compat.mjs"]) execFileSync("scp", [join(repo, "scripts", file), `${host}:${tools}/`], { stdio: "inherit" });
 let staging;
 let record;
 if (option !== "--rollback") {
@@ -26,7 +27,8 @@ if (option !== "--rollback") {
   ssh(`mkdir ${quote(staging)}`);
   execFileSync("rsync", ["-a", `${output}/`, `${host}:${staging}/`], { stdio: "inherit" });
 }
-const result = JSON.parse(ssh(`/opt/homebrew/bin/node ${quote(`${tools}/release-runtime.mjs`)} ${quote(remoteRoot)} ${quote(id)}${staging ? ` ${quote(staging)}` : ""}`));
+const overrides = ["SKILLAR_LAUNCHD_LABEL", "SKILLAR_LAUNCHD_PLIST", "SKILLAR_BEARER_TOKEN_FILE"].filter(name => process.env[name] !== undefined).map(name => `${name}=${quote(process.env[name])}`).join(" ");
+const result = JSON.parse(ssh(`env ${overrides} /opt/homebrew/bin/node ${quote(`${tools}/release-runtime.mjs`)} ${quote(remoteRoot)} ${quote(id)}${staging ? ` ${quote(staging)}` : ""}`));
 await mkdir(join(repo, "dist", "receipts"), { recursive: true });
 await writeFile(join(repo, "dist", "receipts", `${id}-${Date.now()}.json`), JSON.stringify({ ...result, host, canonical_repo: repo }, null, 2) + "\n");
 if (record) {

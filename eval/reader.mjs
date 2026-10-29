@@ -15,9 +15,9 @@ export function pinClient(client, commit) {
   return new Proxy(client, { get(target, key) {
     if (key === 'request') return async (request, ...rest) => {
       if (!['skills/list', 'skills/get', 'resources/read'].includes(request.method)) throw new Error('Evaluation upstream is read-only');
-      const requested = request.params?._meta?.['io.gisul/commit'];
+      const requested = request.params?._meta?.['app.skillar/commit'];
       if (requested && requested !== commit) throw new Error('Content pin mismatch');
-      const response = await target.request({ ...request, params: { ...request.params, _meta: { ...request.params?._meta, 'io.gisul/commit': commit } } }, ...rest);
+      const response = await target.request({ ...request, params: { ...request.params, _meta: { ...request.params?._meta, 'app.skillar/commit': commit } } }, ...rest);
       if (response._meta?.commit !== commit) throw new Error('Pinned release unavailable');
       return response;
     };
@@ -27,8 +27,8 @@ export function pinClient(client, commit) {
 }
 
 async function main() {
-  if (process.env.EVAL_GISUL_OFFLINE === '1') {
-    const server = new McpServer({ name: 'gisul-unavailable', version: '1' });
+  if (process.env.EVAL_SKILLAR_OFFLINE === '1') {
+    const server = new McpServer({ name: 'skillar-unavailable', version: '1' });
     for (const [name, inputSchema] of Object.entries({ search_skills: { query: z.string().optional(), limit: z.number().optional(), offset: z.number().optional() }, load_skill: { uri: z.string() }, read_skill_file: { skill_uri: z.string(), uri: z.string() } })) {
       server.registerTool(name, { description: 'Read remote skills.', inputSchema }, async () => ({ isError: true, content: [{ type: 'text', text: 'Not connected' }] }));
     }
@@ -42,11 +42,11 @@ async function main() {
   if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password || endpoint.search || endpoint.hash) throw new Error('Credential-free HTTPS required');
   const token = (await readFile(config.tokenFile, 'utf8')).trim();
   if (!token || /\s/.test(token)) throw new Error('Invalid bearer file');
-  const { createCodexBridge, createGisulEventLog } = await import(pathToFileURL(config.bundle).href);
-  const client = new Client({ name: 'gisul-formal-eval', version: '1' });
+  const { createCodexBridge, createSkillarEventLog } = await import(pathToFileURL(config.bundle).href);
+  const client = new Client({ name: 'skillar-formal-eval', version: '1' });
   const transport = new StreamableHTTPClientTransport(endpoint, { requestInit: { headers: { Authorization: `Bearer ${token}` }, redirect: 'error' } });
   await client.connect(transport);
-  const events = createGisulEventLog(endpoint.origin, process.env.GISUL_EVENT_LOG_DIR);
+  const events = createSkillarEventLog(endpoint.origin, process.env.SKILLAR_EVENT_LOG_DIR);
   const server = createCodexBridge(pinClient(client, config.commit), endpoint.origin, events, true);
   await server.connect(new StdioServerTransport());
   let closing = false;

@@ -42,7 +42,7 @@ MacBook Pro, 예약 writer, 다른 Herdr pane, 운영 `/Users/iyen/gisul`은 변
 
 ## 발행 실패와 복구 변경
 
-[PR10 main 발행](https://github.com/changeroa/gisul-skills/actions/runs/35707486689)은 262개 파일 업로드와 Git 원본 260개 파일 대조를 마친 뒤 전체 R2 검증에서 실패했다. 120초 제한의 검증 요청이 세 번 시간 초과했고, 포인터 변경에는 도달하지 않았다. 2026-09-22 18:23 KST 재조회에서 기존 `.26`의 revision `12`, sequence `17`, ETag가 그대로였고 새 `c14d8cf` / `.33`은 미완성으로 읽기를 거부했다.
+[PR10 main 발행](https://github.com/changeroa/iyen-skills/actions/runs/35707486689)은 262개 파일 업로드와 Git 원본 260개 파일 대조를 마친 뒤 전체 R2 검증에서 실패했다. 120초 제한의 검증 요청이 세 번 시간 초과했고, 포인터 변경에는 도달하지 않았다. 2026-09-22 18:23 KST 재조회에서 기존 `.26`의 revision `12`, sequence `17`, ETag가 그대로였고 새 `c14d8cf` / `.33`은 미완성으로 읽기를 거부했다.
 
 발행기는 전체 검증을 수행하는 verify/promote/rollback 요청에만 300초를 허용한다. 검증 시간 초과를 자동 재전송하지 않아 겹치는 전체 검사를 만들지 않는다. inventory 전체 대조, 실제 바이트 해시, frontmatter, Git parity, staged MCP 읽기, 최신 main 확인, ETag와 sequence 조건은 그대로다. 복구용 publisher/workerd 테스트 7개가 통과했다. 이것은 발행 검증 시간 예산 변경이며 모델 평가의 제한이나 승격 조건 변경이 아니다.
 

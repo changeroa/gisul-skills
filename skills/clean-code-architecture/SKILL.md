@@ -7,7 +7,7 @@ description: "Clean Code 2판의 two values, independence, architectural boundar
 
 소프트웨어가 오늘 동작하는 가치와 내일 바꿀 수 있는 구조적 가치를 함께 지킨다. business 정책을 UI, database, framework, protocol, vendor SDK 같은 세부사항에서 분리해 중요한 선택을 늦추고 테스트와 교체 비용을 낮춘다.
 
-module·component 수준 SOLID와 dependency graph는 `clean-code-design`, 동시 실행 모델은 `clean-code-concurrency`가 주 책임이다. 판본과 23~27장 적용 범위는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+module·component 수준 SOLID와 dependency graph는 `clean-code-design`, 동시 실행 모델은 `clean-code-concurrency`가 주 책임이다. 판본과 23~27장 적용 범위는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

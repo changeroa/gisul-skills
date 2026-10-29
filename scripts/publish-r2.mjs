@@ -19,12 +19,15 @@ import {
 import { smokeR2 } from "./r2-smoke.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
+const base = process.env.SKILLAR_RELEASE_BASE_URL;
+assert.ok(base?.trim(), "Manual R2 publication requires explicit SKILLAR_RELEASE_BASE_URL; the former personal Cloudflare endpoint is retired and has no fallback");
 assert.equal(
   process.env.GITHUB_ACTIONS,
   "true",
   "Production publication runs only in GitHub Actions",
 );
-assert.equal(process.env.GITHUB_REPOSITORY, "changeroa/gisul-skills");
+assert.equal(process.env.GITHUB_EVENT_NAME, "workflow_dispatch", "R2 publication requires an explicit manual workflow dispatch");
+assert.equal(process.env.GITHUB_REPOSITORY, "changeroa/iyen-skills");
 assert.equal(
   process.env.GITHUB_REF,
   "refs/heads/main",
@@ -34,9 +37,8 @@ const commit = git(repo, ["rev-parse", "HEAD"]);
 assert.equal(commit, process.env.GITHUB_SHA);
 const sequence = Number(process.env.GITHUB_RUN_NUMBER);
 assert.ok(Number.isSafeInteger(sequence) && sequence > 0);
-assert.ok(process.env.GISUL_BEARER_TOKEN, "Missing MCP reader token");
-const base = process.env.GISUL_RELEASE_BASE_URL;
-const api = releaseApi(base, process.env.GISUL_PUBLISH_TOKEN);
+assert.ok(process.env.SKILLAR_BEARER_TOKEN, "Missing MCP reader token");
+const api = releaseApi(base, process.env.SKILLAR_PUBLISH_TOKEN);
 const receipt = {
   state: "running",
   phase: "checking-main",
@@ -55,7 +57,7 @@ try {
   requireLatestMain(repo, commit);
   const before = await api("/admin/current");
   receipt.before = before;
-  const rollback = process.env.GISUL_ROLLBACK_COMMIT;
+  const rollback = process.env.SKILLAR_ROLLBACK_COMMIT;
   let identity, gate, staged, manifest;
   const operation = rollback ? "rollback" : "promote";
   receipt.operation = operation;
@@ -72,7 +74,7 @@ try {
       before.current.high_water.commit,
     ]);
     identity = await api(`/admin/releases/${rollback}`);
-    staged = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, {
+    staged = await smokeR2(base, process.env.SKILLAR_BEARER_TOKEN, identity, {
       pinned: true,
     });
   } else {
@@ -133,7 +135,7 @@ try {
       // A timed-out full scan is not a reason to start overlapping scans.
       retry: false,
     });
-    staged = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, {
+    staged = await smokeR2(base, process.env.SKILLAR_BEARER_TOKEN, identity, {
       pinned: true,
       manifest: artifact.manifest,
     });
@@ -154,7 +156,7 @@ try {
   });
   Object.assign(receipt, result, { phase: "activated" });
   await persist();
-  const live = await smokeR2(base, process.env.GISUL_BEARER_TOKEN, identity, { manifest });
+  const live = await smokeR2(base, process.env.SKILLAR_BEARER_TOKEN, identity, { manifest });
   Object.assign(receipt, { state: "published", phase: "complete", live });
   await persist();
   console.log(JSON.stringify(receipt, null, 2));

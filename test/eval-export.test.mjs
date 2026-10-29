@@ -8,7 +8,7 @@ import { experimentSpan, exportRun, verifyItem } from '../eval/export.mjs';
 
 const protocol = { id: 'frozen-run', hash: 'frozen-protocol', dataset: { version: 'dataset-hash' }, model: 'fixed-model', effort: 'max', profile: 'baseline', reader: { release: '20260922.26', commit: 'a'.repeat(40), bundleHash: 'reader-hash' }, prices: { kind: 'standard_api_equivalent_not_account_bill' } };
 const item = { id: 'F-01', input: { prompt: 'Read the API contract' }, expected: { must_read: ['api.js'] }, split: 'development', critical: true };
-const result = { threadId: 'native-thread', turnId: 'native-turn', gisulEvents: [{ event: 'load_skill', commit: 'a'.repeat(40), manifest_digest: 'digest' }], startedAt: '2026-09-22T01:00:00.000Z', endedAt: '2026-09-22T01:01:00.000Z', status: 'completed', finalText: 'actual output', files: {}, grading: { status: 'unverified' }, usage: { totalTokens: 10 }, estimatedCost: 0.01 };
+const result = { threadId: 'native-thread', turnId: 'native-turn', skillarEvents: [{ event: 'load_skill', commit: 'a'.repeat(40), manifest_digest: 'digest' }], startedAt: '2026-09-22T01:00:00.000Z', endedAt: '2026-09-22T01:01:00.000Z', status: 'completed', finalText: 'actual output', files: {}, grading: { status: 'unverified' }, usage: { totalTokens: 10 }, estimatedCost: 0.01 };
 test('export identity survives retries and binds actual output, dataset item, synthetic scope and release', () => {
   const span = experimentSpan(protocol,item,result,'dataset-id');
   assert.equal(span.traceId.length,32); assert.equal(span.spanId.length,16);

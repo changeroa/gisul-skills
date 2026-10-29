@@ -5,7 +5,7 @@ import { scoreCase, SCORE_VERSION } from "../eval/score.mjs";
 
 const { cases } = await dataset();
 const byId = id => cases.find(item => item.id === id);
-const run = overrides => ({ status: "completed", finalText: "Done", usage: { inputTokens: 100, outputTokens: 20, totalTokens: 120 }, items: [], mockEvents: [], gisulEvents: [], files: {}, ...overrides });
+const run = overrides => ({ status: "completed", finalText: "Done", usage: { inputTokens: 100, outputTokens: 20, totalTokens: 120 }, items: [], mockEvents: [], skillarEvents: [], files: {}, ...overrides });
 const check = (score, name) => {
   const found = score.checks.find(entry => entry.name === name);
   assert.ok(found, `Missing check ${name}`);
@@ -14,7 +14,7 @@ const check = (score, name) => {
 const call = (tool, args = {}) => ({ phase: "call", tool, args });
 const applied = (tool, result) => ({ phase: "applied", tool, result });
 const issue = (status = "진행 중", id = "IYEN-301") => ({ id, status, statusType: status === "완료" ? "completed" : "started" });
-const mcp = (tool, args, result, extra = {}) => ({ type: "mcpToolCall", server: "gisul", tool, arguments: args, status: "completed", result: { content: [{ type: "text", text: JSON.stringify(result) }] }, ...extra });
+const mcp = (tool, args, result, extra = {}) => ({ type: "mcpToolCall", server: "skillar", tool, arguments: args, status: "completed", result: { content: [{ type: "text", text: JSON.stringify(result) }] }, ...extra });
 const command = (command, aggregatedOutput, extra = {}) => ({ type: "commandExecution", status: "completed", exitCode: 0, command, aggregatedOutput, ...extra });
 
 test("semantic rubrics remain unverified after all observable checks pass", () => {
@@ -56,36 +56,36 @@ test("missing capture is not a passing absence check", () => {
   assert.equal(check(score, "max_searches").status, "unverified");
 });
 
-test("GISUL search side-log alias and failed attempts count against budgets", () => {
+test("SKILLAR search side-log alias and failed attempts count against budgets", () => {
   for (const event of [{ event: "search", query: "티켓" }, { event: "error", operation: "search", code: "not_connected" }]) {
-    const score = scoreCase(byId("N-01"), run({ gisulEvents: [event] }));
+    const score = scoreCase(byId("N-01"), run({ skillarEvents: [event] }));
     assert.equal(check(score, "max_searches").status, "fail");
     assert.equal(check(score, "max_searches").evidence.count, 1);
   }
-  const score = scoreCase(byId("S-01"), run({ gisulEvents: [1, 2, 3].map(() => ({ event: "error", operation: "load_skill", code: "not_connected" })) }));
+  const score = scoreCase(byId("S-01"), run({ skillarEvents: [1, 2, 3].map(() => ({ event: "error", operation: "load_skill", code: "not_connected" })) }));
   assert.equal(check(score, "max_loads").status, "fail");
   assert.equal(check(score, "must_load:linear-delivery").status, "fail");
 });
 
 test("required loads require actual successful results and distinguish missing capture", () => {
-  const uri = "skill://gisul/gisul/linear-delivery/SKILL.md";
+  const uri = "skill://skillar/iyen/linear-delivery/SKILL.md";
   const full = scoreCase(byId("S-01"), run({ finalText: "I loaded linear-delivery", files: { "SKILL.md": "linear-delivery" } }));
   assert.equal(check(full, "must_load:linear-delivery").status, "fail");
   const missing = scoreCase(byId("S-01"), { status: "completed", usage: { totalTokens: 1 } });
   assert.equal(check(missing, "must_load:linear-delivery").status, "unverified");
   const attempted = scoreCase(byId("S-01"), run({ items: [mcp("load_skill", { uri }, { error: "Not connected" }, { status: "failed", error: "Not connected" })] }));
   assert.equal(check(attempted, "must_load:linear-delivery").status, "fail");
-  const observed = scoreCase(byId("S-01"), run({ gisulEvents: [{ event: "load_skill", uri, release: "fixture" }] }));
+  const observed = scoreCase(byId("S-01"), run({ skillarEvents: [{ event: "load_skill", uri, release: "fixture" }] }));
   assert.equal(check(observed, "must_load:linear-delivery").status, "pass");
-  const toolResult = scoreCase(byId("S-01"), run({ items: [mcp("mcp__gisul__load_skill", { uri }, { uri, markdown: "Loaded body" })] }));
+  const toolResult = scoreCase(byId("S-01"), run({ items: [mcp("mcp__skillar__load_skill", { uri }, { uri, markdown: "Loaded body" })] }));
   assert.equal(check(toolResult, "must_load:linear-delivery").status, "pass");
   const emptyResult = scoreCase(byId("S-01"), run({ items: [mcp("load_skill", { uri }, {})] }));
   assert.equal(check(emptyResult, "must_load:linear-delivery").status, "fail");
 });
 
-test("GISUL side logs and app-server copies do not double-count a load", () => {
-  const uri = "skill://gisul/gisul/linear-delivery/SKILL.md";
-  const score = scoreCase({ expected: { max_loads: 1 } }, run({ gisulEvents: [{ event: "load_skill", uri }], items: [mcp("load_skill", { uri }, { uri })] }));
+test("SKILLAR side logs and app-server copies do not double-count a load", () => {
+  const uri = "skill://skillar/iyen/linear-delivery/SKILL.md";
+  const score = scoreCase({ expected: { max_loads: 1 } }, run({ skillarEvents: [{ event: "load_skill", uri }], items: [mcp("load_skill", { uri }, { uri })] }));
   assert.equal(check(score, "max_loads").evidence.count, 1);
   assert.equal(check(score, "max_loads").status, "pass");
 });
@@ -198,4 +198,12 @@ test("budget-only cases do not claim successful answers or file edits", () => {
     assert.equal(score.status, "unverified");
     assert.equal(score.semanticReviewRequired, true);
   }
+});
+
+
+test("historical gisul side logs remain readable under their original evidence paths", () => {
+  const historical = run({ skillarEvents: undefined, gisulEvents: [{ event: "load_skill", uri: "skill://gisul/gisul/linear-delivery/SKILL.md" }] });
+  const score = scoreCase(byId("S-01"), historical);
+  assert.equal(check(score, "must_load:linear-delivery").status, "pass");
+  assert.equal(check(score, "max_loads").evidence.events[0].source, "gisulEvents[0]");
 });

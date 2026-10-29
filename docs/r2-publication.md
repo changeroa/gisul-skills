@@ -1,9 +1,16 @@
-# GitHub Actions to private R2
+# Optional manual publication to private R2
 
-Git is the authoring source. `Publish immutable R2 release` validates main, builds
-committed bytes, uploads them to the authenticated Worker and changes one R2
-pointer after verification. The Worker serves MCP directly from private R2.
-Routine publication needs no Mac mini origin, SSH or dashboard uploads.
+The primary setup is Skillar installed from npm with a local catalog. The former
+personal Cloudflare deployment has been deleted and is retired. This repository
+does not recreate or deploy it, and main pushes no longer trigger publication.
+
+`Manually publish immutable R2 release` remains a reusable manual procedure for a
+separately configured current endpoint. It runs only through `workflow_dispatch`
+and fails before validation or release API calls when repository variable
+`SKILLAR_RELEASE_BASE_URL` is missing. It never falls back to
+`GISUL_RELEASE_BASE_URL`. The immutable builders, verification and rollback tools
+remain available; the following serving contracts apply only to an explicitly
+configured hosted installation.
 
 ## Gates and content preservation
 
@@ -30,13 +37,14 @@ they do not modify active R2 objects. `accepted` means saved to Git. Check
 `get_skill_write_status` and verify the published manifest before reporting the
 change as live. Creation can include supporting files; updates check the loaded
 SKILL.md digest and preserve other files.
+Saving to main does not publish: hosted activation requires a separate manual
+dispatch against the explicitly configured current endpoint.
 
 ## Publication and concurrency
 
-Every main push enters one fixed `gisul-r2-production` concurrency group, with
-running jobs left intact. The publisher itself skips changes irrelevant to the
-catalog/build. A workflow path filter would lose relevant changes when a later
-documentation commit supersedes a pending run, so there is no path filter.
+An explicit manual dispatch enters the fixed `skillar-r2-production` concurrency
+group, with running jobs left intact. The publisher skips changes irrelevant to
+the catalog/build. A push to main performs validation without hosted publication.
 
 Before building and immediately before activation, the job fetches main and
 requires its candidate to be the current head. A monotonic sequence from this
@@ -64,35 +72,23 @@ Release/commit also travel with bridge search/load/file events into Langfuse.
 
 ## Credentials and target
 
-Set repository variable `GISUL_RELEASE_BASE_URL` to the Worker origin, without
-`/mcp`. Set repository secrets `GISUL_PUBLISH_TOKEN` and `GISUL_BEARER_TOKEN`
+Set repository variable `SKILLAR_RELEASE_BASE_URL` to the Worker origin, without
+`/mcp`. Set repository secrets `SKILLAR_PUBLISH_TOKEN` and `SKILLAR_BEARER_TOKEN`
 through GitHub's encrypted Actions secret store. They must match the Worker's
 separate publisher and reader credentials. CI does not need Cloudflare account
 credentials or public bucket access. Never commit tokens or embed them in URLs.
 
-The verified stable production origin is
-`https://gisul-mcp.changeroa.workers.dev`. Both Actions and installed clients use
-this endpoint. The custom domain `gisul.iyendev.com` can return its zone's browser
-challenge to GitHub-hosted runners; a successful local request is insufficient
-evidence that an unattended runner can use it. The stable workers.dev route uses
-the same active Worker and bearer checks. No unrelated zone settings are changed.
-
-For the initial migration, use the uploaded candidate's preview origin while the
-old production version remains active. The old version reads the Mac origin and
-has no R2 binding; candidate and future production share the R2 bucket and pointer.
-After cutover, a preview is therefore not an isolated publication environment.
-Use the runtime commit pinned by `validate.yml` or a tested descendant and verify
-that the MCP `serverInfo.version` matches its full source commit. Follow the
-[runtime deployment guide](https://github.com/changeroa/gisul/blob/main/docs/deployment.md)
-for version upload and activation. After actual installed-plugin and
-Langfuse checks, activate that Worker version, verify the production MCP endpoint,
-then change the repository variable to the stable production origin. Keep the R2 bucket
-private. Runtime deployment is maintained in `changeroa/gisul`.
+The former personal origin `https://gisul-mcp.changeroa.workers.dev` and its
+`gisul.iyendev.com` domain are retired, not defaults or publication targets.
+Historical deployment evidence is retained in the dated records. No current
+hosted endpoint is implied by those records. This workflow does not provision or
+recreate Cloudflare infrastructure, and configuring a new endpoint requires a
+separate deployment decision.
 
 ## Recovery and rollback
 
 Rerun a failed job if its commit is still main: identical uploads are safe. If
-main has advanced, let its newer run publish instead. Inspect `/admin/current`
+main has advanced, explicitly dispatch a new run for the current main commit. Inspect `/admin/current`
 after an ambiguous activation; the failed request alone does not prove failure.
 A failed job may already have activated its candidate. Check the retained receipt's
 phase, activation result and failure readback before deciding to roll back.
@@ -125,7 +121,7 @@ file. It checks exact release/commit, runtime version and manifest digest.
 The script feeds metadata from those real calls into an explicitly synthetic
 exporter fixture. No model is run, no production user turn is fabricated, and
 skill bodies are omitted. It invokes the installed masked hook, verifies every
-expected observation and the exact gisul connection join through the Langfuse
+expected observation and the exact skillar connection join through the Langfuse
 API, invokes the hook again and compares observation IDs and multiplicity.
 The expected project ID is required; credentials stay in the existing protected
 local configuration. Receipts and bridge events are written under ignored

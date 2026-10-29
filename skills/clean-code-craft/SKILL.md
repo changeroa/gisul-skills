@@ -7,7 +7,7 @@ description: "Clean Code 2판의 craftsmanship 장들로 개발 실행 방식과
 
 깨끗한 코드를 개인 스타일이 아니라 팀이 지속적으로 안전한 변경을 전달하는 방식으로 만든다. 동작과 구조의 결함을 알고도 쌓지 않고, 위험에 비례한 증거를 만들며, 작은 통합 주기와 정직한 소통을 유지한다.
 
-이 스킬은 Clean Code 2판 28~37장의 실천을 운영 절차로 바꾼 것이며, 팀·통합·release 실천을 담당한다. 구체적인 코드 구현과 구조 리뷰는 해당 `clean-code-*` 전문 스킬로 넘긴다. 개인을 도덕적으로 평가하거나 특정 개발 방법론을 강요하는 데 사용하지 않는다. 출처와 적용 한계는 `skill://gisul/gisul/clean-code/references/sources-and-guardrails.md`를 따른다.
+이 스킬은 Clean Code 2판 28~37장의 실천을 운영 절차로 바꾼 것이며, 팀·통합·release 실천을 담당한다. 구체적인 코드 구현과 구조 리뷰는 해당 `clean-code-*` 전문 스킬로 넘긴다. 개인을 도덕적으로 평가하거나 특정 개발 방법론을 강요하는 데 사용하지 않는다. 출처와 적용 한계는 `skill://skillar/iyen/clean-code/references/sources-and-guardrails.md`를 따른다.
 
 ## 모드와 권한
 

@@ -7,10 +7,10 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { z } from "zod";
 
 const host = process.argv[2] ?? "macmini";
-if (process.argv.length > 3 || !/^[A-Za-z0-9][A-Za-z0-9._@-]*$/.test(host)) throw new Error("Usage: node scripts/import-from-gisul.mjs [ssh-host]");
+if (process.argv.length > 3 || !/^[A-Za-z0-9][A-Za-z0-9._@-]*$/.test(host)) throw new Error("Usage: node scripts/import-from-skillar.mjs [ssh-host]");
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const client = new Client({ name: "gisul-content-import", version: "1" });
-const transport = new StdioClientTransport({ command: "ssh", args: ["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", host, "gisul"], stderr: "pipe", maxBufferSize: 32 * 1024 * 1024 });
+const client = new Client({ name: "skillar-content-import", version: "1" });
+const transport = new StdioClientTransport({ command: "ssh", args: ["-T", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", host, "skillar"], stderr: "pipe", maxBufferSize: 32 * 1024 * 1024 });
 transport.stderr.on("data", () => {});
 const hash = bytes => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 try {
@@ -32,7 +32,7 @@ try {
     names.add(name);
     const oldRoot = skill.uri.slice(0, -8);
     if (!skill.uri.endsWith("/SKILL.md") || !skill.resources.some(file => file.uri === skill.uri)) throw new Error("Incomplete source manifest");
-    const newUri = `skill://gisul/gisul/${name}/SKILL.md`;
+    const newUri = `skill://skillar/iyen/${name}/SKILL.md`;
     if (skill.uri !== newUri) aliases[skill.uri] = newUri;
     for (const resource of skill.resources) {
       if (!resource.uri.startsWith(oldRoot)) throw new Error("Resource escaped its skill manifest");

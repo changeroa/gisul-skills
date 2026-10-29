@@ -9,7 +9,7 @@ import { buildEnvironment, CodexSession, readyServers, verifyBoundary } from '..
 import { classifyFailure, stopReason } from '../eval/run.mjs';
 
 const REPO = fileURLToPath(new URL('..', import.meta.url));
-const LOADER = '---\nname: gisul\ndescription: Read remote workflows.\n---\nUse the gisul reader.';
+const LOADER = '---\nname: skillar\ndescription: Read remote workflows.\n---\nUse the skillar reader.';
 const names = ['search_skills', 'load_skill', 'read_skill_file'];
 const tools = Object.fromEntries(names.map(name => [name, { name, inputSchema: { type: 'object' } }]));
 const nested = config => {
@@ -23,13 +23,13 @@ const nested = config => {
   return result;
 };
 async function fixture(t, overrides = {}) {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'gisul-runtime-test-')));
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'skillar-runtime-test-')));
   t.after(() => rm(root, { recursive: true, force: true }));
   const workspace = join(root, 'workspace'), home = join(root, 'home'), denied = join(root, 'controller');
   await writeFile(denied, 'private controller canary');
   const options = { home, workspace, agentsMarkdown: 'Chosen global instruction.\n', loaderMarkdown: LOADER,
     model: 'gpt-6-astra', effort: 'max', authSource: null, deniedPaths: [denied],
-    servers: { gisul: { command: '/usr/bin/true' }, linear: { command: process.execPath, args: [join(REPO,'eval/mock-linear.mjs')] } }, ...overrides };
+    servers: { skillar: { command: '/usr/bin/true' }, linear: { command: process.execPath, args: [join(REPO,'eval/mock-linear.mjs')] } }, ...overrides };
   return { root, denied, workspace, home, options };
 }
 
@@ -40,7 +40,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
 const fixture = JSON.parse(fs.readFileSync(path.join(process.env.CODEX_HOME, 'protocol-fixture.json')));
-const skills = [{name:'gisul',path:path.join(process.cwd(),'.agents/skills/gisul/SKILL.md'),enabled:true,scope:'repo'},
+const skills = [{name:'skillar',path:path.join(process.cwd(),'.agents/skills/skillar/SKILL.md'),enabled:true,scope:'repo'},
  {name:'builtin',path:path.join(process.env.CODEX_HOME,'skills/.system/builtin/SKILL.md'),enabled:true,scope:'system'}];
 const send = value => process.stdout.write(JSON.stringify(value)+'\n');
 readline.createInterface({input:process.stdin}).on('line', line => {
@@ -52,7 +52,7 @@ readline.createInterface({input:process.stdin}).on('line', line => {
  if(m.method==='skills/config/write') {skills.find(s=>s.path===m.params.path).enabled=m.params.enabled;return ok({});}
  if(m.method==='thread/start') return ok({thread:{id:'thread-1'},model:fixture.config.model,modelProvider:'openai',
   reasoningEffort:fixture.config.model_reasoning_effort,approvalPolicy:'never',activePermissionProfile:{id:'eval',extends:':workspace'},sandbox:{networkAccess:false},received:m.params});
- if(m.method==='mcpServerStatus/list') return ok({data:[{name:'gisul',runtimeStatus:'connected',tools:fixture.tools},{name:'linear',runtimeStatus:'connected',tools:{},serverInfo:{name:'linear-evaluation-fixture'}}]});
+ if(m.method==='mcpServerStatus/list') return ok({data:[{name:'skillar',runtimeStatus:'connected',tools:fixture.tools},{name:'linear',runtimeStatus:'connected',tools:{},serverInfo:{name:'linear-evaluation-fixture'}}]});
  if(m.method==='command/exec') return ok({exitCode:m.params.command.at(-1)===fixture.loaderPath?0:1,stdout:m.params.command.at(-1)===fixture.loaderPath?'readable':'EPERM',stderr:''});
  if(m.method==='reject') return send({id:m.id,error:{code:-32000,message:'sensitive server detail omitted'}});
  if(m.method==='collision') return send({id:m.id,method:'item/commandExecution/requestApproval',params:{}});
@@ -105,9 +105,9 @@ test('isolated files preserve chosen instructions, stable profiles and auth with
   assert.deepEqual((await readdir(f.home)).sort(),['AGENTS.md','auth.json','config.toml','eval-baseline.config.toml','eval-candidate.config.toml']);
   assert.equal(built.config['permissions.eval'].filesystem[join(process.env.HOME,'.codex')],'deny');
   assert.equal(built.config['permissions.eval'].filesystem[f.home],'deny');
-  assert.deepEqual(built.config['mcp_servers.gisul'].enabled_tools,names);
+  assert.deepEqual(built.config['mcp_servers.skillar'].enabled_tools,names);
   assert.deepEqual(built.config['mcp_servers.linear'].tools,{save_issue:{approval_mode:'approve'},send_slack_message:{approval_mode:'approve'}});
-  assert.equal(built.config['mcp_servers.gisul'].tools,undefined);
+  assert.equal(built.config['mcp_servers.skillar'].tools,undefined);
   await assert.rejects(buildEnvironment(f.options),/must be empty/);
 });
 
@@ -130,7 +130,7 @@ test('stdio preserves argv literals, strips ambient capabilities and disables au
   assert.equal(host.env.CODEX_HOME,f.home); assert.equal(host.env.HOME,process.env.HOME);
   for(const name of ['OPENAI_API_KEY','NODE_OPTIONS','HERDR_SOCKET']) assert.equal(host.env[name],undefined);
   const catalog=await f.api.rpc('skills/list');
-  assert.deepEqual(catalog.data[0].skills.filter(s=>s.enabled).map(s=>s.name),['gisul']);
+  assert.deepEqual(catalog.data[0].skills.filter(s=>s.enabled).map(s=>s.name),['skillar']);
   const start=await f.api.start(f.workspace,{allowProviderModelFallback:false});
   assert.equal(start.received.ephemeral,true); assert.equal(start.received.permissions,'eval');
   assert.equal(start.received.config.model_reasoning_effort,'max');
@@ -213,12 +213,12 @@ test('boundary probe never prints content; readable, missing or inconclusive den
 });
 
 test('MCP readiness requires exact connected names and only the reader tools', async () => {
-  const valid=[{name:'gisul',runtimeStatus:'connected',tools},{name:'linear',runtimeStatus:'connected',tools:{},serverInfo:{name:'linear-evaluation-fixture'}}];
-  for(const data of [[...valid,{name:'slack',runtimeStatus:'starting'}],valid.map(s=>s.name==='gisul'?{...s,tools:{...tools,create_skill:{}}}:s),valid.map(s=>({...s,runtimeStatus:'failed'})),valid.map(s=>s.name==='linear'?{...s,serverInfo:{name:'real-linear'}}:s)]) {
+  const valid=[{name:'skillar',runtimeStatus:'connected',tools},{name:'linear',runtimeStatus:'connected',tools:{},serverInfo:{name:'linear-evaluation-fixture'}}];
+  for(const data of [[...valid,{name:'slack',runtimeStatus:'starting'}],valid.map(s=>s.name==='skillar'?{...s,tools:{...tools,create_skill:{}}}:s),valid.map(s=>({...s,runtimeStatus:'failed'})),valid.map(s=>s.name==='linear'?{...s,serverInfo:{name:'real-linear'}}:s)]) {
     await assert.rejects(readyServers({rpc:async()=>({data})}),/Unexpected external|exactly|startup failed|not the evaluation fixture/);
   }
   await assert.rejects(readyServers({rpc:async()=>({data:valid,nextCursor:'more'})}),/pagination/);
-  await assert.rejects(readyServers({rpc:async()=>({data:[]})},['gisul','linear'],10),/incomplete/);
+  await assert.rejects(readyServers({rpc:async()=>({data:[]})},['skillar','linear'],10),/incomplete/);
   assert.equal((await readyServers({rpc:async()=>({data:valid})})).length,2);
 });
 
@@ -228,7 +228,7 @@ test('real Codex no-model preflight: isolated catalog, pinned thread, read denie
   const f=await fixture(t);
   const reader=join(f.root,'reader.cjs');
   await writeFile(reader,`const r=require('node:readline');const tools=${JSON.stringify(Object.values(tools))};r.createInterface({input:process.stdin}).on('line',l=>{const m=JSON.parse(l);if(m.id===undefined)return;const result=m.method==='initialize'?{protocolVersion:m.params.protocolVersion,capabilities:{tools:{}},serverInfo:{name:'evaluation-reader-fixture',version:'1'}}:m.method==='tools/list'?{tools}:{};process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');});`);
-  const built=await buildEnvironment({...f.options,servers:{gisul:{command:process.execPath,args:[reader]},linear:{command:process.execPath,args:[join(REPO,'eval/mock-linear.mjs')],env:{EVAL_WRITE_LOG:join(f.root,'linear.jsonl')}}}});
+  const built=await buildEnvironment({...f.options,servers:{skillar:{command:process.execPath,args:[reader]},linear:{command:process.execPath,args:[join(REPO,'eval/mock-linear.mjs')],env:{EVAL_WRITE_LOG:join(f.root,'linear.jsonl')}}}});
   const api=new CodexSession({cwd:f.workspace,...built}); t.after(()=>api.close());
   const host=await api.initialize();
   const started=await api.start();
@@ -237,7 +237,7 @@ test('real Codex no-model preflight: isolated catalog, pinned thread, read denie
   const probes=[f.denied,join(built.env.CODEX_HOME,'config.toml'),join(process.env.HOME,'.codex')];
   const checks=await verifyBoundary(api,{workspace:f.workspace,allowedPath:built.loaderPath,deniedPaths:probes});
   assert.ok(checks.every(check=>check.passed));
-  assert.deepEqual((await readyServers(api)).map(s=>s.name).sort(),['gisul','linear']);
+  assert.deepEqual((await readyServers(api)).map(s=>s.name).sort(),['skillar','linear']);
   const server=createServer(socket=>socket.end());
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
   t.after(()=>new Promise(resolve=>server.close(resolve)));

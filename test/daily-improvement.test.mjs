@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { runDaily, renderCandidate } from '../scripts/daily-improvement.mjs';
 
 const date = '2020-01-01';
-const config = outputRoot => ({ outputRoot, projectId: 'project1', githubRepo: 'changeroa/gisul-skills', model: 'test-model', reasoning: 'high', maxRunSeconds: 30, maxTraces: 2, maxInputBytes: 10000, enableModelAnalysis: true, publishDraftPR: true });
+const config = outputRoot => ({ outputRoot, projectId: 'project1', githubRepo: 'changeroa/iyen-skills', model: 'test-model', reasoning: 'high', maxRunSeconds: 30, maxTraces: 2, maxInputBytes: 10000, enableModelAnalysis: true, publishDraftPR: true });
 const quality = { checkpoint_schema: 3, project_id: 'project1', date, timezone: 'Asia/Seoul', source: 'observations-v2-logical-roots', complete: true, full_day: true, passed: true, counts: { non_synthetic_roots: 5, non_synthetic_primary_turn_roots: 2 } };
 const response = { summary: 'One bounded proposal', proposals: [{ trace_ids: ['abc'], change: 'Change a narrow contract', counterexample: 'Keep the normal case', validation: 'Replay both cases', limitations: 'Two traces only' }] };
 const api = { origin: 'https://example.test', async request(path) { return { id: path.split('/').at(-1), input: 'masked evidence', output: 'masked outcome', observations: [] }; } };

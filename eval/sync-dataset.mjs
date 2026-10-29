@@ -16,7 +16,7 @@ const get=async path=>{try{return await api.request(path);}catch(error){if(error
 const datasetPath=`/api/public/v2/datasets/${encodeURIComponent(source.name)}`;
 let target=await get(datasetPath);
 if(!target){
-  try{target=await api.request("/api/public/v2/datasets",{method:"POST",body:{name:source.name,description:"Versioned agent environment evaluation; Git is the case source.",metadata:{source:"changeroa/gisul-skills",version:source.version}}});}
+  try{target=await api.request("/api/public/v2/datasets",{method:"POST",body:{name:source.name,description:"Versioned agent environment evaluation; Git is the case source.",metadata:{source:"changeroa/iyen-skills",version:source.version}}});}
   catch(error){target=await get(datasetPath);if(!target)throw error;}
 }
 let updated=0,unchanged=0;
