@@ -13,9 +13,12 @@ const member=(n,phase)=>({uri:`skill://gisul/gisul/${n}/SKILL.md`,phase,selectio
 const def={schema_version:1,kind:'skill-pack',name:'example-pack',display_name:'Example',description:'Example review',scope:'fixture',members:[member('scope','scope'),member('backend','investigate'),member('verify','verify')]};
 test('published packs retain roles, required members and reference closure',async()=>{
  const catalog=await validate();const packs=await readPacks(new URL('..',import.meta.url).pathname,catalog.valid);
- assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','clean-code-pack','frontend-pack','testing-pack']);
- assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,12,13,9]);
- assert.ok(packs.every(p=>p.definition.members.some(m=>m.uri.endsWith('/review-verifier/SKILL.md')&&m.selection==='required')));
+ assert.deepEqual(packs.map(p=>p.definition.name),['architecture-pack','backend-pack','clean-code-pack','frontend-pack','object-design-pack','testing-pack']);
+ assert.deepEqual(packs.map(p=>p.definition.members.length),[14,13,12,13,9,9]);
+ assert.ok(packs.filter(p=>p.definition.name!=='object-design-pack').every(p=>p.definition.members.some(m=>m.uri.endsWith('/review-verifier/SKILL.md')&&m.selection==='required')));
+ const objectDesign=packs.find(p=>p.definition.name==='object-design-pack').definition;
+ assert.ok(objectDesign.members.some(m=>m.uri.endsWith('/object-design-verification/SKILL.md')&&m.phase==='verify'&&m.selection==='required'));
+ assert.ok(objectDesign.members.every(m=>!/(?:clean-code|review-|testing|preserve-decisions|archify)/.test(m.uri)));
  const combined=packs.filter(p=>['backend-pack','frontend-pack'].includes(p.definition.name)).flatMap(p=>p.definition.members);
  assert.equal(combined.length,26);assert.equal(new Set(combined.map(m=>m.uri)).size,17);
  assert.ok(packs.find(p=>p.definition.name==='architecture-pack').definition.members.some(m=>m.uri.endsWith('/review-architecture/SKILL.md')&&m.selection==='required'));
@@ -37,7 +40,7 @@ test('published packs retain roles, required members and reference closure',asyn
   if(roles.has(m.uri))assert.equal(roles.get(m.uri),m.phase,'Shared members must retain their phase across packs');
   roles.set(m.uri,m.phase);
  }
- for(const phase of ['scope','verify'])assert.equal([...roles.values()].filter(p=>p===phase).length,1);
+ for(const phase of ['scope','verify'])assert.equal([...roles.values()].filter(p=>p===phase).length,2);
 
 });
 test('definition checks reject missing references, duplicate and absent required roles',()=>{

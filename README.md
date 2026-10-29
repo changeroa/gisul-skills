@@ -63,6 +63,12 @@ This is not expertise in a bottle. It's a set of procedures an agent can try to 
 
 This is a problem-first entry point, not the entire catalog. Book-derived workflows and imported skills are credited below.
 
+## Standalone pack: UML and object design
+
+[**object-design**](skills/object-design/SKILL.md) · [**Pack definition**](packs/object-design-pack.json) · [Specialist guide](docs/object-design.md)
+
+Select self-contained procedures connecting user goals, concepts, contracts, responsibilities, collaborations, architecture and verification. No other pack is required.
+
 ## One empty screen. Four different situations.
 
 | State | What the interface should do |
