@@ -19,11 +19,14 @@ import {
 import { smokeR2 } from "./r2-smoke.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
+const base = process.env.SKILLAR_RELEASE_BASE_URL;
+assert.ok(base?.trim(), "Manual R2 publication requires explicit SKILLAR_RELEASE_BASE_URL; the former personal Cloudflare endpoint is retired and has no fallback");
 assert.equal(
   process.env.GITHUB_ACTIONS,
   "true",
   "Production publication runs only in GitHub Actions",
 );
+assert.equal(process.env.GITHUB_EVENT_NAME, "workflow_dispatch", "R2 publication requires an explicit manual workflow dispatch");
 assert.equal(process.env.GITHUB_REPOSITORY, "changeroa/iyen-skills");
 assert.equal(
   process.env.GITHUB_REF,
@@ -35,7 +38,6 @@ assert.equal(commit, process.env.GITHUB_SHA);
 const sequence = Number(process.env.GITHUB_RUN_NUMBER);
 assert.ok(Number.isSafeInteger(sequence) && sequence > 0);
 assert.ok(process.env.SKILLAR_BEARER_TOKEN, "Missing MCP reader token");
-const base = process.env.SKILLAR_RELEASE_BASE_URL;
 const api = releaseApi(base, process.env.SKILLAR_PUBLISH_TOKEN);
 const receipt = {
   state: "running",

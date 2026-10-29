@@ -58,13 +58,15 @@ The following old names are intentional:
   `gisulEvents` results as well as new `skillarEvents` results.
 - `arkpoint-gisul`, `Ark-Point/gisul*` and the pinned `arkpoint-ux-qa`
   `source_uri` refer to external team resources or their original provenance.
-- Publication workflow variables and secrets accept the previous `GISUL_*`
-  names while preferring `SKILLAR_*`.
+- Publication secrets accept previous `GISUL_*` names while preferring
+  `SKILLAR_*`. The endpoint requires explicit `SKILLAR_RELEASE_BASE_URL`;
+  `GISUL_RELEASE_BASE_URL` is never a fallback. Publication is manual only.
 - `metadata.gisul`, `gisul_join` and the quality report's related fields belong
   to the external `langfuse-masked` collector contract. They remain unchanged.
-- The deployed `gisul-mcp.changeroa.workers.dev` endpoint and
-  `gisul.iyendev.com` domain remain deployment configuration. Renaming source
-  references does not establish a new live endpoint.
+- The former personal `gisul-mcp.changeroa.workers.dev` endpoint and
+  `gisul.iyendev.com` domain are retired. Their names remain in historical
+  evidence, not active publication configuration. The primary runtime is
+  npm-installed Skillar with a local catalog.
 - The retired `com.iyendev.gisul-sleep-diagnostic-20260917` observer and ignored
   `gisulPlugin` manifest field identify legacy diagnostics.
 

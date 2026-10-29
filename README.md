@@ -82,6 +82,8 @@ This is a problem-first entry point, not the entire catalog. Book-derived workfl
 
 To use the catalog through an agent, follow [skillar's runtime connection guides](https://github.com/changeroa/skillar#get-started). This repository holds the instructions. skillar provides the server and clients that discover and deliver them.
 
+The primary setup uses Skillar installed from npm with a local catalog. The former personal Cloudflare deployment is retired; pushing this repository does not publish to it.
+
 Example request for a connected agent:
 
 > Find and read ux-state-review on Skillar. Review this signup flow's loading, verification-pending, failure, and re-entry states. Separate verified evidence from unchecked assumptions.

@@ -1,5 +1,10 @@
 # OpenClaw skillar connection
 
+The primary setup is npm-installed Skillar with a local catalog. The former
+personal Cloudflare deployment is retired. The HTTPS bridge procedure and dated
+acceptance evidence below are retained for explicitly configured hosted
+installations; they do not identify a currently available personal endpoint.
+
 Use the same verified Worker content through a local stdio bridge. The bridge
 keeps digest verification and exposes only search, load and supporting-file reads.
 It does not restore the retired SSH/server-origin path.

@@ -1,7 +1,5 @@
-name: Publish immutable R2 release
+name: Manually publish immutable R2 release
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       rollback_commit:
@@ -14,7 +12,19 @@ concurrency:
   group: skillar-r2-production
   cancel-in-progress: false
 jobs:
+  require-target:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require an explicitly configured current publication endpoint
+        env:
+          SKILLAR_RELEASE_BASE_URL: ${{ vars.SKILLAR_RELEASE_BASE_URL }}
+        run: |
+          if [ -z "${SKILLAR_RELEASE_BASE_URL//[[:space:]]/}" ]; then
+            echo '::error::Manual R2 publication requires repository variable SKILLAR_RELEASE_BASE_URL. The former personal Cloudflare deployment is retired; no legacy endpoint fallback is used.'
+            exit 1
+          fi
   validate:
+    needs: require-target
     uses: ./.github/workflows/validate.yml
   publish:
     needs: validate
@@ -33,7 +43,7 @@ jobs:
         run: node scripts/publish-r2.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          SKILLAR_RELEASE_BASE_URL: ${{ vars.SKILLAR_RELEASE_BASE_URL || vars.GISUL_RELEASE_BASE_URL }}
+          SKILLAR_RELEASE_BASE_URL: ${{ vars.SKILLAR_RELEASE_BASE_URL }}
           SKILLAR_PUBLISH_TOKEN: ${{ secrets.SKILLAR_PUBLISH_TOKEN || secrets.GISUL_PUBLISH_TOKEN }}
           SKILLAR_BEARER_TOKEN: ${{ secrets.SKILLAR_BEARER_TOKEN || secrets.GISUL_BEARER_TOKEN }}
           SKILLAR_ROLLBACK_COMMIT: ${{ inputs.rollback_commit }}

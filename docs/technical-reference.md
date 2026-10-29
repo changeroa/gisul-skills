@@ -2,6 +2,8 @@
 
 Private authoring source for workflow skills served by the skillar MCP server.
 The code repository is [changeroa/skillar](https://github.com/changeroa/skillar).
+The primary runtime is Skillar installed from npm with a local catalog. The former
+personal Cloudflare endpoint is retired; Git pushes do not trigger hosted publication.
 
 `skills/` contains the imported content, with file bytes verified against the
 remote server's resource manifests. `migration/import.json` records the source
